@@ -2,6 +2,7 @@ package modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +25,16 @@ public class ExceptionsModelo implements Serializable{
 	private int id;
 	private int numLinha;
 	private String mensagem;
+	@Column(length = 1337)
+	private String solocao;
+	
 
+	public String getSolocao() {
+		return solocao;
+	}
+	public void setSolocao(String solocao) {
+		this.solocao = solocao;
+	}
 	@ManyToOne
 	@JoinColumns({
 			@JoinColumn(name = "CODIGOMODELO_ID", referencedColumnName = "ID") })

@@ -32,10 +32,9 @@ import modelo.Procura;
 
 public class AppPrinc {
 
-	//private String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
-	private String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; //teste
+	
+	private String diretorio = Configuracoes.getDiretorio(); //teste
 	private String extensao = "pas";
-
 	public String tipoArquivoSaida = ".txt";
 	public CodigoModelo modelo;
 	//Todas as palavras que podem ser procuradas
@@ -53,12 +52,12 @@ public class AppPrinc {
 	public String palavraAbreParenteses = "([(])";
 	public String palavraFechaParenteses = "([)])";
 	public String palavraPontoVirgula = "([;])";
-	public String palavraEnd = "(end|END|End)";
+	public String palavraEnd = "(end|END|End)";	
 	public String palavraBegin = "(Begin|begin|BEGIN)";
 	public String palavraConsulta = "(sql.add|SQL.ADD|Sql.Add|SQL.Add)";
 	
 	public String palavraProcura = "(IdTipoServico)";
-		
+	
 	public List<CodigoModelo> listaCodigos = new ArrayList<CodigoModelo>();
 	public CodigoModelo codigo = new CodigoModelo();
 	
@@ -73,23 +72,17 @@ public class AppPrinc {
 
 	public List<Procura> listaProcura = new ArrayList<Procura>();
 	public Procura procura = new Procura();
+
+
 	
-	// lista todos os IF's do codigo
-	public boolean listarIf = false;
-	// lista todos as exceptions do codigo 
-	public boolean listarExcecoes = true;
-	// lista todas as funções e procedures
-	public boolean listarMetodos = true;
-	// lista todos as consultas de data source do codigo 
-	public boolean listarConsultas = false;
-	//modo simplificado retorna o tipo de coisa encontrado na linha como por exemplo if's e else's
-	public boolean modoSimplificado= false;
-	//imprimi diretamente no console
-	public boolean modoImprimir= false;
-	//imprimi todo o codigo do modo imprimir num arquivo especifico
-	public boolean escritaEmArquivo= false;
-	//imprimi procura
-	public boolean procuraEmArquivo= false;
+	public boolean listarIf = Configuracoes.isListarIf();
+	public boolean listarExcecoes = Configuracoes.isListarExcecoes();
+	public boolean listarMetodos = Configuracoes.isListarMetodos();
+	public boolean listarConsultas = Configuracoes.isListarConsultas();
+	public boolean modoSimplificado= Configuracoes.isModoSimplificado();
+	public boolean modoImprimir= Configuracoes.isModoImprimir();
+	public boolean escritaEmArquivo= Configuracoes.isEscritaEmArquivo();
+	public boolean procuraEmArquivo= Configuracoes.isProcuraEmArquivo();
 
 	/*
 	 * Atributos para funcionar o codigo
@@ -110,11 +103,11 @@ public class AppPrinc {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 
 	public AppPrinc() throws IOException {
+		EntityManagerFactory emf;
 		File file = new File(diretorio);
 		File afile[] = file.listFiles();
 		int i = 0;
@@ -126,21 +119,35 @@ public class AppPrinc {
 			}
 			if(arquivos.length()==0)
 				arquivos.delete();
-
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("ProjetoAbella");
+		}
+		switch (Configuracoes.getAcoesBanco()) {
+		case 1:
+			emf = Persistence.createEntityManagerFactory("ProjetoAbellaDropCreate");
+			break;
+		case 2:
+			emf = Persistence.createEntityManagerFactory("ProjetoAbellaCreate");
+			break;
+		case 3:
+			emf = Persistence.createEntityManagerFactory("ProjetoAbellaDrop");
+			break;
+		default:
+			emf = Persistence.createEntityManagerFactory("ProjetoAbellaNaoFazNada");
+		}
+		
+		if(Configuracoes.getAcoesBanco()!=3)
+		{
 			if(listarConsultas)
-				listarConsultas();
+				listarConsultas(emf);
 			if(listarMetodos)
 				listarMetodos(emf);
 			if(listarExcecoes)
 				listarExcecoes(emf);
 			if(listarIf)
-				listarIfs();
+				listarIfs(emf);
 			if(procuraEmArquivo)
 				procuraEmArquivo();
-
-	        emf.close();
 		}
+        emf.close();
 	}
 	
 	private void procuraEmArquivo() {
@@ -149,17 +156,28 @@ public class AppPrinc {
 		}
 	}
 
-	private void listarConsultas() {
+	private void listarConsultas(EntityManagerFactory emf) {
 		// TODO Auto-generated method stub
 		for (ConsultaModelo c : listaConsultas) 
 			System.out.println(c);
 	}
 
-	private void listarIfs() {
+	private void listarIfs(EntityManagerFactory emf) {
 		// TODO Auto-generated method stub
-		for (IfModelo i : listaIfs) {
+		
+
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		for (IfModelo e : listaIfs) {
+	        em.persist(e);
+		}
+        em.getTransaction().commit();
+
+        em.close();
+		/*for (IfModelo i : listaIfs) {
 			System.out.println(i);
 		}
+		*/
 		
 	}
 
