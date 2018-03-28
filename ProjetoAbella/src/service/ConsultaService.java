@@ -27,5 +27,6 @@ public class ConsultaService {
 
 	public static void salvaConsulta(ConsultaModelo consulta) {
 		listaConsultas.add(consulta);
+		ConsultaService.consulta = new ConsultaModelo();
 	}
 }

@@ -185,9 +185,7 @@ public class Core {
 	        	ConsultaService.getConsulta().setNumLinha(numLinha);
 	        	ConsultaService.getConsulta().setConsulta(splitConsulta[1]);
 	        	
-	        	
 	        	ConsultaService.salvaConsulta(ConsultaService.getConsulta());
-	        	ConsultaService.setConsulta(new ConsultaModelo());
 	        	
 	        	tipo += "consulta";
 	        }
@@ -201,7 +199,6 @@ public class Core {
 		        	IfService.getIf().setNumLinha(numLinha);
 		        	IfService.getIf().setCondicao(splitIf[1]);
 		        	IfService.salvaIf(IfService.getIf());
-		        	IfService.setIf(new IfModelo());
 		        	
 		        	//for (String s : splitIf) 
 		        	//	System.out.println(numLinha+"\t"+s);
@@ -226,20 +223,15 @@ public class Core {
 			    	ExceptionService.getExceptions().setNumLinha(numLinha);
 			    	ExceptionService.getExceptions().setMensagem(splitExcepection[2]);
 			    	ExceptionService.getExceptions().setCodigoModelo(MetodoService.getListaMetodos().get(MetodoService.getListaMetodos().size()-1));
-			    	
-			    	
 			    }
 		    	else
 		    	{
 		    		ExceptionService.getExceptions().setNumLinha(numLinha);
 		    		ExceptionService.getExceptions().setMensagem(splitExcepection[1] + ". (Mensagem gerada pelo sistema)");
 		    		ExceptionService.getExceptions().setCodigoModelo(MetodoService.getListaMetodos().get(MetodoService.getListaMetodos().size()-1));
-		    		
 		    	}
 		    	
-		    	
 		    	ExceptionService.salvaException(ExceptionService.getExceptions());
-	    		ExceptionService.setExceptions(new ExceptionsModelo());
 	        	tipo += "ExceptionCreate ";
 	        }
 
@@ -296,7 +288,6 @@ public class Core {
 				    		MetodoService.getMetodo().setMetodo(metodoProcFuncDivisao[1]);
 				    		MetodoService.getMetodo().setNumLinha(numLinha);
 				        	MetodoService.salvaMetodo(MetodoService.getMetodo());
-							MetodoService.setMetodo(new MetodoModelo());
 				        	tipo += "Função ";
 			    		}
 			        }
@@ -317,7 +308,6 @@ public class Core {
 							MetodoService.getMetodo().setMetodo(metodoProcFuncDivisao[1]);
 							MetodoService.getMetodo().setNumLinha(numLinha);
 							MetodoService.salvaMetodo(MetodoService.getMetodo());
-							MetodoService.setMetodo(new MetodoModelo());
 				        	tipo += "Procedure ";
 						}
 			        }

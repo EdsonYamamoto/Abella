@@ -27,6 +27,6 @@ public class IfService {
 
 	public static void salvaIf(IfModelo If) {
 		listaIf.add(If);
-		If = new IfModelo();
+		IfService.If = new IfModelo();
 	}
 }

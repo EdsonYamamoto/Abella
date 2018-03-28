@@ -27,6 +27,6 @@ public class ExceptionService {
 
 	public static void salvaException(ExceptionsModelo exceptions) {
 		listaExceptions.add(exceptions);
-		exceptions = new ExceptionsModelo();
+		ExceptionService.exceptions = new ExceptionsModelo();
 	}
 }

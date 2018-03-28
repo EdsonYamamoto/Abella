@@ -24,6 +24,7 @@ public final class MetodoService {
 	}
 	public static void salvaMetodo(MetodoModelo metodo) {
 		listaMetodos.add(metodo);
+		MetodoService.metodo = new MetodoModelo();
 	}
 	
 }
