@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="MetodosXPCELL")
-public class CodigoModelo implements Serializable{
+public class MetodoModelo implements Serializable{
 	/**
 	 * 
 	 */
@@ -58,11 +58,11 @@ public class CodigoModelo implements Serializable{
 	public void setMetodo(String metodo) {
 		this.metodo = metodo;
 	}
-	public CodigoModelo()
+	public MetodoModelo()
 	{
 		
 	}
-	public CodigoModelo(String procedure,int numLinha)
+	public MetodoModelo(String procedure,int numLinha)
 	{
 		this.metodo = procedure;
 		this.numLinha = numLinha;

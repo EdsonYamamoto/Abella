@@ -24,11 +24,17 @@ public class IfModelo implements Serializable{
 	private int numLinha;
 	@Column(length = 1337)
 	private String condicao;
-	
-
 	@ManyToOne
 	@JoinColumns({
 			@JoinColumn(name = "CODIGOMODELO_ID", referencedColumnName = "ID") })
+	MetodoModelo codigoModelo;
+	
+	public MetodoModelo getCodigoModelo() {
+		return codigoModelo;
+	}
+	public void setCodigoModelo(MetodoModelo codigoModelo) {
+		this.codigoModelo = codigoModelo;
+	}
 	public int getId() {
 		return id;
 	}

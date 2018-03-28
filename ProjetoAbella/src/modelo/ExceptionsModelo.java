@@ -27,7 +27,11 @@ public class ExceptionsModelo implements Serializable{
 	private String mensagem;
 	@Column(length = 1337)
 	private String solocao;
-	
+
+	@ManyToOne
+	@JoinColumns({
+			@JoinColumn(name = "CODIGOMODELO_ID", referencedColumnName = "ID") })
+	private MetodoModelo codigoModelo;
 
 	public String getSolocao() {
 		return solocao;
@@ -35,10 +39,6 @@ public class ExceptionsModelo implements Serializable{
 	public void setSolocao(String solocao) {
 		this.solocao = solocao;
 	}
-	@ManyToOne
-	@JoinColumns({
-			@JoinColumn(name = "CODIGOMODELO_ID", referencedColumnName = "ID") })
-	private CodigoModelo codigoModelo;
 	
 	public int getNumLinha() {
 		return numLinha;
@@ -52,10 +52,10 @@ public class ExceptionsModelo implements Serializable{
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
 	}
-	public CodigoModelo getCodigoModelo() {
+	public MetodoModelo getCodigoModelo() {
 		return codigoModelo;
 	}
-	public void setCodigoModelo(CodigoModelo codigoModelo) {
+	public void setCodigoModelo(MetodoModelo codigoModelo) {
 		this.codigoModelo = codigoModelo;
 	}
 	@Override
