@@ -7,6 +7,14 @@ import modelo.MetodoModelo;
 
 public final class MetodoService {
 	private static List<MetodoModelo> listaMetodos = new ArrayList<MetodoModelo>();
+	private static List<MetodoModelo> listaBancoMetodos = new ArrayList<MetodoModelo>();
+	
+	public static List<MetodoModelo> getListaBancoMetodos() {
+		return listaBancoMetodos;
+	}
+	public static void setListaBancoMetodos(List<MetodoModelo> listaBancoMetodos) {
+		MetodoService.listaBancoMetodos = listaBancoMetodos;
+	}
 	private static MetodoModelo metodo = new MetodoModelo();
 	
 	public static List<MetodoModelo> getListaMetodos() {

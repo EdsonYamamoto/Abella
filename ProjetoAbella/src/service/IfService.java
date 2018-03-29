@@ -7,6 +7,16 @@ import modelo.IfModelo;
 
 public class IfService {
 	private static List<IfModelo> listaIf = new ArrayList<IfModelo>();
+	private static List<IfModelo> listaBancoIf = new ArrayList<IfModelo>();
+	
+	public static List<IfModelo> getListaBancoIf() {
+		return listaBancoIf;
+	}
+
+	public static void setListaBancoIf(List<IfModelo> listaBancoIf) {
+		IfService.listaBancoIf = listaBancoIf;
+	}
+
 	private static IfModelo If = new IfModelo();
 
 	public static List<IfModelo> getListaIf() {

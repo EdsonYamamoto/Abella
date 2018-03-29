@@ -3,6 +3,7 @@ package main;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 import modelo.ConsultaModelo;
 import modelo.ExceptionsModelo;
@@ -95,5 +96,19 @@ public class Features {
 			em.persist(c);
         em.close();
         em.getTransaction().commit();
+	}
+	
+	@SuppressWarnings("unchecked")
+	static void leQuery()
+	{
+		EntityManagerFactory emf;
+		emf = Persistence.createEntityManagerFactory("ProjetoAbellaNaoFazNada");
+		EntityManager em = emf.createEntityManager();
+		TypedQuery<MetodoModelo> q = (TypedQuery<MetodoModelo>) em.createNativeQuery("select t from MetodoModelo t", MetodoModelo.class);
+
+		MetodoService.setListaBancoMetodos(q.getResultList());
+		for (MetodoModelo entity : MetodoService.getListaBancoMetodos())
+			System.out.println(entity);
+        emf.close();
 	}
 }

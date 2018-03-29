@@ -7,7 +7,16 @@ import modelo.ConsultaModelo;
 
 public class ConsultaService {
 	private static List<ConsultaModelo> listaConsultas = new ArrayList<ConsultaModelo>();
+	private static List<ConsultaModelo> listaBancoConsultas = new ArrayList<ConsultaModelo>();
 	private static ConsultaModelo consulta = new ConsultaModelo();
+	
+	public static List<ConsultaModelo> getListaBancoConsultas() {
+		return listaBancoConsultas;
+	}
+
+	public static void setListaBancoConsultas(List<ConsultaModelo> listaBancoConsultas) {
+		ConsultaService.listaBancoConsultas = listaBancoConsultas;
+	}
 
 	public static List<ConsultaModelo> getListaConsultas() {
 		return listaConsultas;

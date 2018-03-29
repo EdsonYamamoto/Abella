@@ -5,7 +5,7 @@ public final class Configuracoes {
 	/*
 	 * Habilita inserção no banco de dados
 	 * */
-	private static boolean habilitaInsercaoBanco = true;
+	private static boolean habilitaInsercaoBanco = false;
 	/*
 	 * Insercoes no banco
 	 * */

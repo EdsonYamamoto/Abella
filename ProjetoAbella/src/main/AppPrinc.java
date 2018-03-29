@@ -19,7 +19,6 @@ public class AppPrinc {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	public AppPrinc() throws IOException {
@@ -39,6 +38,7 @@ public class AppPrinc {
 			Features.inserirDadosBanco();
 		if(Configuracoes.isHabilitaImpressaoLOG())
 			Features.impressaoDados();
+		Features.leQuery();
 	}
 }
 

@@ -22,16 +22,16 @@ import service.MetodoService;
 public class Core {
 
 	//Todas as palavras que podem ser procuradas
-	public static String palavraIf = "(IF|if|If|iF)";
-	public static String palavraElse = "(?i:.*ELSE.*)";
-	public static String palavraWhile = "(?i:.*WHILE.*)";
-	public static String palavraExceptionCreate = "(?i:.*SQL.ADD.*)";
-	public static String palavraProcedure = "(?i:.*PROCEDURE.*)";
-	public static String palavraFunction = "(?i:.*FUNCTION.*)";
-	public static String palavraEnd = "(?i:.*END.*)";	
-	public static String palavraBegin = "(?i:.*BEGIN.*)";
-	public static String palavraConsulta = "(?i:.*SQL.ADD.*)";
-	public static String palavraDo = "(DO|do)";
+	public static String palavraIf = "(?i:.*IF*)";
+	public static String palavraElse = "(?i:.*ELSE*)";
+	public static String palavraWhile = "(?i:.*WHILE*)";
+	public static String palavraExceptionCreate = "(?i:.*Exception.Create*)";
+	public static String palavraProcedure = "(?i:.*PROCEDURE*)";
+	public static String palavraFunction = "(?i:.*FUNCTION*)";
+	public static String palavraEnd = "(?i:.*END*)";	
+	public static String palavraBegin = "(?i:.*BEGIN*)";
+	public static String palavraConsulta = "(?i:.*SQL.ADD*)";
+	public static String palavraDo = "(?i:.*DO*)";
 	public static String palavraCometario1Linha = "([//])";	
 	public static String palavraCometarioMultiplasLinhaInicio = "([{])";	
 	public static String palavraCometarioMultiplasLinhaFim = "([}])";	
@@ -167,7 +167,7 @@ public class Core {
 	        if(matcherConsulta.find())
 	        {
 	        	String[] splitConsulta;
-	        	splitConsulta = str.split("add|Add|ADD|;");
+	        	splitConsulta = str.split("(?i:.*ADD*)|([;])");
 	        	ConsultaService.getConsulta().setNumLinha(numLinha);
 	        	ConsultaService.getConsulta().setConsulta(splitConsulta[1]);
 	        	ConsultaService.getConsulta().setDataCadastro(Calendar.getInstance());
@@ -180,7 +180,7 @@ public class Core {
 	        if(matcherIf.matches())
 	        {
 	        	String[] splitIf;
-	        	splitIf = str.split("(if|IF|If|then|Then|THEN)");
+	        	splitIf = str.split("IF|If|iF|if|THEN|Then|then");
 	        	if(splitIf.length>1)
 	        	{
 		        	IfService.getIf().setNumLinha(numLinha);
@@ -191,7 +191,6 @@ public class Core {
 		        	
 		        	//for (String s : splitIf) 
 		        	//	System.out.println(numLinha+"\t"+s);
-
 	        	}
 		        tipo += "If ";
 	        }
@@ -283,6 +282,7 @@ public class Core {
 			        }
 	        	}
 	        }
+	        
 	        if(matcherProcedure.matches())
 	        {
 	        	condicaoDeComentario=true;
@@ -305,7 +305,6 @@ public class Core {
 				}
 	        }
 		}
-		
 		return tipo;
 	}
 }
