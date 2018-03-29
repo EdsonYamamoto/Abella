@@ -5,7 +5,7 @@ public final class Configuracoes {
 	/*
 	 * Habilita inserção no banco de dados
 	 * */
-	private static boolean habilitaInsercaoBanco = false;
+	private static boolean habilitaInsercaoBanco = true;
 	/*
 	 * Insercoes no banco
 	 * */
@@ -39,9 +39,9 @@ public final class Configuracoes {
 	
 	
 	//a pasta que o programa vai pegar as informações
-	private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
+	//private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
 	//private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
-	//private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
+	private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
 	
 	//Tipo do arquivo a ser lido
 	private static String extensaoArquivoEntrada = ".pas";

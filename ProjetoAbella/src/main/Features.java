@@ -48,30 +48,64 @@ public class Features {
 			emf = Persistence.createEntityManagerFactory("ProjetoAbellaNaoFazNada");
 		}
 
-		if(Configuracoes.getAcoesBanco()!=3)
+		if(Configuracoes.getAcoesBanco()==1)
 		{
 			if(Configuracoes.isInserirBancoListaMetodos())
-				metodoArmazenaMetodos(emf);
+				metodoDroparEArmazenaMetodos(emf);
 			if(Configuracoes.isInserirBancoListaIf())
-				metodoArmazenaCondicoes(emf);
-			if(Configuracoes.isImprimiListaExcecoes())
-				metodoArmazenaExcecoes(emf);
-			if(Configuracoes.isImprimiListaConsultas())
-				metodoArmazenaConsultasBanco(emf);
+				metodoDroparEArmazenaCondicoes(emf);
+			if(Configuracoes.isInserirBancoListaExcecoes())
+				metodoDroparEArmazenaExcecoes(emf);
+			if(Configuracoes.isInserirBancoListaConsultas())
+				metodoDroparEArmazenaConsultasBanco(emf);
+		}
+		/*
+		 * Nao implementado
+		 * */
+		if(Configuracoes.getAcoesBanco()==2)
+		{
+			if(Configuracoes.isInserirBancoListaMetodos())
+				metodoVerificaParaArmazenaMetodos(emf);
+			if(Configuracoes.isInserirBancoListaIf())
+				metodoVerificaParaArmazenaCondicoes(emf);
+			if(Configuracoes.isInserirBancoListaExcecoes())
+				metodoVerificaParaArmazenaExcecoes(emf);
+			if(Configuracoes.isInserirBancoListaConsultas())
+				metodoVerificaParaArmazenaConsultasBanco(emf);
 		}
         emf.close();
 	}
 	
-	private static void metodoArmazenaConsultasBanco(EntityManagerFactory emf) {
+	private static void metodoVerificaParaArmazenaConsultasBanco(EntityManagerFactory emf) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void metodoVerificaParaArmazenaExcecoes(EntityManagerFactory emf) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void metodoVerificaParaArmazenaCondicoes(EntityManagerFactory emf) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void metodoVerificaParaArmazenaMetodos(EntityManagerFactory emf) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void metodoDroparEArmazenaConsultasBanco(EntityManagerFactory emf) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		for (ConsultaModelo c : ConsultaService.getListaConsultas()) 
-			System.out.println(c);
+	        em.persist(c);
         em.close();
         em.getTransaction().commit();
 	}
 
-	private static void metodoArmazenaCondicoes(EntityManagerFactory emf) {
+	private static void metodoDroparEArmazenaCondicoes(EntityManagerFactory emf) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		for (IfModelo e : IfService.getListaIf()) 
@@ -80,7 +114,7 @@ public class Features {
         em.getTransaction().commit();
 	}
 
-	private static void metodoArmazenaExcecoes(EntityManagerFactory emf) {
+	private static void metodoDroparEArmazenaExcecoes(EntityManagerFactory emf) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		for (ExceptionsModelo e : ExceptionService.getListaExceptions())
@@ -89,7 +123,7 @@ public class Features {
         em.getTransaction().commit();
 	}
 	
-	public static void metodoArmazenaMetodos(EntityManagerFactory emf){
+	public static void metodoDroparEArmazenaMetodos(EntityManagerFactory emf){
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		for (MetodoModelo c : MetodoService.getListaMetodos()) 
@@ -98,17 +132,28 @@ public class Features {
         em.getTransaction().commit();
 	}
 	
-	@SuppressWarnings("unchecked")
 	static void leQuery()
 	{
 		EntityManagerFactory emf;
-		emf = Persistence.createEntityManagerFactory("ProjetoAbellaNaoFazNada");
+		emf = Persistence.createEntityManagerFactory("ProjetoAbellaCreate");
 		EntityManager em = emf.createEntityManager();
-		TypedQuery<MetodoModelo> q = (TypedQuery<MetodoModelo>) em.createNativeQuery("select t from MetodoModelo t", MetodoModelo.class);
 
-		MetodoService.setListaBancoMetodos(q.getResultList());
-		for (MetodoModelo entity : MetodoService.getListaBancoMetodos())
-			System.out.println(entity);
+		em.getTransaction().begin();
+		
+		@SuppressWarnings("unchecked")
+		TypedQuery<MetodoModelo> listaBancoDados = (TypedQuery<MetodoModelo>) em.createNativeQuery("select * from metodosXPCELL", MetodoModelo.class);
+
+		MetodoService.setListaBancoMetodos(listaBancoDados.getResultList());
+
+        em.close();
         emf.close();
+        
+		for (MetodoModelo metodoBanco : MetodoService.getListaBancoMetodos())
+			for (MetodoModelo metodoExtraido : MetodoService.getListaMetodos()) 
+				if(metodoBanco.getMetodo().compareTo(metodoExtraido.getMetodo())==0)
+					MetodoService.getListaMetodos().remove(metodoBanco);
+		for (MetodoModelo m : MetodoService.getListaMetodos()) 
+			System.out.println(m);
+		
 	}
 }

@@ -12,6 +12,7 @@ public class AppPrinc {
 	public static void main(String[] args)
 	{
 		try {
+			System.out.println("INICIADO PROGRAMA");
 			AppPrinc programa = new AppPrinc();	
 			System.out.println("Sucesso em ler os arquivos programa");
 			System.out.println("Programa : "+programa+" finalizando");
@@ -34,11 +35,15 @@ public class AppPrinc {
 			if(arquivos.length()==0)
 				arquivos.delete();
 		}
+
+		System.out.println("Feito a leitura de todos os arquivos");
+		
 		if(Configuracoes.isHabilitaInsercaoBanco())
 			Features.inserirDadosBanco();
 		if(Configuracoes.isHabilitaImpressaoLOG())
 			Features.impressaoDados();
-		Features.leQuery();
+
+		//	Features.leQuery();
 	}
 }
 

@@ -3,15 +3,35 @@ package modelo;
 import java.util.Calendar;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+@Entity(name="ConsultaBancoXPCELL")
 public class ConsultaModelo {
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 	private int numLinha;
+	
+	@Lob
+	@Column
 	private String consulta;
 	@Column(name="dtCadastro")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataCadastro;
+	
+	public ConsultaModelo()
+	{
+		numLinha=0;
+		consulta="";
+	}
+	
 	public int getNumLinha() {
 		return numLinha;
 	}
@@ -34,6 +54,6 @@ public class ConsultaModelo {
 	@Override
 	public String toString()
 	{
-		return this.numLinha+"\t"+ this.consulta;
+		return ""+ this.consulta;
 	}
 }

@@ -30,38 +30,48 @@ public class ExceptionsModelo implements Serializable{
 	private String mensagem;
 	@Column(length = 1337)
 	private String solocao;
-	@ManyToOne
-	@JoinColumns({
-			@JoinColumn(name = "IFMODELO_ID", referencedColumnName = "ID") })
-	private IfModelo ifModelo;
-	
 	@Column(name="dtCadastro")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataCadastro;
 	
 
-	/*
+	
 	@ManyToOne
 	@JoinColumns({
 			@JoinColumn(name = "CODIGOMODELO_ID", referencedColumnName = "ID") })
 	private MetodoModelo codigoModelo;
-	 */
+	 
 
 	/*
+	@ManyToOne
+	@JoinColumns({
+			@JoinColumn(name = "IFMODELO_ID", referencedColumnName = "ID") })
+	private IfModelo ifModelo;
+	*/
+	/*
+	 * 
+	public IfModelo getIfModelo() {
+		return ifModelo;
+	}
+	public void setIfModelo(IfModelo ifModelo) {
+		this.ifModelo = ifModelo;
+	}
+	 * */
+
+
+	
 	public MetodoModelo getCodigoModelo() {
 		return codigoModelo;
 	}
 	public void setCodigoModelo(MetodoModelo codigoModelo) {
 		this.codigoModelo = codigoModelo;
 	}
-	*/
 	public String getSolocao() {
 		return solocao;
 	}
 	public void setSolocao(String solocao) {
 		this.solocao = solocao;
 	}
-	
 	public int getNumLinha() {
 		return numLinha;
 	}
@@ -74,22 +84,15 @@ public class ExceptionsModelo implements Serializable{
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
 	}
-	
-	public Calendar getDataCadastro() {
-		return dataCadastro;
-	}
-	public IfModelo getIfModelo() {
-		return ifModelo;
-	}
-	public void setIfModelo(IfModelo ifModelo) {
-		this.ifModelo = ifModelo;
-	}
 	public void setDataCadastro(Calendar dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+	public Calendar getDataCadastro() {
+		return dataCadastro;
 	}
 	@Override
 	public String toString()
 	{
-		return this.ifModelo+"\t"+ this.numLinha+"\t"+ this.mensagem;
+		return this.codigoModelo+"\t"+ this.numLinha+"\t"+ this.mensagem;
 	}
 }

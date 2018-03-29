@@ -80,6 +80,6 @@ public class IfModelo implements Serializable{
 	@Override
 	public String toString()
 	{
-		return this.numLinha+"\t"+ this.condicao;
+		return this.metodoModelo+"\t"+this.numLinha+"\t"+ this.condicao;
 	}
 }

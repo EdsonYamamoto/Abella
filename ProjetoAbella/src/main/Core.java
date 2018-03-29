@@ -31,6 +31,7 @@ public class Core {
 	public static String palavraEnd = "(?i:.*END*)";	
 	public static String palavraBegin = "(?i:.*BEGIN*)";
 	public static String palavraConsulta = "(?i:.*SQL.ADD*)";
+	public static String palavraTerminaConsulta = "(?i:.*EXECSQL*)|(?i:.*.OPEN*)";
 	public static String palavraDo = "(?i:.*DO*)";
 	public static String palavraCometario1Linha = "([//])";	
 	public static String palavraCometarioMultiplasLinhaInicio = "([{])";	
@@ -39,6 +40,7 @@ public class Core {
 	public static String palavraAbreParenteses = "([(])";
 	public static String palavraFechaParenteses = "([)])";
 	public static String palavraPontoVirgula = "([;])";
+
 	//public static String palavraConsulta = "(sql.add|SQL.ADD|Sql.Add|SQL.Add)";
 	//public static String palavraExceptionCreate = "(Exception.Create|exception.create)";
 	
@@ -144,6 +146,8 @@ public class Core {
 		Pattern patternEnd = Pattern.compile(palavraEnd);
 		Pattern patternBegin = Pattern.compile(palavraBegin);
 		Pattern patternConsulta = Pattern.compile(palavraConsulta);
+		Pattern patternTerminaConsulta = Pattern.compile(palavraTerminaConsulta);
+		
 		
 		
 		for(int i=0;i<palavras.length;i++)	
@@ -162,19 +166,32 @@ public class Core {
 	        Matcher matcherEnd = patternEnd.matcher(palavras[i]);
 	        Matcher matcherBegin = patternBegin.matcher(palavras[i]);
 	        Matcher matcherConsulta = patternConsulta.matcher(palavras[i]);
+	        Matcher matcherTerminaConsulta = patternTerminaConsulta.matcher(palavras[i]);
+	        
 	        
 	        
 	        if(matcherConsulta.find())
 	        {
+	        	String teste="";
 	        	String[] splitConsulta;
 	        	splitConsulta = str.split("(?i:.*ADD*)|([;])");
+	        	for (String string : splitConsulta) {
+		        	String[] palavrasDaConsulta = string.split("([(']|[')])");
+		        	for (String string2 : palavrasDaConsulta) 
+			        	teste+=string2;
+				}
+	        	if(teste.trim().compareTo("")!=0)
+	        		if(ConsultaService.getConsulta().toString().trim()!="")
+	        			ConsultaService.getConsulta().setConsulta(ConsultaService.getConsulta()+teste+System.getProperty("line.separator"));
+	        	tipo += "consulta";
+	        }
+	        
+	        if(matcherTerminaConsulta.find())
+	        {
 	        	ConsultaService.getConsulta().setNumLinha(numLinha);
-	        	ConsultaService.getConsulta().setConsulta(splitConsulta[1]);
 	        	ConsultaService.getConsulta().setDataCadastro(Calendar.getInstance());
-	        	
 	        	ConsultaService.salvaConsulta(ConsultaService.getConsulta());
 	        	
-	        	tipo += "consulta";
 	        }
 	        
 	        if(matcherIf.matches())
@@ -216,8 +233,11 @@ public class Core {
 		    		ExceptionService.getExceptions().setNumLinha(numLinha);
 		    		ExceptionService.getExceptions().setMensagem(splitExcepection[1] + ". (Mensagem gerada pelo sistema)");
 		    	}
-	    		ExceptionService.getExceptions().setIfModelo(IfService.getListaIf().get(IfService.getListaIf().size()-1));
+		    	ExceptionService.getExceptions().setCodigoModelo(MetodoService.getListaMetodos().get(MetodoService.getListaMetodos().size()-1));
+	    		//ExceptionService.getExceptions().setIfModelo(IfService.getListaIf().get(IfService.getListaIf().size()-1));
 		    	ExceptionService.getExceptions().setDataCadastro(Calendar.getInstance());
+	    		//System.out.println(ExceptionService.getExceptions());
+	    		//System.out.println(ExceptionService.getExceptions().getIfModelo());
 		    	ExceptionService.salvaException(ExceptionService.getExceptions());
 	        	tipo += "ExceptionCreate ";
 	        }
