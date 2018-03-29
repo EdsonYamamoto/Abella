@@ -8,14 +8,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import modelo.ConsultaModelo;
-import modelo.ExceptionsModelo;
-import modelo.IfModelo;
-import modelo.MetodoModelo;
 import modelo.Procura;
 import service.ConsultaService;
 import service.ExceptionService;
@@ -26,24 +23,25 @@ public class Core {
 
 	//Todas as palavras que podem ser procuradas
 	public static String palavraIf = "(IF|if|If|iF)";
-	public static String palavraElse = "(ELSE|Else|ELse|ELSe|else)";
-	public static String palavraWhile = "(While|while|WHILE)";
+	public static String palavraElse = "(?i:.*ELSE.*)";
+	public static String palavraWhile = "(?i:.*WHILE.*)";
+	public static String palavraExceptionCreate = "(?i:.*SQL.ADD.*)";
+	public static String palavraProcedure = "(?i:.*PROCEDURE.*)";
+	public static String palavraFunction = "(?i:.*FUNCTION.*)";
+	public static String palavraEnd = "(?i:.*END.*)";	
+	public static String palavraBegin = "(?i:.*BEGIN.*)";
+	public static String palavraConsulta = "(?i:.*SQL.ADD.*)";
 	public static String palavraDo = "(DO|do)";
 	public static String palavraCometario1Linha = "([//])";	
 	public static String palavraCometarioMultiplasLinhaInicio = "([{])";	
 	public static String palavraCometarioMultiplasLinhaFim = "([}])";	
-	public static String palavraExceptionCreate = "(Exception.Create|exception.create)";
-	public static String palavraProcedure = "(procedure|Procedure|PROCEDURE)";
-	public static String palavraFunction = "(function|Function|FUNCTION)";
 	public static String palavraPonto = "([.])";
 	public static String palavraAbreParenteses = "([(])";
 	public static String palavraFechaParenteses = "([)])";
 	public static String palavraPontoVirgula = "([;])";
-	public static String palavraEnd = "(end|END|End)";	
-	public static String palavraBegin = "(Begin|begin|BEGIN)";
-	public static String palavraConsulta = "(sql.add|SQL.ADD|Sql.Add|SQL.Add)";
+	//public static String palavraConsulta = "(sql.add|SQL.ADD|Sql.Add|SQL.Add)";
+	//public static String palavraExceptionCreate = "(Exception.Create|exception.create)";
 	
-	public static String palavraProcura = "(IdTipoServico)";
 
 	public static List<Procura> listaProcura = new ArrayList<Procura>();
 	public static Procura procura = new Procura();
@@ -107,9 +105,7 @@ public class Core {
 					bufferEscrita.write (escritaArquivo);//Leia um arquivo e Escreva no outro
 					bufferEscrita.newLine ();//pula uma linha no arquivoescrever (result);
 				}
-				
 			}
-			
 		}			
 		br.close();
 		arquivoParaEscrever.close ();
@@ -148,7 +144,6 @@ public class Core {
 		Pattern patternEnd = Pattern.compile(palavraEnd);
 		Pattern patternBegin = Pattern.compile(palavraBegin);
 		Pattern patternConsulta = Pattern.compile(palavraConsulta);
-		Pattern patternProcura = Pattern.compile(palavraProcura);
 		
 		
 		for(int i=0;i<palavras.length;i++)	
@@ -167,16 +162,7 @@ public class Core {
 	        Matcher matcherEnd = patternEnd.matcher(palavras[i]);
 	        Matcher matcherBegin = patternBegin.matcher(palavras[i]);
 	        Matcher matcherConsulta = patternConsulta.matcher(palavras[i]);
-	        Matcher matcherProcura = patternProcura.matcher(palavras[i]);
 	        
-	        
-	        if(matcherProcura.find())
-	        {
-	        	procura.setNumLinha(numLinha);
-	        	procura.setMensagem(str);
-	        	listaProcura.add(procura);
-	        	procura= new Procura();
-	        }
 	        
 	        if(matcherConsulta.find())
 	        {
@@ -184,6 +170,7 @@ public class Core {
 	        	splitConsulta = str.split("add|Add|ADD|;");
 	        	ConsultaService.getConsulta().setNumLinha(numLinha);
 	        	ConsultaService.getConsulta().setConsulta(splitConsulta[1]);
+	        	ConsultaService.getConsulta().setDataCadastro(Calendar.getInstance());
 	        	
 	        	ConsultaService.salvaConsulta(ConsultaService.getConsulta());
 	        	
@@ -198,6 +185,8 @@ public class Core {
 	        	{
 		        	IfService.getIf().setNumLinha(numLinha);
 		        	IfService.getIf().setCondicao(splitIf[1]);
+		        	IfService.getIf().setDataCadastro(Calendar.getInstance());
+		        	IfService.getIf().setMetodoModelo(MetodoService.getListaMetodos().get(MetodoService.getListaMetodos().size()-1));
 		        	IfService.salvaIf(IfService.getIf());
 		        	
 		        	//for (String s : splitIf) 
@@ -222,15 +211,14 @@ public class Core {
 		    	{
 			    	ExceptionService.getExceptions().setNumLinha(numLinha);
 			    	ExceptionService.getExceptions().setMensagem(splitExcepection[2]);
-			    	ExceptionService.getExceptions().setCodigoModelo(MetodoService.getListaMetodos().get(MetodoService.getListaMetodos().size()-1));
 			    }
 		    	else
 		    	{
 		    		ExceptionService.getExceptions().setNumLinha(numLinha);
 		    		ExceptionService.getExceptions().setMensagem(splitExcepection[1] + ". (Mensagem gerada pelo sistema)");
-		    		ExceptionService.getExceptions().setCodigoModelo(MetodoService.getListaMetodos().get(MetodoService.getListaMetodos().size()-1));
 		    	}
-		    	
+	    		ExceptionService.getExceptions().setIfModelo(IfService.getListaIf().get(IfService.getListaIf().size()-1));
+		    	ExceptionService.getExceptions().setDataCadastro(Calendar.getInstance());
 		    	ExceptionService.salvaException(ExceptionService.getExceptions());
 	        	tipo += "ExceptionCreate ";
 	        }
@@ -287,7 +275,9 @@ public class Core {
 				    		MetodoService.getMetodo().settipoMetodo(palavras[0]);
 				    		MetodoService.getMetodo().setMetodo(metodoProcFuncDivisao[1]);
 				    		MetodoService.getMetodo().setNumLinha(numLinha);
-				        	MetodoService.salvaMetodo(MetodoService.getMetodo());
+				    		MetodoService.getMetodo().setDataCadastro(Calendar.getInstance());
+				    		MetodoService.salvaMetodo(MetodoService.getMetodo());
+				        	
 				        	tipo += "Função ";
 			    		}
 			        }
@@ -307,6 +297,7 @@ public class Core {
 							MetodoService.getMetodo().settipoMetodo(palavras[0]);
 							MetodoService.getMetodo().setMetodo(metodoProcFuncDivisao[1]);
 							MetodoService.getMetodo().setNumLinha(numLinha);
+				    		MetodoService.getMetodo().setDataCadastro(Calendar.getInstance());
 							MetodoService.salvaMetodo(MetodoService.getMetodo());
 				        	tipo += "Procedure ";
 						}

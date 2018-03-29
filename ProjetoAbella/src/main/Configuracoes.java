@@ -44,7 +44,7 @@ public final class Configuracoes {
 	//private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
 	
 	//Tipo do arquivo a ser lido
-	private static String extensaoArquivoEntrada = "pas";
+	private static String extensaoArquivoEntrada = ".pas";
 	//tipo de arquivo de saida
 	private static String extensaoArquivoSaida = ".txt";
 	

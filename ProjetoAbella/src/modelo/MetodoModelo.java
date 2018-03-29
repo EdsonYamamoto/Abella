@@ -1,14 +1,18 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="MetodosXPCELL")
@@ -26,8 +30,18 @@ public class MetodoModelo implements Serializable{
 	private String tipoMetodo;
 	private int numLinha;
 	private String metodo;
+	@Column(name="dtCadastro")
+	@Temporal(TemporalType.DATE)
+	private Calendar dataCadastro;
 	
 	
+	
+	public void setDataCadastro(Calendar dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+	public Calendar getDataCadastro() {
+		return dataCadastro;
+	}
 	public String getUnit() {
 		return unit;
 	}
