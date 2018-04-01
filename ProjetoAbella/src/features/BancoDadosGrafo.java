@@ -25,6 +25,7 @@ public class BancoDadosGrafo {
 		
 		String nomeArquivoSaidaScriptNos = "scriptCreateNos.txt";//o nome do arquivo com a extensão
 		String nomeArquivoSaidaScriptArestas = "scriptCreateArestas.txt";//o nome do arquivo com a extensão
+		String nomeArquivoSaidaScriptDeleteTudo = "scriptDeletaTudo.txt";//deletar os nos e as relações
 		String dirPath = Configuracoes.getDiretorioArquivoSaida()+"/scriptsNeo4J";
 		File diretorioSaida = new File(dirPath);
 		if(!diretorioSaida.exists())
@@ -33,13 +34,30 @@ public class BancoDadosGrafo {
 			System.out.println("Diretorio "+ diretorioSaida.getPath() +" Criado");
 		}
 		
-		File arquivoSaida = new File(dirPath,nomeArquivoSaidaScriptNos);	
-		FileWriter arquivoParaEscrever = new FileWriter (arquivoSaida);
-		BufferedWriter bufferEscrita= new BufferedWriter (arquivoParaEscrever);
+		File arquivoSaida;	
+		FileWriter arquivoParaEscrever;
+		BufferedWriter bufferEscrita;
 
 		String linhaEscritaArquivo="";
 		
+		/*
+		 * Metodo de deletar
+		 * */
+		linhaEscritaArquivo="";
+		arquivoSaida = new File(dirPath,nomeArquivoSaidaScriptDeleteTudo);	
+		arquivoParaEscrever = new FileWriter (arquivoSaida);
+		bufferEscrita= new BufferedWriter (arquivoParaEscrever);
+		bufferEscrita.newLine ();
+		bufferEscrita.flush();
 		
+		
+		linhaEscritaArquivo= "MATCH (n)"+System.lineSeparator();
+				
+		linhaEscritaArquivo+="DETACH DELETE n"+System.lineSeparator();
+		bufferEscrita.write (linhaEscritaArquivo);//Leia um arquivo e Escreva no outro
+		bufferEscrita.newLine ();//pula uma linha no arquivoescrever (result);
+		bufferEscrita.flush();
+		arquivoParaEscrever.close ();
 		
 		/*
 		 * Criacao dos nos

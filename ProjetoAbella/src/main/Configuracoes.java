@@ -5,7 +5,7 @@ public final class Configuracoes {
 	/*
 	 * Habilita inserção no banco de dados
 	 * */
-	private static boolean habilitaInsercaoBanco = true;
+	private static boolean habilitaInsercaoBanco = false;
 	/*
 	 * Insercoes no banco
 	 * */
@@ -43,8 +43,8 @@ public final class Configuracoes {
 	/*
 	 * Pasta que busca o arquivo para ser lido
 	 * */
-	//private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
-	private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
+	private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
+	//private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
 	//private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
 
 	/*
@@ -60,8 +60,8 @@ public final class Configuracoes {
 	/*
 	 * Pasta haverá o output de todos os arquivos
 	 * */
-	//private static String diretorioArquivoSaida = "C:/Users/Edson/Desktop/saidas"; 
-	private static String diretorioArquivoSaida = "C:/Users/edson.kazumi/Desktop/testeSaida";
+	private static String diretorioArquivoSaida = "C:/Users/Edson/Desktop/saidas"; 
+	//private static String diretorioArquivoSaida = "C:/Users/edson.kazumi/Desktop/testeSaida";
 	
 	
 	

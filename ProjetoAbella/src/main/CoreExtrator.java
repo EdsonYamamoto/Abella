@@ -23,7 +23,7 @@ public class CoreExtrator {
 	public static String palavraIf = "(?i:.*IF*)";
 	public static String palavraElse = "(?i:.*ELSE*)";
 	public static String palavraWhile = "(?i:.*WHILE*)";
-	public static String palavraExceptionCreate = "(?i:.*Exception.Create*)";
+	public static String palavraExceptionCreate = "(?i:.*EXCEPTION.CREATE*)";
 	public static String palavraProcedure = "(?i:.*PROCEDURE*)";
 	public static String palavraFunction = "(?i:.*FUNCTION*)";
 	public static String palavraEnd = "(?i:.*END*)";	
@@ -131,7 +131,6 @@ public class CoreExtrator {
 	{
 		String[] aux;
 		aux = arquivo.getName().split("[.]");
-		System.out.println(aux[0]);
 		ArquivoService.getArquivo().setNome(aux[0]);
 		ArquivoService.getArquivo().setDataCadastro(Calendar.getInstance());
 		ArquivoService.salvaArquivo(ArquivoService.getArquivo());
