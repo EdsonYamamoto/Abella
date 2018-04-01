@@ -5,7 +5,7 @@ public final class Configuracoes {
 	/*
 	 * Habilita inserção no banco de dados
 	 * */
-	private static boolean habilitaInsercaoBanco = false;
+	private static boolean habilitaInsercaoBanco = true;
 	/*
 	 * Insercoes no banco
 	 * */
@@ -32,12 +32,12 @@ public final class Configuracoes {
 	/*
 	 * Habilita impressao de script para o banco de dados NEO4J
 	 * */
-	private static boolean habilitaImpressaoScriptBancoNeo4J = true;
+	private static boolean habilitaImpressaoScriptBancoNeo4J = false;
 	/*
 	 * imprimi todo o codigo do modo imprimir num arquivo especifico
 	 * O modo simplificado de impressao deixa o texto de maneira simplificada
 	 * */
-	private static boolean habilitarModoImpressaoArquivo= true;
+	private static boolean habilitarModoImpressaoArquivo= false;
 	private static boolean modoSimplificadoImpressao= false;
 	
 	/*

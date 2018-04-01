@@ -1,10 +1,16 @@
 package features;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import main.AppPrinc;
 import main.Configuracoes;
 import modelo.ArquivoModelo;
 import modelo.ConsultaModelo;
@@ -39,15 +45,16 @@ public class BancoDados {
 		if(Configuracoes.getAcoesBanco()==1)
 		{
 			if(Configuracoes.isInserirBancoListaArquivo())
-				metodoDroparEArmazenaArquivo(emf);
+				inserirNoBanco(emf, ArquivoService.getListaArquivos());
 			if(Configuracoes.isInserirBancoListaMetodos())
-				metodoDroparEArmazenaMetodos(emf);
+				inserirNoBanco(emf, MetodoService.getListaMetodos());
 			if(Configuracoes.isInserirBancoListaIf())
-				metodoDroparEArmazenaCondicoes(emf);
+				inserirNoBanco(emf, IfService.getListaIf());
 			if(Configuracoes.isInserirBancoListaExcecoes())
-				metodoDroparEArmazenaExcecoes(emf);
+				inserirNoBanco(emf, ExceptionService.getListaExceptions());
 			if(Configuracoes.isInserirBancoListaConsultas())
-				metodoDroparEArmazenaConsultasBanco(emf);
+				inserirNoBanco(emf, ConsultaService.getListaConsultas());
+			
 			System.out.println("A persistencia de dropar e criar tabelas com os dados obtidos por leitura no banco de dados foi executada.");
 		}
 		/*
@@ -56,15 +63,15 @@ public class BancoDados {
 		else if(Configuracoes.getAcoesBanco()==2)
 		{
 			if(Configuracoes.isInserirBancoListaArquivo())
-				metodoVerificaParaArmazenaArquivoBanco(emf);
+				metodoVerificaDadosParaArmazenar(emf);
 			if(Configuracoes.isInserirBancoListaMetodos())
-				metodoVerificaParaArmazenaMetodos(emf);
+				metodoVerificaDadosParaArmazenar(emf);
 			if(Configuracoes.isInserirBancoListaIf())
-				metodoVerificaParaArmazenaCondicoes(emf);
+				metodoVerificaDadosParaArmazenar(emf);
 			if(Configuracoes.isInserirBancoListaExcecoes())
-				metodoVerificaParaArmazenaExcecoes(emf);
+				metodoVerificaDadosParaArmazenar(emf);
 			if(Configuracoes.isInserirBancoListaConsultas())
-				metodoVerificaParaArmazenaConsultasBanco(emf);
+				metodoVerificaDadosParaArmazenar(emf);
 			System.out.println("A persistencia de criar dados por comparação no banco de dados foi executada.");
 		}
 
@@ -75,83 +82,53 @@ public class BancoDados {
         emf.close();
 
 	}
-	
-	private static void metodoVerificaParaArmazenaArquivoBanco(EntityManagerFactory emf) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	private static void metodoVerificaParaArmazenaConsultasBanco(EntityManagerFactory emf) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void metodoVerificaParaArmazenaExcecoes(EntityManagerFactory emf) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void metodoVerificaParaArmazenaCondicoes(EntityManagerFactory emf) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void metodoVerificaParaArmazenaMetodos(EntityManagerFactory emf) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	private static void metodoDroparEArmazenaConsultasBanco(EntityManagerFactory emf) {
+	private static void inserirNoBanco(EntityManagerFactory emf, List lista) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		for (ConsultaModelo c : ConsultaService.getListaConsultas()) 
+		for (Object c : lista) 
 	        em.persist(c);
         em.close();
         em.getTransaction().commit();
 	}
-
-	private static void metodoDroparEArmazenaCondicoes(EntityManagerFactory emf) {
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
-		for (IfModelo e : IfService.getListaIf()) 
-	        em.persist(e);
-        em.close();
-        em.getTransaction().commit();
-	}
-
-	private static void metodoDroparEArmazenaArquivo(EntityManagerFactory emf) {
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
-		for (ArquivoModelo e : ArquivoService.getListaArquivos())
-	        em.persist(e);
-        em.close();
-        em.getTransaction().commit();
-	}
-
-	private static void metodoDroparEArmazenaExcecoes(EntityManagerFactory emf) {
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
-		for (ExceptionsModelo e : ExceptionService.getListaExceptions())
-	        em.persist(e);
-        em.close();
-        em.getTransaction().commit();
-	}
 	
-	public static void metodoDroparEArmazenaMetodos(EntityManagerFactory emf){
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
-		for (MetodoModelo c : MetodoService.getListaMetodos()) 
-			em.persist(c);
-        em.close();
-        em.getTransaction().commit();
-	}
+	//"select * from metodosXPCELL"
 	/*
-	 * Query será usada para retirar valores lidos ja existentes no banco
-	 * */
-	static void leQuery()
+	private static <ob> List retornaDadosBanco(String query, Class classe)
 	{
-		EntityManagerFactory emf;
-		emf = Persistence.createEntityManagerFactory("ProjetoAbellaCreate");
+
+        try {
+            Object ob = classe.newInstance();
+            
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ProjetoAbellaNaoFazNada");
+    		EntityManager em = emf.createEntityManager();
+
+    		em.getTransaction().begin();
+    		
+    		@SuppressWarnings("unchecked")
+    		TypedQuery<ob> listaBancoDados = (TypedQuery<ob>) em.createNativeQuery(query, ob.class);
+
+    		MetodoService.setListaBancoMetodos(listaBancoDados.getResultList());
+
+            em.close();
+            emf.close();
+            
+        } 
+        catch (InstantiationException ex) {
+            Logger.getLogger(AppPrinc.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        catch (IllegalAccessException ex) {
+            Logger.getLogger(AppPrinc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		
+		return null;
+	}
+	*/
+	private static void metodoVerificaDadosParaArmazenar(EntityManagerFactory emf) {
+		// TODO Auto-generated method stub
+		
+		
+		emf = Persistence.createEntityManagerFactory("ProjetoAbellaNaoFazNada");
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin();
@@ -163,13 +140,62 @@ public class BancoDados {
 
         em.close();
         emf.close();
-        
-		for (MetodoModelo metodoBanco : MetodoService.getListaBancoMetodos())
-			for (MetodoModelo metodoExtraido : MetodoService.getListaMetodos()) 
-				if(metodoBanco.getMetodo().compareTo(metodoExtraido.getMetodo())==0)
-					MetodoService.getListaMetodos().remove(metodoBanco);
+
+        for (MetodoModelo metodoBanco : MetodoService.getListaBancoMetodos())
+		{
+	        Iterator<MetodoModelo> i = MetodoService.getListaMetodos().iterator();
+	        while (i.hasNext()) {
+	        	MetodoModelo o = i.next();
+	        	if((metodoBanco.getUnit()+metodoBanco.getMetodo()).compareTo(o.getUnit()+o.getMetodo())==0)
+	        	{
+	        		i.remove();
+	        	}
+	        }
+		}
 		for (MetodoModelo m : MetodoService.getListaMetodos()) 
-			System.out.println(m);
+			System.out.println(m.getMetodo());
+		
+		
+		emf = Persistence.createEntityManagerFactory("ProjetoAbellaCreate");
+		inserirNoBanco(emf,MetodoService.getListaMetodos());
 		
 	}
+
+	public static void leQueryEEscreveNovosDados() {
+
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("ProjetoAbellaNaoFazNada");
+		EntityManager em = emf.createEntityManager();
+
+		em.getTransaction().begin();
+		
+		@SuppressWarnings("unchecked")
+		TypedQuery<MetodoModelo> listaBancoDados = (TypedQuery<MetodoModelo>) em.createNativeQuery("select * from metodosXPCELL", MetodoModelo.class);
+
+		MetodoService.setListaBancoMetodos(listaBancoDados.getResultList());
+
+        em.close();
+        emf.close();
+
+        for (MetodoModelo metodoBanco : MetodoService.getListaBancoMetodos())
+		{
+	        Iterator<MetodoModelo> i = MetodoService.getListaMetodos().iterator();
+	        while (i.hasNext()) {
+	        	MetodoModelo o = i.next();
+	        	if((metodoBanco.getUnit()+metodoBanco.getMetodo()).compareTo(o.getUnit()+o.getMetodo())==0)
+	        	{
+	        		i.remove();
+	        	}
+	        }
+		}
+		for (MetodoModelo m : MetodoService.getListaMetodos()) 
+			System.out.println(m.getMetodo());
+		
+		
+		emf = Persistence.createEntityManagerFactory("ProjetoAbellaCreate");
+		inserirNoBanco(emf,MetodoService.getListaMetodos());
+		
+		
+	}
+
+
 }

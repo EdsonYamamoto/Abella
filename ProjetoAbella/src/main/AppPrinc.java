@@ -54,7 +54,7 @@ public class AppPrinc {
 			System.out.println("Impresso script");
 		}
 
-		//	Features.leQuery();
+		//BancoDados.leQuery();
 	}
 }
 
