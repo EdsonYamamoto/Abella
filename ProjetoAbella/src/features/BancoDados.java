@@ -23,6 +23,7 @@ public class BancoDados {
 		EntityManagerFactory emf;
 		switch (Configuracoes.getAcoesBanco()) {
 		case 1:
+			
 			emf = Persistence.createEntityManagerFactory("ProjetoAbellaDropCreate");
 			break;
 		case 2:
@@ -47,11 +48,12 @@ public class BancoDados {
 				metodoDroparEArmazenaExcecoes(emf);
 			if(Configuracoes.isInserirBancoListaConsultas())
 				metodoDroparEArmazenaConsultasBanco(emf);
+			System.out.println("A persistencia de dropar e criar tabelas com os dados obtidos por leitura no banco de dados foi executada.");
 		}
 		/*
 		 * Nao implementado
 		 * */
-		if(Configuracoes.getAcoesBanco()==2)
+		else if(Configuracoes.getAcoesBanco()==2)
 		{
 			if(Configuracoes.isInserirBancoListaArquivo())
 				metodoVerificaParaArmazenaArquivoBanco(emf);
@@ -63,8 +65,15 @@ public class BancoDados {
 				metodoVerificaParaArmazenaExcecoes(emf);
 			if(Configuracoes.isInserirBancoListaConsultas())
 				metodoVerificaParaArmazenaConsultasBanco(emf);
+			System.out.println("A persistencia de criar dados por comparação no banco de dados foi executada.");
 		}
+
+        else if(Configuracoes.getAcoesBanco()==3)
+			System.out.println("A persistencia de dropar todo o banco foi executada");
+        else
+        	System.out.println("Não há persistencia colocada");
         emf.close();
+
 	}
 	
 	private static void metodoVerificaParaArmazenaArquivoBanco(EntityManagerFactory emf) {

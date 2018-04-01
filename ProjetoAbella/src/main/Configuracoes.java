@@ -5,7 +5,7 @@ public final class Configuracoes {
 	/*
 	 * Habilita inserção no banco de dados
 	 * */
-	private static boolean habilitaInsercaoBanco = false;
+	private static boolean habilitaInsercaoBanco = true;
 	/*
 	 * Insercoes no banco
 	 * */
@@ -29,34 +29,40 @@ public final class Configuracoes {
 	private static boolean imprimiListaConsultas = true;
 	private static boolean imprimiListaArquivo = true;
 	
-
 	/*
 	 * Habilita impressao de script para o banco de dados NEO4J
 	 * */
 	private static boolean habilitaImpressaoScriptBancoNeo4J = true;
-	
-	//modo simplificado retorna o tipo de coisa encontrado na linha como por exemplo if's e else's
-	private static boolean modoSimplificadoImpressao= false;
-	//imprimi diretamente no console
+	/*
+	 * imprimi todo o codigo do modo imprimir num arquivo especifico
+	 * O modo simplificado de impressao deixa o texto de maneira simplificada
+	 * */
 	private static boolean habilitarModoImpressaoArquivo= true;
-	//imprimi todo o codigo do modo imprimir num arquivo especifico
-	private static boolean escritaEmArquivo= true;
-	//imprimi procura
-	private static boolean procuraEmArquivo= false;
+	private static boolean modoSimplificadoImpressao= false;
 	
-	
-	//a pasta que o programa vai pegar as informações
-	private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
-	//private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
+	/*
+	 * Pasta que busca o arquivo para ser lido
+	 * */
+	//private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
+	private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
 	//private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
 
-	//pasta para a saida de todos os outputs
-	private static String diretorioArquivoSaida = "C:/Users/Edson/Desktop/saidasDelphi"; 
-	
-	//Tipo do arquivo a ser lido
+	/*
+	 * Tipo do arquivo a ser lido
+	 * */
 	private static String extensaoArquivoEntrada = ".pas";
-	//tipo de arquivo de saida
+	
+	/*
+	 * Tipo do arquivo de saida
+	 * */
 	private static String extensaoArquivoSaida = ".txt";
+	
+	/*
+	 * Pasta haverá o output de todos os arquivos
+	 * */
+	//private static String diretorioArquivoSaida = "C:/Users/Edson/Desktop/saidas"; 
+	private static String diretorioArquivoSaida = "C:/Users/edson.kazumi/Desktop/testeSaida";
+	
 	
 	
 	public static String getExtensaoArquivoSaida() {
@@ -70,8 +76,6 @@ public final class Configuracoes {
 	 * */
 	private static int acoesBanco= 1;
 	
-	
-
 	public static boolean isImprimiListaIf() {
 		return imprimiListaIf;
 	}
@@ -101,12 +105,6 @@ public final class Configuracoes {
 	}
 	public static boolean isHabilitarModoImpressaoArquivo() {
 		return habilitarModoImpressaoArquivo;
-	}
-	public static boolean isEscritaEmArquivo() {
-		return escritaEmArquivo;
-	}
-	public static boolean isProcuraEmArquivo() {
-		return procuraEmArquivo;
 	}
 	public static String getDiretorio() {
 		return diretorio;
@@ -138,12 +136,5 @@ public final class Configuracoes {
 	public static boolean isImprimiListaArquivo() {
 		return imprimiListaArquivo;
 	}
-	
-	
-	
-	
-	/*
-	 * Metodos get para variaveis
-	 * */
 	
 }

@@ -18,7 +18,6 @@ public class AppPrinc {
 		try {
 			System.out.println("INICIADO PROGRAMA");
 			AppPrinc programa = new AppPrinc();	
-			System.out.println("Sucesso em ler os arquivos programa");
 			System.out.println("Programa : "+programa+" finalizando");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -34,7 +33,7 @@ public class AppPrinc {
 			File arquivos = afile[i];
 			if(arquivos.getName().endsWith(Configuracoes.getExtensaoArquivoEntrada()))
 			{
-				Core.reescreveCodigo(arquivos);
+				CoreExtrator.reescreveCodigo(arquivos);
 			}
 			if(arquivos.length()==0)
 				arquivos.delete();

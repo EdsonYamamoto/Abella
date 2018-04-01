@@ -38,10 +38,6 @@ public class IfModelo implements Serializable{
 	private Calendar dataCadastro;
 	
 	
-	
-	
-	
-	
 	public MetodoModelo getMetodoModelo() {
 		return metodoModelo;
 	}

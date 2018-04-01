@@ -17,7 +17,7 @@ import service.ExceptionService;
 import service.IfService;
 import service.MetodoService;
 
-public class Core {
+public class CoreExtrator {
 
 	//Todas as palavras que podem ser procuradas
 	public static String palavraIf = "(?i:.*IF*)";
@@ -56,8 +56,7 @@ public class Core {
 	 * */
 	//codigo q reescreve todas o arquivo de texto
 	public static void reescreveCodigo(File arquivos) throws IOException {
-		String nomeArquivo = arquivos.getName();
-		String nomeArquivoSaida = nomeArquivo+Configuracoes.getExtensaoArquivoSaida();	//o nome do arquivo com a extensão
+		String nomeArquivoSaida;	//o nome do arquivo com a extensão
 		String caminhoArquivo = arquivos.getAbsolutePath();
 		String aux;
 		String espacoAux="";
@@ -66,7 +65,7 @@ public class Core {
 		String textoArquivoSaida="";
 		
 		salvaArquivoService(arquivoAtual);
-		
+		nomeArquivoSaida = ArquivoService.getListaArquivos().get(ArquivoService.getListaArquivos().size()-1).getNome()+Configuracoes.getExtensaoArquivoSaida();	//o nome do arquivo com a extensão
 		BufferedReader br = null;
 	
 		try {
@@ -89,20 +88,26 @@ public class Core {
 				aux = numLinha+"\t"+espacoAux+aux;
 				linhaLida = numLinha+"\t"+espacoAux+linhaLida;
 				
-				textoArquivoSaida = textoArquivoSaida+linhaLida+System.getProperty("line.separator");
-/*
+
 				if(!Configuracoes.isModoSimplificadoImprimir())
-					System.out.println(linhaLida);
+					textoArquivoSaida = textoArquivoSaida+linhaLida+System.getProperty("line.separator");
 				else
-					System.out.println(aux);
-*/
+					textoArquivoSaida = textoArquivoSaida+aux+System.getProperty("line.separator");
+
 			}
 		}			
 		br.close();
 		
 		if(Configuracoes.isHabilitarModoImpressaoArquivo())
 		{
-			File arquivoSaida = new File(Configuracoes.getDiretorioArquivoSaida(),nomeArquivoSaida);	
+			File diretorioSaida = new File(Configuracoes.getDiretorioArquivoSaida()+"/ModoImpresso");
+			if(!diretorioSaida.exists())
+			{
+				diretorioSaida.mkdirs();
+				System.out.println("Diretorio "+ diretorioSaida.getPath() +" Criado");
+			}
+			//System.out.println(diretorioSaida.getAbsolutePath() + " - " + diretorioSaida.exists());
+			File arquivoSaida = new File(Configuracoes.getDiretorioArquivoSaida()+"/ModoImpresso",nomeArquivoSaida);
 			FileWriter arquivoParaEscrever = new FileWriter (arquivoSaida);//arquivo para escrita
 			arquivoSaida.createNewFile ();//arquivo criado
 			BufferedWriter bufferEscrita= new BufferedWriter (arquivoParaEscrever);
@@ -128,6 +133,7 @@ public class Core {
 		aux = arquivo.getName().split("[.]");
 		System.out.println(aux[0]);
 		ArquivoService.getArquivo().setNome(aux[0]);
+		ArquivoService.getArquivo().setDataCadastro(Calendar.getInstance());
 		ArquivoService.salvaArquivo(ArquivoService.getArquivo());
 	}
 	/*

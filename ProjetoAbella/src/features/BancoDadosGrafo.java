@@ -1,6 +1,5 @@
 package features;
 
-import java.awt.List;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -26,7 +25,15 @@ public class BancoDadosGrafo {
 		
 		String nomeArquivoSaidaScriptNos = "scriptCreateNos.txt";//o nome do arquivo com a extensão
 		String nomeArquivoSaidaScriptArestas = "scriptCreateArestas.txt";//o nome do arquivo com a extensão
-		File arquivoSaida = new File(Configuracoes.getDiretorioArquivoSaida(),nomeArquivoSaidaScriptNos);	
+		String dirPath = Configuracoes.getDiretorioArquivoSaida()+"/scriptsNeo4J";
+		File diretorioSaida = new File(dirPath);
+		if(!diretorioSaida.exists())
+		{
+			diretorioSaida.mkdirs();
+			System.out.println("Diretorio "+ diretorioSaida.getPath() +" Criado");
+		}
+		
+		File arquivoSaida = new File(dirPath,nomeArquivoSaidaScriptNos);	
 		FileWriter arquivoParaEscrever = new FileWriter (arquivoSaida);
 		BufferedWriter bufferEscrita= new BufferedWriter (arquivoParaEscrever);
 
@@ -37,7 +44,7 @@ public class BancoDadosGrafo {
 		/*
 		 * Criacao dos nos
 		 * */
-		arquivoSaida = new File(Configuracoes.getDiretorioArquivoSaida(),nomeArquivoSaidaScriptNos);	
+		arquivoSaida = new File(dirPath,nomeArquivoSaidaScriptNos);	
 		arquivoParaEscrever = new FileWriter (arquivoSaida);
 		bufferEscrita= new BufferedWriter (arquivoParaEscrever);
 		bufferEscrita.write ("CREATE");
@@ -71,7 +78,7 @@ public class BancoDadosGrafo {
 		 * Criacao das arestas
 		 * */
 		linhaEscritaArquivo="";
-		arquivoSaida = new File(Configuracoes.getDiretorioArquivoSaida(),nomeArquivoSaidaScriptArestas);	
+		arquivoSaida = new File(dirPath,nomeArquivoSaidaScriptArestas);	
 		arquivoParaEscrever = new FileWriter (arquivoSaida);
 		bufferEscrita= new BufferedWriter (arquivoParaEscrever);
 		bufferEscrita.newLine ();
@@ -99,13 +106,5 @@ public class BancoDadosGrafo {
 			
 		}
 		arquivoParaEscrever.close ();
-
-		/*
-		 * 
-match (zumbi:Zumbi) where zumbi.MundoFicticio = "TheWalkingDead" 
-match (sen:Sensorial) where sen.nome = "Visao"
-create
-(zumbi)-[:Possui]->(sen)
-		 * */
 	}
 }
