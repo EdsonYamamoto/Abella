@@ -3,62 +3,61 @@ package modelo;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity(name="ConsultaBancoXPCELL")
-public class ConsultaModelo implements Serializable{
-
+@Entity(name="ArquivoXPCELL")
+public class ArquivoModelo implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@OneToMany(cascade = CascadeType.ALL)
 	private int id;
-	private int numLinha;
+
+	private String unit;
+	private String Nome;
 	
-	@Lob
-	@Column
-	private String consulta;
 	@Column(name="dtCadastro")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataCadastro;
-	
-	public ConsultaModelo()
-	{
-		numLinha=0;
-		consulta="";
+	public String getUnit() {
+		return unit;
 	}
-	
-	public int getNumLinha() {
-		return numLinha;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
-	public void setNumLinha(int numLinha) {
-		this.numLinha = numLinha;
+	public String getNome() {
+		return Nome;
 	}
-	public String getConsulta() {
-		return consulta;
+	public void setNome(String Nome) {
+		this.Nome = Nome;
 	}
-	public void setConsulta(String consulta) {
-		this.consulta = consulta;
-	}
-	
+
 	public Calendar getDataCadastro() {
 		return dataCadastro;
 	}
 	public void setDataCadastro(Calendar dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
-	@Override
-	public String toString()
-	{
-		return ""+ this.consulta;
+	public int getId() {
+		return id;
 	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 }
+
+
+

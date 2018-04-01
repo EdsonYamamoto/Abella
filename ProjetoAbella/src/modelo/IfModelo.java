@@ -30,13 +30,9 @@ public class IfModelo implements Serializable{
 	@JoinColumns({
 			@JoinColumn(name = "METODOMODELO_ID", referencedColumnName = "ID") })
 	MetodoModelo metodoModelo;
-	
-	
 	private int numLinha;
 	@Column(length = 1337)
 	private String condicao;
-	
-
 	@Column(name="dtCadastro")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataCadastro;

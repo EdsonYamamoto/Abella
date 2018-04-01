@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,8 +28,12 @@ public class MetodoModelo implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@OneToMany(cascade = CascadeType.ALL)
 	private int id;
+
+	@ManyToOne
+	@JoinColumns({
+			@JoinColumn(name = "ARQUIVOMODELO_ID", referencedColumnName = "ID") })
+	private ArquivoModelo arquivoModelo;
 	private String unit;
-	private String pasName;
 	private String tipoMetodo;
 	private int numLinha;
 	private String metodo;
@@ -48,12 +55,7 @@ public class MetodoModelo implements Serializable{
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-	public String getPasName() {
-		return pasName;
-	}
-	public void setPasName(String pasName) {
-		this.pasName = pasName;
-	}
+	
 	public String gettipoMetodo() {
 		return tipoMetodo;
 	}
@@ -82,10 +84,19 @@ public class MetodoModelo implements Serializable{
 		this.numLinha = numLinha;
 	}
 	
+	
+	
+	public ArquivoModelo getArquivoModelo() {
+		return arquivoModelo;
+	}
+	public void setArquivoModelo(ArquivoModelo arquivoModelo) {
+		this.arquivoModelo = arquivoModelo;
+	}
 	@Override
 	public String toString()
 	{
-		return this.pasName+"\t"+ this.unit + "\t"+this.tipoMetodo+"\t"+this.numLinha+"\t"+this.metodo;
+		return this.unit + "\t"+this.tipoMetodo+"\t"+this.numLinha+"\t"+this.metodo;
 	}
+	
 }
 

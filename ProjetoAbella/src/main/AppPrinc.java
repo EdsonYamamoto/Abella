@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.String;
 
+import features.BancoDados;
+import features.BancoDadosGrafo;
+import features.Dados;
+
 
 public class AppPrinc {
 	
@@ -39,9 +43,17 @@ public class AppPrinc {
 		System.out.println("Feito a leitura de todos os arquivos");
 		
 		if(Configuracoes.isHabilitaInsercaoBanco())
-			Features.inserirDadosBanco();
+		{
+			BancoDados.inserirDadosBanco();
+			System.out.println("Inserido todas informações no banco");
+		}
 		if(Configuracoes.isHabilitaImpressaoLOG())
-			Features.impressaoDados();
+			Dados.impressaoDados();
+		if(Configuracoes.isHabilitaImpressaoScriptBancoNeo4J())
+		{
+			BancoDadosGrafo.impressaoDadosBancoNeo4j();
+			System.out.println("Impresso script");
+		}
 
 		//	Features.leQuery();
 	}

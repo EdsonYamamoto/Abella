@@ -1,37 +1,24 @@
-package main;
+package features;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import main.Configuracoes;
+import modelo.ArquivoModelo;
 import modelo.ConsultaModelo;
 import modelo.ExceptionsModelo;
 import modelo.IfModelo;
 import modelo.MetodoModelo;
+import service.ArquivoService;
 import service.ConsultaService;
 import service.ExceptionService;
 import service.IfService;
 import service.MetodoService;
 
-public class Features {
-	static void impressaoDados()
-	{
-		if (Configuracoes.isImprimiListaMetodos()) 
-			for (MetodoModelo c : MetodoService.getListaMetodos()) 
-				System.out.println(c);
-		if(Configuracoes.isImprimiListaExcecoes())
-			for (ExceptionsModelo c : ExceptionService.getListaExceptions()) 
-				System.out.println(c);
-		if(Configuracoes.isImprimiListaIf())
-			for (IfModelo c : IfService.getListaIf()) 
-				System.out.println(c);
-		if(Configuracoes.isImprimiListaConsultas())
-			for (ConsultaModelo c : ConsultaService.getListaConsultas()) 
-				System.out.println(c);
-	}
-	
-	static void inserirDadosBanco()
+public class BancoDados {
+	public static void inserirDadosBanco()
 	{
 		EntityManagerFactory emf;
 		switch (Configuracoes.getAcoesBanco()) {
@@ -50,6 +37,8 @@ public class Features {
 
 		if(Configuracoes.getAcoesBanco()==1)
 		{
+			if(Configuracoes.isInserirBancoListaArquivo())
+				metodoDroparEArmazenaArquivo(emf);
 			if(Configuracoes.isInserirBancoListaMetodos())
 				metodoDroparEArmazenaMetodos(emf);
 			if(Configuracoes.isInserirBancoListaIf())
@@ -64,6 +53,8 @@ public class Features {
 		 * */
 		if(Configuracoes.getAcoesBanco()==2)
 		{
+			if(Configuracoes.isInserirBancoListaArquivo())
+				metodoVerificaParaArmazenaArquivoBanco(emf);
 			if(Configuracoes.isInserirBancoListaMetodos())
 				metodoVerificaParaArmazenaMetodos(emf);
 			if(Configuracoes.isInserirBancoListaIf())
@@ -76,6 +67,11 @@ public class Features {
         emf.close();
 	}
 	
+	private static void metodoVerificaParaArmazenaArquivoBanco(EntityManagerFactory emf) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private static void metodoVerificaParaArmazenaConsultasBanco(EntityManagerFactory emf) {
 		// TODO Auto-generated method stub
 		
@@ -95,7 +91,7 @@ public class Features {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	private static void metodoDroparEArmazenaConsultasBanco(EntityManagerFactory emf) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -109,6 +105,15 @@ public class Features {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		for (IfModelo e : IfService.getListaIf()) 
+	        em.persist(e);
+        em.close();
+        em.getTransaction().commit();
+	}
+
+	private static void metodoDroparEArmazenaArquivo(EntityManagerFactory emf) {
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		for (ArquivoModelo e : ArquivoService.getListaArquivos())
 	        em.persist(e);
         em.close();
         em.getTransaction().commit();
@@ -131,7 +136,9 @@ public class Features {
         em.close();
         em.getTransaction().commit();
 	}
-	
+	/*
+	 * Query será usada para retirar valores lidos ja existentes no banco
+	 * */
 	static void leQuery()
 	{
 		EntityManagerFactory emf;

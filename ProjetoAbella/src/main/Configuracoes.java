@@ -5,7 +5,7 @@ public final class Configuracoes {
 	/*
 	 * Habilita inserção no banco de dados
 	 * */
-	private static boolean habilitaInsercaoBanco = true;
+	private static boolean habilitaInsercaoBanco = false;
 	/*
 	 * Insercoes no banco
 	 * */
@@ -13,6 +13,7 @@ public final class Configuracoes {
 	private static boolean inserirBancoListaExcecoes = true;
 	private static boolean inserirBancoListaMetodos = true; 
 	private static boolean inserirBancoListaConsultas = true;
+	private static boolean inserirBancoListaArquivo = true;
 	
 
 	/*
@@ -22,26 +23,35 @@ public final class Configuracoes {
 	/*
 	 * Modo de impressao em documento
 	 * */
-	private static boolean imprimiListaIf = false;
-	private static boolean imprimiListaExcecoes = false;
-	private static boolean imprimiListaMetodos = false;
-	private static boolean imprimiListaConsultas = false;
+	private static boolean imprimiListaIf = true;
+	private static boolean imprimiListaExcecoes = true;
+	private static boolean imprimiListaMetodos = true;
+	private static boolean imprimiListaConsultas = true;
+	private static boolean imprimiListaArquivo = true;
 	
+
+	/*
+	 * Habilita impressao de script para o banco de dados NEO4J
+	 * */
+	private static boolean habilitaImpressaoScriptBancoNeo4J = true;
 	
 	//modo simplificado retorna o tipo de coisa encontrado na linha como por exemplo if's e else's
 	private static boolean modoSimplificadoImpressao= false;
 	//imprimi diretamente no console
-	private static boolean modoImprimir= false;
+	private static boolean habilitarModoImpressaoArquivo= true;
 	//imprimi todo o codigo do modo imprimir num arquivo especifico
-	private static boolean escritaEmArquivo= false;
+	private static boolean escritaEmArquivo= true;
 	//imprimi procura
 	private static boolean procuraEmArquivo= false;
 	
 	
 	//a pasta que o programa vai pegar as informações
-	//private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
+	private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
 	//private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
-	private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
+	//private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
+
+	//pasta para a saida de todos os outputs
+	private static String diretorioArquivoSaida = "C:/Users/Edson/Desktop/saidasDelphi"; 
 	
 	//Tipo do arquivo a ser lido
 	private static String extensaoArquivoEntrada = ".pas";
@@ -89,8 +99,8 @@ public final class Configuracoes {
 	public static boolean isModoSimplificadoImprimir() {
 		return modoSimplificadoImpressao;
 	}
-	public static boolean isModoImprimir() {
-		return modoImprimir;
+	public static boolean isHabilitarModoImpressaoArquivo() {
+		return habilitarModoImpressaoArquivo;
 	}
 	public static boolean isEscritaEmArquivo() {
 		return escritaEmArquivo;
@@ -116,6 +126,20 @@ public final class Configuracoes {
 	public static boolean isHabilitaImpressaoLOG() {
 		return habilitaImpressaoLOG;
 	}
+	public static boolean isHabilitaImpressaoScriptBancoNeo4J() {
+		return habilitaImpressaoScriptBancoNeo4J;
+	}
+	public static String getDiretorioArquivoSaida() {
+		return diretorioArquivoSaida;
+	}
+	public static boolean isInserirBancoListaArquivo() {
+		return inserirBancoListaArquivo;
+	}
+	public static boolean isImprimiListaArquivo() {
+		return imprimiListaArquivo;
+	}
+	
+	
 	
 	
 	/*

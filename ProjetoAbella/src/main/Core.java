@@ -7,13 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import modelo.Procura;
+import service.ArquivoService;
 import service.ConsultaService;
 import service.ExceptionService;
 import service.IfService;
@@ -45,8 +43,7 @@ public class Core {
 	//public static String palavraExceptionCreate = "(Exception.Create|exception.create)";
 	
 
-	public static List<Procura> listaProcura = new ArrayList<Procura>();
-	public static Procura procura = new Procura();
+	private static File arquivoAtual;
 	
 
 	/*
@@ -63,54 +60,57 @@ public class Core {
 		String nomeArquivoSaida = nomeArquivo+Configuracoes.getExtensaoArquivoSaida();	//o nome do arquivo com a extensão
 		String caminhoArquivo = arquivos.getAbsolutePath();
 		String aux;
-		numLinha=0;
 		String espacoAux="";
+		arquivoAtual = arquivos;
+		numLinha=0;
+		String textoArquivoSaida="";
 		
-		File arquivoSaida = new File(nomeArquivoSaida);	
-	      /*ESCREVER*/
-		FileWriter arquivoParaEscrever = new FileWriter (arquivoSaida);//arquivo para escrita
-	
+		salvaArquivoService(arquivoAtual);
+		
 		BufferedReader br = null;
 	
 		try {
 			br = new BufferedReader(new FileReader(caminhoArquivo));
-			arquivoSaida.createNewFile ();//arquivo criado
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block			
 			e.printStackTrace();
 		}
 		espacadorLinha = 0;
-		BufferedWriter bufferEscrita= new BufferedWriter (arquivoParaEscrever);
 		String espaco="\t";
 		
 		while(br.ready()){
-			String escritaArquivo = br.readLine().trim();
+			String linhaLida = br.readLine().trim();
 			numLinha++;
-
-			MetodoService.getMetodo().setPasName(arquivos.getName());
-			aux = tipoString(escritaArquivo.trim(), br) ;
-			if(aux.compareTo("")!=0&&!condicaoDeComentario&&Configuracoes.isModoImprimir())
+			aux = tipoString(linhaLida.trim(), br) ;
+			if(aux.compareTo("")!=0&&!condicaoDeComentario)
 			{
 				espacoAux="";
 				espacoAux =  repeat(espaco, espacadorLinha);
-				//System.out.println(espacadorLinha);
 				aux = numLinha+"\t"+espacoAux+aux;
+				linhaLida = numLinha+"\t"+espacoAux+linhaLida;
 				
-				escritaArquivo = numLinha+"\t"+espacoAux+escritaArquivo;
+				textoArquivoSaida = textoArquivoSaida+linhaLida+System.getProperty("line.separator");
+/*
 				if(!Configuracoes.isModoSimplificadoImprimir())
-					System.out.println(escritaArquivo);
+					System.out.println(linhaLida);
 				else
 					System.out.println(aux);
-				
-				if(Configuracoes.isModoImprimir())
-				{
-					bufferEscrita.write (escritaArquivo);//Leia um arquivo e Escreva no outro
-					bufferEscrita.newLine ();//pula uma linha no arquivoescrever (result);
-				}
+*/
 			}
 		}			
 		br.close();
-		arquivoParaEscrever.close ();
+		
+		if(Configuracoes.isHabilitarModoImpressaoArquivo())
+		{
+			File arquivoSaida = new File(Configuracoes.getDiretorioArquivoSaida(),nomeArquivoSaida);	
+			FileWriter arquivoParaEscrever = new FileWriter (arquivoSaida);//arquivo para escrita
+			arquivoSaida.createNewFile ();//arquivo criado
+			BufferedWriter bufferEscrita= new BufferedWriter (arquivoParaEscrever);
+			bufferEscrita.write(textoArquivoSaida);
+			bufferEscrita.flush();
+			bufferEscrita.close();
+			arquivoParaEscrever.close ();
+		}
 	}
 	
 	public static String repeat(String str, int times) {
@@ -119,7 +119,17 @@ public class Core {
 	
 	
 	
-	
+	/*
+	 * Guarda 
+	 * */
+	private static void salvaArquivoService(File arquivo)
+	{
+		String[] aux;
+		aux = arquivo.getName().split("[.]");
+		System.out.println(aux[0]);
+		ArquivoService.getArquivo().setNome(aux[0]);
+		ArquivoService.salvaArquivo(ArquivoService.getArquivo());
+	}
 	/*
 	 * Encontra palavras reservadas
 	 * */
@@ -191,7 +201,6 @@ public class Core {
 	        	ConsultaService.getConsulta().setNumLinha(numLinha);
 	        	ConsultaService.getConsulta().setDataCadastro(Calendar.getInstance());
 	        	ConsultaService.salvaConsulta(ConsultaService.getConsulta());
-	        	
 	        }
 	        
 	        if(matcherIf.matches())
@@ -234,10 +243,7 @@ public class Core {
 		    		ExceptionService.getExceptions().setMensagem(splitExcepection[1] + ". (Mensagem gerada pelo sistema)");
 		    	}
 		    	ExceptionService.getExceptions().setCodigoModelo(MetodoService.getListaMetodos().get(MetodoService.getListaMetodos().size()-1));
-	    		//ExceptionService.getExceptions().setIfModelo(IfService.getListaIf().get(IfService.getListaIf().size()-1));
 		    	ExceptionService.getExceptions().setDataCadastro(Calendar.getInstance());
-	    		//System.out.println(ExceptionService.getExceptions());
-	    		//System.out.println(ExceptionService.getExceptions().getIfModelo());
 		    	ExceptionService.salvaException(ExceptionService.getExceptions());
 	        	tipo += "ExceptionCreate ";
 	        }
@@ -290,7 +296,8 @@ public class Core {
 			    		metodoProcFuncDivisao = p.split("[.]|[(]|[)]|[;]|[:]");
 			    		if(metodoProcFuncDivisao.length!=1)
 			    		{
-				    		MetodoService.getMetodo().setUnit(metodoProcFuncDivisao[0]);
+			    			MetodoService.getMetodo().setArquivoModelo(ArquivoService.getListaArquivos().get(ArquivoService.getListaArquivos().size()-1));
+			    			MetodoService.getMetodo().setUnit(metodoProcFuncDivisao[0]);
 				    		MetodoService.getMetodo().settipoMetodo(palavras[0]);
 				    		MetodoService.getMetodo().setMetodo(metodoProcFuncDivisao[1]);
 				    		MetodoService.getMetodo().setNumLinha(numLinha);
@@ -313,7 +320,8 @@ public class Core {
 			    		metodoProcFuncDivisao = p.split("[.]|[(]|[)]|[;]");
 						if(metodoProcFuncDivisao.length!=1)
 						{
-							MetodoService.getMetodo().setUnit(metodoProcFuncDivisao[0]);
+			    			MetodoService.getMetodo().setArquivoModelo(ArquivoService.getListaArquivos().get(ArquivoService.getListaArquivos().size()-1));
+			    			MetodoService.getMetodo().setUnit(metodoProcFuncDivisao[0]);
 							MetodoService.getMetodo().settipoMetodo(palavras[0]);
 							MetodoService.getMetodo().setMetodo(metodoProcFuncDivisao[1]);
 							MetodoService.getMetodo().setNumLinha(numLinha);
