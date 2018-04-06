@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import main.Configuracoes;
+import main.FluxoExtrator;
 import modelo.ArquivoModelo;
 import modelo.MetodoModelo;
+import pacoteGrafo.Edge;
+import pacoteGrafo.Node;
 import service.ArquivoService;
 import service.MetodoService;
 
@@ -19,14 +22,23 @@ public class BancoDadosGrafo {
 	static String pasName = "PasName";
 	static String unit = "Unit";
 	static String relacao = "Possui";
+	static String fluxo = "Fluxo";
+
+	static File arquivoSaida;	
+	static FileWriter arquivoParaEscrever;
+	static BufferedWriter bufferEscrita;
+
+	static String linhaEscritaArquivo="";
+	
+
+	static String nomeArquivoSaidaScriptNos = "scriptCreateNos.txt";//o nome do arquivo com a extensão
+	static String nomeArquivoSaidaScriptUnitMetodo = "scriptCreateArestas.txt";//o nome do arquivo com a extensão
+	static String nomeArquivoSaidaScriptDeleteTudo = "scriptDeletaTudo.txt";//deletar os nos e as relações
+	static String nomeArquivoSaidaScriptMetodoMetodo = "scriptCreateArestasEntreMetodos.txt";//deletar os nos e as relações
+	static String dirPath = Configuracoes.getDiretorioArquivoSaida()+"/scriptsNeo4J";
 	
 	public static void impressaoDadosBancoNeo4j() throws IOException
 	{
-		
-		String nomeArquivoSaidaScriptNos = "scriptCreateNos.txt";//o nome do arquivo com a extensão
-		String nomeArquivoSaidaScriptArestas = "scriptCreateArestas.txt";//o nome do arquivo com a extensão
-		String nomeArquivoSaidaScriptDeleteTudo = "scriptDeletaTudo.txt";//deletar os nos e as relações
-		String dirPath = Configuracoes.getDiretorioArquivoSaida()+"/scriptsNeo4J";
 		File diretorioSaida = new File(dirPath);
 		if(!diretorioSaida.exists())
 		{
@@ -34,12 +46,40 @@ public class BancoDadosGrafo {
 			System.out.println("Diretorio "+ diretorioSaida.getPath() +" Criado");
 		}
 		
-		File arquivoSaida;	
-		FileWriter arquivoParaEscrever;
-		BufferedWriter bufferEscrita;
+		escreveMetodoDeletar();
+		escreveNos();
+		escreveNosUnitArestaMetodo();
+		escreveMetodoArestaMetodo();
 
-		String linhaEscritaArquivo="";
-		
+	}
+
+	private static void escreveMetodoArestaMetodo() throws IOException 
+	{
+		/*
+		 * Criacao das arestas
+		 * */
+		linhaEscritaArquivo="";
+		arquivoSaida = new File(dirPath,nomeArquivoSaidaScriptMetodoMetodo);	
+		arquivoParaEscrever = new FileWriter (arquivoSaida);
+		bufferEscrita= new BufferedWriter (arquivoParaEscrever);
+		bufferEscrita.newLine ();
+		bufferEscrita.flush();
+
+		for (Node n : FluxoExtrator.arvore.nodes) {
+			for (Edge e : n.getEdges()) {
+				linhaEscritaArquivo= "match ("+e.from.nome+":"+metodo+") where "+e.from.nome+"."+pasName+"=\""+n.pasName+"\""+System.lineSeparator();
+				linhaEscritaArquivo+= "match ("+e.to.nome+":"+metodo+") where "+e.to.nome+"."+pasName+"=\""+n.pasName+"\""+System.lineSeparator();
+				linhaEscritaArquivo+="Create"+System.lineSeparator();
+				linhaEscritaArquivo+="("+e.from.nome+")-[:"+fluxo+"]->("+e.to.nome+")"+System.lineSeparator()+System.lineSeparator();
+				bufferEscrita.write (linhaEscritaArquivo);
+				bufferEscrita.newLine ();
+				bufferEscrita.flush();
+			}
+		}
+		arquivoParaEscrever.close ();
+	}
+	private static void escreveMetodoDeletar() throws IOException 
+	{
 		/*
 		 * Metodo de deletar
 		 * */
@@ -58,7 +98,9 @@ public class BancoDadosGrafo {
 		bufferEscrita.newLine ();//pula uma linha no arquivoescrever (result);
 		bufferEscrita.flush();
 		arquivoParaEscrever.close ();
-		
+	}
+	private static void escreveNos() throws IOException 
+	{
 		/*
 		 * Criacao dos nos
 		 * */
@@ -88,15 +130,14 @@ public class BancoDadosGrafo {
 			bufferEscrita.flush();
 		}
 		arquivoParaEscrever.close ();
-		
-		
-		
-
+	}
+	private static void escreveNosUnitArestaMetodo() throws IOException 
+	{
 		/*
 		 * Criacao das arestas
 		 * */
 		linhaEscritaArquivo="";
-		arquivoSaida = new File(dirPath,nomeArquivoSaidaScriptArestas);	
+		arquivoSaida = new File(dirPath,nomeArquivoSaidaScriptUnitMetodo);	
 		arquivoParaEscrever = new FileWriter (arquivoSaida);
 		bufferEscrita= new BufferedWriter (arquivoParaEscrever);
 		bufferEscrita.newLine ();
@@ -121,7 +162,6 @@ public class BancoDadosGrafo {
 				bufferEscrita.flush();
 				listaArquivos.add(c.getArquivoModelo());
 			}
-			
 		}
 		arquivoParaEscrever.close ();
 	}

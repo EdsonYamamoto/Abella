@@ -5,7 +5,7 @@ public final class Configuracoes {
 	/*
 	 * Habilita inserção no banco de dados
 	 * */
-	private static boolean habilitaInsercaoBanco = true;
+	private static boolean habilitaInsercaoBanco = false;
 	/*
 	 * Insercoes no banco
 	 * */
@@ -15,11 +15,11 @@ public final class Configuracoes {
 	private static boolean inserirBancoListaConsultas = true;
 	private static boolean inserirBancoListaArquivo = true;
 	
-
 	/*
 	 * Habilita escrita em documentos de texto
 	 * */
 	private static boolean habilitaImpressaoLOG = false;
+	
 	/*
 	 * Modo de impressao em documento
 	 * */
@@ -32,19 +32,32 @@ public final class Configuracoes {
 	/*
 	 * Habilita impressao de script para o banco de dados NEO4J
 	 * */
-	private static boolean habilitaImpressaoScriptBancoNeo4J = false;
+	private static boolean habilitaImpressaoScriptBancoNeo4J = true;
 	/*
 	 * imprimi todo o codigo do modo imprimir num arquivo especifico
 	 * O modo simplificado de impressao deixa o texto de maneira simplificada
 	 * */
+	
 	private static boolean habilitarModoImpressaoArquivo= false;
 	private static boolean modoSimplificadoImpressao= false;
 	
 	/*
+	 * imprimi todo o codigo do modo imprimir num arquivo especifico
+	 * O modo simplificado de impressao deixa o texto de maneira simplificada
+	 * */
+	
+	private static boolean habilitarModoFluxoPrograma= true;
+	
+	/*
+	 * imprime todas os items armazenados na arvore
+	 * */
+	private static boolean habilitarModoImpressaoFluxoPrograma= false;
+	
+	/*
 	 * Pasta que busca o arquivo para ser lido
 	 * */
-	private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
-	//private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
+	//private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
+	private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
 	//private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
 
 	/*
@@ -60,10 +73,8 @@ public final class Configuracoes {
 	/*
 	 * Pasta haverá o output de todos os arquivos
 	 * */
-	private static String diretorioArquivoSaida = "C:/Users/Edson/Desktop/saidas"; 
-	//private static String diretorioArquivoSaida = "C:/Users/edson.kazumi/Desktop/testeSaida";
-	
-	
+	//private static String diretorioArquivoSaida = "C:/Users/Edson/Desktop/saidas"; 
+	private static String diretorioArquivoSaida = "C:/Users/edson.kazumi/Desktop/testeSaida";
 	
 	public static String getExtensaoArquivoSaida() {
 		return extensaoArquivoSaida;
@@ -135,6 +146,12 @@ public final class Configuracoes {
 	}
 	public static boolean isImprimiListaArquivo() {
 		return imprimiListaArquivo;
+	}
+	public static boolean isHabilitarModoFluxoPrograma() {
+		return habilitarModoFluxoPrograma;
+	}
+	public static boolean isHabilitarModoImpressaoFluxoPrograma() {
+		return habilitarModoImpressaoFluxoPrograma;
 	}
 	
 }

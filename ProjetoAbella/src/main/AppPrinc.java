@@ -7,6 +7,8 @@ import java.lang.String;
 import features.BancoDados;
 import features.BancoDadosGrafo;
 import features.Dados;
+import pacoteGrafo.Graph;
+import pacoteGrafo.Node;
 
 
 public class AppPrinc {
@@ -46,15 +48,29 @@ public class AppPrinc {
 			BancoDados.inserirDadosBanco();
 			System.out.println("Inserido todas informações no banco");
 		}
+		
 		if(Configuracoes.isHabilitaImpressaoLOG())
 			Dados.impressaoDados();
+		
+		if(Configuracoes.isHabilitarModoFluxoPrograma())
+		{
+			i = 0;
+			for (int j = afile.length; i < j; i++) {
+				File arquivos = afile[i];
+				if(arquivos.getName().endsWith(Configuracoes.getExtensaoArquivoEntrada()))
+				{
+					FluxoExtrator.escreveFluxoPrograma(arquivos);
+				}
+				if(arquivos.length()==0)
+					arquivos.delete();
+			}
+		}
+		
 		if(Configuracoes.isHabilitaImpressaoScriptBancoNeo4J())
 		{
 			BancoDadosGrafo.impressaoDadosBancoNeo4j();
 			System.out.println("Impresso script");
 		}
-
-		BancoDados.leQueryEEscreveNovosDados();
 	}
 }
 
