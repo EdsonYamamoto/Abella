@@ -57,8 +57,9 @@ public final class Configuracoes {
 	 * Pasta que busca o arquivo para ser lido
 	 * */
 	//private static String diretorio = "C:/Users/Edson/Desktop/delphi"; 
-	private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
+	//private static String diretorio = "C:/Users/edson.kazumi/Desktop/teste"; 
 	//private static String diretorio = "C:/XPCell/Fontes/fntXpCellProducaoSorocaba";
+	private static String diretorio = "C:/Users/edson.kazumi/Desktop/1402/Locadora";
 
 	/*
 	 * Tipo do arquivo a ser lido

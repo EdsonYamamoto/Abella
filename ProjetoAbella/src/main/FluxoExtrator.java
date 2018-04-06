@@ -58,11 +58,13 @@ public class FluxoExtrator {
 		 * */
 		//codigo q reescreve todas o arquivo de texto
 		public static void escreveFluxoPrograma(File arquivos) throws IOException {
-			arvore = new Graph();
+			//arvore = new Graph();
 			String nomeArquivoSaida;	//o nome do arquivo com a extensão
+			MetodoService.setMetodo(null);
 			String caminhoArquivo = arquivos.getAbsolutePath();
 			String aux="";
 			String testeTextoGrafo="";
+			numLinha=0;
 			
 			BufferedReader br = null;
 
@@ -73,6 +75,7 @@ public class FluxoExtrator {
 				e.printStackTrace();
 			}
 			while(br.ready()){
+				numLinha++;
 				String linhaLida = br.readLine().trim();
 				fluxoPrograma(linhaLida.trim(), br) ;
 				//if(aux.compareTo("")!=0&&!condicaoDeComentario)
@@ -82,13 +85,23 @@ public class FluxoExtrator {
 				//}
 			}			
 			br.close();
-			/*
+			
+			//for (MetodoModelo c : MetodoService.getListaMetodos()) 
+			//	System.out.println(c);
+			System.out.println("Nos da arvore");
 			for (Node n : arvore.nodes) {
 				for (Edge e : n.getEdges()) {
 					System.out.println(e.from+" -> "+e.to);
 				}
 			}
-			*/
+			
+			System.out.println("Folhas da arvore");
+			for (Node n : arvore.nodes) 
+				if(n.getEdges().size()==0)
+					System.out.println("Folha: "+n);
+				
+			
+			
 			
 			if(Configuracoes.isHabilitarModoImpressaoFluxoPrograma())
 			{
@@ -303,6 +316,7 @@ public class FluxoExtrator {
 									if (metodoProcFuncDivisao[0].compareTo(metodo.getUnit())==0 && metodoProcFuncDivisao[1].compareTo(metodo.getMetodo())==0) 
 									{
 										MetodoService.setMetodo(metodo);
+										//System.out.println(MetodoService.getMetodo());
 										arvore.addNode(MetodoService.getMetodo().getMetodo(), MetodoService.getMetodo().getUnit());
 									}
 					        	tipo += "Procedure ";
@@ -310,12 +324,21 @@ public class FluxoExtrator {
 				        }
 					}
 		        }
-		        
+		        String[] auxiliar;
+		        //System.out.println(MetodoService.getMetodo().getMetodo());
+		        if(MetodoService.getMetodo()!=null)
 		        for (MetodoModelo metodo : MetodoService.getListaMetodos()) {
-					if(metodo.getMetodo().compareTo(palavras[i])==0)
+		        	
+		        	auxiliar = palavras[i].split("[;]|[(]|[)]");
+					if(auxiliar.length>0)
 					{
-						arvore.addNode(palavras[i], MetodoService.getMetodo().getUnit());
-						arvore.addEdge(MetodoService.getMetodo().getMetodo(), palavras[i], "oi?");
+						if(metodo.getMetodo().compareTo(auxiliar[0])==0)
+						{
+							//System.out.println(MetodoService.getMetodo().getMetodo()+"\t"+numLinha+"\t"+ auxiliar[0]);
+							arvore.addNode(auxiliar[0], MetodoService.getMetodo().getUnit());
+							arvore.addEdge(MetodoService.getMetodo().getMetodo(), auxiliar[0], "oi?");
+							
+						}
 					}
 				}
 				

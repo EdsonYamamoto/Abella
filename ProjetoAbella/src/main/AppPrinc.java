@@ -54,6 +54,7 @@ public class AppPrinc {
 		
 		if(Configuracoes.isHabilitarModoFluxoPrograma())
 		{
+			FluxoExtrator.arvore = new Graph();
 			i = 0;
 			for (int j = afile.length; i < j; i++) {
 				File arquivos = afile[i];
