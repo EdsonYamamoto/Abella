@@ -32,7 +32,7 @@ public final class Configuracoes {
 	/*
 	 * Habilita impressao de script para o banco de dados NEO4J
 	 * */
-	private static boolean habilitaImpressaoScriptBancoNeo4J = true;
+	private static boolean habilitaImpressaoScriptBancoNeo4J = false;
 	/*
 	 * imprimi todo o codigo do modo imprimir num arquivo especifico
 	 * O modo simplificado de impressao deixa o texto de maneira simplificada
@@ -46,7 +46,7 @@ public final class Configuracoes {
 	 * O modo simplificado de impressao deixa o texto de maneira simplificada
 	 * */
 	
-	private static boolean habilitarModoFluxoPrograma= true;
+	private static boolean habilitarModoFluxoPrograma= false;
 	
 	/*
 	 * imprime todas os items armazenados na arvore

@@ -35,7 +35,8 @@ public class AppPrinc {
 			File arquivos = afile[i];
 			if(arquivos.getName().endsWith(Configuracoes.getExtensaoArquivoEntrada()))
 			{
-				CoreExtrator.reescreveCodigo(arquivos);
+				TesteExtracao.extracaoteste(arquivos);
+				//CoreExtrator.reescreveCodigo(arquivos);
 			}
 			if(arquivos.length()==0)
 				arquivos.delete();

@@ -38,6 +38,8 @@ public class CoreExtrator {
 	public static String palavraAbreParenteses = "([(])";
 	public static String palavraFechaParenteses = "([)])";
 	public static String palavraPontoVirgula = "([;])";
+	public static String palavraInteger = "([?i:.*INTEGER.*])";
+	public static String palavraString = "([?i:.*STRING.*])";
 
 	//public static String palavraConsulta = "(sql.add|SQL.ADD|Sql.Add|SQL.Add)";
 	//public static String palavraExceptionCreate = "(Exception.Create|exception.create)";
