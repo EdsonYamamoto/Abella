@@ -16,7 +16,8 @@ public class PascalLexicalAnalyzer {
         PascalToken token;
 
         while ((token = lexical.yylex()) != null) {
-            System.out.println("<" + token.name + ", " + token.value + "> (" + token.line + " - " + token.column + ")");
+            System.out.println(token.name + "\t " + token.value);
+            //System.out.println("<" + token.name + "\t " + token.value + "> (" + token.line + " - " + token.column + ")");
         }
     }
 }
