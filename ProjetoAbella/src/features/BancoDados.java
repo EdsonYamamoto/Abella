@@ -2,20 +2,13 @@ package features;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import main.AppPrinc;
 import main.Configuracoes;
-import modelo.ArquivoModelo;
-import modelo.ConsultaModelo;
-import modelo.ExceptionsModelo;
-import modelo.IfModelo;
 import modelo.MetodoModelo;
 import service.ArquivoService;
 import service.ConsultaService;

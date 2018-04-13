@@ -9,5 +9,8 @@ Program CalcularSalario;
 			ValorSalario := ValorSalario * 2; 
 	End;
 
+{ este teste é 
+comentario
+}
 	Imprimir("Processamento feito com sucesso")
 End.
