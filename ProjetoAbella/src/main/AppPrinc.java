@@ -20,7 +20,7 @@ public class AppPrinc {
 		try {
 			System.out.println("INICIADO PROGRAMA");
 			AppPrinc programa = new AppPrinc();	
-			System.out.println("Programa : "+programa+" finalizando");
+			System.out.println("Programa : "+programa+" finalizado com sucesso");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,7 +35,7 @@ public class AppPrinc {
 			File arquivos = afile[i];
 			if(arquivos.getName().endsWith(Configuracoes.getExtensaoArquivoEntrada()))
 			{
-				TesteExtracao.extracaoteste(arquivos);
+				ExtratorLexico.extrator(arquivos);
 				//CoreExtrator.reescreveCodigo(arquivos);
 			}
 			if(arquivos.length()==0)

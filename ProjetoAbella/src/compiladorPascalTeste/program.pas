@@ -6,11 +6,11 @@ Program CalcularSalario;
 		If (TempoEmAnos > 10) Then 
 			ValorSalario := 100.00; 
 		Else 
-			ValorSalario := ValorSalario * 2; 
+			ValorSalario := ValorSalario + 2; 
 	End;
 
 { este teste é 
 comentario
 }
-	Imprimir("Processamento feito com sucesso")
+	Imprimir('Processamento feito com sucesso')
 End.
