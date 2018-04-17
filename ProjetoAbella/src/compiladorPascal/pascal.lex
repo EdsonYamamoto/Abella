@@ -20,6 +20,12 @@ private PascalToken createToken(String name, String value) {
 %column
 
 
+
+palavraBegin				= "(?i:.*BEGIN*)"
+palavraEnd					= "(?i:.*END*)"
+palavraInteger				= "(?i:.*INTEGER*)"
+palavraString				= "(?i:.*STRING*)"
+
 integer 			= 0|[1-9][0-9]*
 real 				= ((\+|-)?([0-9]+)(\.[0-9]+)?)|((\+|-)?\.?[0-9]+)
 
@@ -50,25 +56,24 @@ identificadores		= [A-Za-z_][A-Za-z_0-9]*
 abreParenteses      = ("(")
 fechaParenteses     = (")")
 
-leftbrace       	= \{
-rightbrace      	= \}
-
-begin				= ("begin")
-end					= ("end")
 
 iniciaImpressao = ("\'")
 
+LineTerminator = \r|\n|\r\n
+InputCharacter = [^\r|\n|áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ!?ºª][A-Za-z_0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ!?ºª]*
+
+
+
 texto				= {iniciaImpressao}{InputCharacter}* {iniciaImpressao}
 comment_body   	 	= {nonrightbrace}*
-nonrightbrace   	= [^}]
 
+leftbrace       	= \{
+rightbrace      	= \}
+nonrightbrace   	= [^}]
 
 comentario_1		= {leftbrace}{comment_body}{rightbrace}
 comentario_2		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
 comentario_3		= "//" {InputCharacter}* {LineTerminator}
-
-LineTerminator = \r|\n|\r\n
-InputCharacter = [^\r|\n|]
 
 
 
@@ -105,8 +110,14 @@ program = "program"
 {igual}			{ return new PascalToken( "igual", yytext() ); }
 {vetor}			{ return new PascalToken( "vetor", yytext() ); }
 
-{begin}		{ return new PascalToken( "begin", yytext() ); }
-{end} 		{ return new PascalToken( "end", yytext() ); }
+
+{palavraBegin}		{ return new PascalToken( "begin", yytext() ); }
+{palavraEnd} 		{ return new PascalToken( "end", yytext() ); }
+{palavraInteger} 		{ return new PascalToken( "inteiro", yytext() ); }
+{palavraString} 		{ return new PascalToken( "string", yytext() ); }
+
+
+
 "program" 	{ return new PascalToken( "program", yytext() ); }		
 "Var"		{ return new PascalToken( "var", yytext() ); }
 "if"		{ return new PascalToken( "if", yytext() ); }

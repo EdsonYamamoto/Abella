@@ -35,13 +35,18 @@ public class LexicalAnalyzer {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\11\0\1\14\1\40\1\53\1\53\1\37\22\0\1\14\2\0\1\23"+
-    "\3\0\1\36\1\25\1\26\1\5\1\2\1\21\1\3\1\4\1\6"+
-    "\1\1\11\1\1\20\1\21\1\10\1\11\1\7\1\0\1\13\25\24"+
-    "\1\46\4\24\1\22\1\0\1\22\1\12\1\24\1\0\1\44\1\31"+
-    "\1\24\1\35\1\32\1\47\1\33\1\50\1\34\2\24\1\51\1\45"+
-    "\1\15\1\16\1\42\1\24\1\43\1\52\1\17\6\24\1\27\1\41"+
-    "\1\30\7\0\1\53\u1fa2\0\1\53\1\53\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
+    "\11\0\1\34\1\46\1\66\1\66\1\45\22\0\1\34\1\47\1\0"+
+    "\1\42\1\32\1\33\1\0\1\44\1\1\1\14\1\6\1\22\1\40"+
+    "\1\23\1\5\1\24\1\21\11\21\1\4\1\40\1\26\1\27\1\25"+
+    "\1\2\1\31\1\43\1\7\1\43\1\15\1\10\1\43\1\11\1\43"+
+    "\1\12\4\43\1\13\3\43\1\17\1\20\1\16\1\43\1\60\4\43"+
+    "\1\41\1\0\1\41\1\30\1\43\1\0\1\56\3\43\1\63\1\61"+
+    "\1\55\1\62\1\3\2\43\1\64\1\57\1\35\1\36\1\53\1\43"+
+    "\1\54\1\65\1\37\6\43\1\51\1\50\1\52\7\0\1\66\44\0"+
+    "\1\47\17\0\1\47\5\0\4\47\3\0\3\47\3\0\1\47\1\0"+
+    "\1\47\1\0\1\47\1\0\4\47\3\0\1\47\5\0\4\47\3\0"+
+    "\4\47\2\0\1\47\1\0\1\47\1\0\1\47\1\0\4\47\3\0"+
+    "\1\47\u1f2d\0\1\66\1\66\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
 
   /** 
    * Translates characters to character classes
@@ -54,16 +59,17 @@ public class LexicalAnalyzer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\5\1\12\1\13\1\14\2\15\1\5"+
-    "\1\16\1\17\1\20\1\21\1\1\3\15\1\22\2\23"+
-    "\2\15\1\0\1\2\2\0\1\24\1\25\1\15\1\26"+
-    "\1\0\1\27\3\15\1\30\1\0\1\31\2\15\2\0"+
-    "\2\32\2\15\1\33\2\15\1\34\1\0\1\35\1\36"+
-    "\1\15\1\37\1\15\1\40\2\15\1\41";
+    "\1\0\1\1\1\2\1\3\2\4\1\5\1\3\1\6"+
+    "\1\7\1\10\1\11\1\12\1\13\1\14\1\4\1\15"+
+    "\1\16\1\17\1\20\1\21\1\3\1\22\1\23\1\24"+
+    "\2\25\1\1\3\3\1\0\1\26\1\27\1\7\3\0"+
+    "\1\30\1\31\1\3\1\0\1\32\1\0\1\33\3\3"+
+    "\4\0\2\34\2\3\1\35\1\3\2\0\1\36\1\37"+
+    "\1\3\1\40\1\0\1\3\1\0\1\3\4\0\1\41"+
+    "\15\0\1\42\5\0\1\43\3\0\1\44\1\45";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[68];
+    int [] result = new int[98];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -88,18 +94,22 @@ public class LexicalAnalyzer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\54\0\130\0\130\0\130\0\204\0\54\0\260"+
-    "\0\334\0\u0108\0\54\0\54\0\54\0\54\0\u0134\0\u0160"+
-    "\0\u018c\0\54\0\54\0\54\0\54\0\u01b8\0\u01e4\0\u0210"+
-    "\0\u023c\0\u0268\0\u0294\0\54\0\u02c0\0\u02ec\0\204\0\204"+
-    "\0\u0318\0\u0344\0\54\0\54\0\u0370\0\54\0\u01b8\0\54"+
-    "\0\u039c\0\u03c8\0\u03f4\0\u0134\0\u0268\0\u0268\0\u0420\0\u044c"+
-    "\0\u0478\0\u04a4\0\u04d0\0\54\0\u04fc\0\u0528\0\u0134\0\u0554"+
-    "\0\u0580\0\u0134\0\u05ac\0\54\0\u0134\0\u05d8\0\u0134\0\u0604"+
-    "\0\u0134\0\u0630\0\u065c\0\u0134";
+    "\0\0\0\67\0\156\0\245\0\334\0\u0113\0\67\0\u014a"+
+    "\0\67\0\u0181\0\u0181\0\u0181\0\u01b8\0\u01ef\0\u0226\0\67"+
+    "\0\67\0\67\0\67\0\67\0\67\0\u025d\0\67\0\67"+
+    "\0\u0294\0\u02cb\0\67\0\u0302\0\u0339\0\u0370\0\u03a7\0\u03de"+
+    "\0\u014a\0\67\0\u0113\0\u0113\0\u0415\0\u044c\0\67\0\67"+
+    "\0\u0483\0\u04ba\0\u04ba\0\u0302\0\67\0\u04f1\0\u0528\0\u055f"+
+    "\0\u0596\0\u05cd\0\u0604\0\u063b\0\u0672\0\67\0\u06a9\0\u06e0"+
+    "\0\u014a\0\u0717\0\u074e\0\u0785\0\67\0\u014a\0\u07bc\0\u014a"+
+    "\0\u07f3\0\u082a\0\u0861\0\u0898\0\u08cf\0\u0906\0\u093d\0\u0974"+
+    "\0\u014a\0\u09ab\0\u09e2\0\u0a19\0\u0a50\0\u0a87\0\u0abe\0\u0af5"+
+    "\0\u0b2c\0\u0b63\0\u0b9a\0\u0bd1\0\u0c08\0\u0c3f\0\67\0\u0c76"+
+    "\0\u0cad\0\u0ce4\0\u0d1b\0\u0d52\0\67\0\u0d89\0\u0dc0\0\u0df7"+
+    "\0\67\0\67";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[68];
+    int [] result = new int[98];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -122,51 +132,59 @@ public class LexicalAnalyzer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11"+
-    "\1\12\1\13\1\14\1\15\1\16\2\17\1\20\1\21"+
-    "\1\13\1\22\1\23\1\17\1\24\1\25\1\26\1\2"+
-    "\1\27\1\30\1\17\1\31\1\17\1\32\1\33\1\34"+
-    "\1\16\1\35\3\17\1\36\4\17\56\0\1\3\2\0"+
-    "\1\37\50\0\1\40\57\0\1\41\1\42\56\0\1\43"+
-    "\53\0\1\44\43\0\1\17\13\0\3\17\4\0\1\17"+
-    "\4\0\5\17\4\0\11\17\2\0\1\17\13\0\3\17"+
-    "\4\0\1\17\4\0\5\17\4\0\6\17\1\45\2\17"+
-    "\12\0\1\46\42\0\30\47\1\50\23\47\1\0\1\17"+
-    "\13\0\3\17\4\0\1\17\4\0\1\17\1\51\3\17"+
-    "\4\0\11\17\2\0\1\17\13\0\1\52\2\17\4\0"+
-    "\1\17\4\0\5\17\4\0\7\17\1\53\1\17\2\0"+
-    "\1\17\13\0\3\17\4\0\1\17\4\0\5\17\4\0"+
-    "\5\17\1\54\3\17\1\0\36\55\1\56\3\0\12\55"+
-    "\40\0\1\34\14\0\1\17\13\0\3\17\4\0\1\17"+
-    "\4\0\5\17\4\0\1\17\1\57\7\17\2\0\1\17"+
-    "\13\0\3\17\4\0\1\17\4\0\5\17\4\0\2\17"+
-    "\1\60\6\17\1\0\5\61\1\62\46\61\37\42\1\63"+
-    "\1\64\1\0\12\42\1\0\1\17\13\0\3\17\4\0"+
-    "\1\17\4\0\1\17\1\65\3\17\4\0\11\17\2\0"+
-    "\1\17\13\0\3\17\4\0\1\17\4\0\2\17\1\66"+
-    "\2\17\4\0\11\17\2\0\1\17\13\0\3\17\4\0"+
-    "\1\17\4\0\4\17\1\67\4\0\11\17\2\0\1\17"+
-    "\13\0\3\17\4\0\1\17\4\0\5\17\4\0\10\17"+
-    "\1\70\2\0\1\17\13\0\1\17\1\71\1\17\4\0"+
-    "\1\17\4\0\5\17\4\0\11\17\2\0\1\17\13\0"+
-    "\3\17\4\0\1\17\4\0\5\17\4\0\1\17\1\72"+
-    "\7\17\1\0\5\61\1\73\46\61\5\0\1\62\1\74"+
-    "\105\0\1\64\14\0\1\17\13\0\1\75\2\17\4\0"+
-    "\1\17\4\0\5\17\4\0\11\17\2\0\1\17\13\0"+
-    "\3\17\4\0\1\17\4\0\3\17\1\76\1\17\4\0"+
-    "\11\17\2\0\1\17\13\0\3\17\4\0\1\17\4\0"+
-    "\1\17\1\77\3\17\4\0\11\17\2\0\1\17\13\0"+
-    "\3\17\4\0\1\17\4\0\2\17\1\100\2\17\4\0"+
-    "\11\17\1\0\5\61\1\73\1\74\45\61\1\0\1\17"+
-    "\13\0\1\101\2\17\4\0\1\17\4\0\5\17\4\0"+
-    "\11\17\2\0\1\17\13\0\3\17\4\0\1\17\4\0"+
-    "\5\17\4\0\1\17\1\102\7\17\2\0\1\17\13\0"+
-    "\3\17\4\0\1\17\4\0\5\17\4\0\2\17\1\103"+
-    "\6\17\2\0\1\17\13\0\3\17\4\0\1\17\4\0"+
-    "\5\17\4\0\3\17\1\104\5\17\1\0";
+    "\1\2\1\3\1\2\1\4\1\5\1\6\1\7\5\10"+
+    "\1\11\4\10\1\12\1\13\1\14\1\15\1\16\1\17"+
+    "\1\20\1\21\1\22\1\23\1\24\1\25\2\10\1\26"+
+    "\1\20\1\27\1\30\1\10\1\31\1\32\1\33\1\2"+
+    "\1\25\1\34\1\2\1\35\4\10\1\36\2\10\1\37"+
+    "\2\10\72\0\1\40\67\0\1\10\3\0\5\10\1\0"+
+    "\5\10\13\0\3\10\3\0\1\10\7\0\6\10\1\41"+
+    "\4\10\30\0\1\42\60\0\1\43\50\0\1\10\3\0"+
+    "\5\10\1\0\5\10\13\0\3\10\3\0\1\10\7\0"+
+    "\13\10\6\0\1\44\13\0\1\12\53\0\1\45\15\0"+
+    "\1\46\71\0\1\47\66\0\1\50\42\0\1\10\3\0"+
+    "\5\10\1\0\5\10\13\0\3\10\3\0\1\10\7\0"+
+    "\7\10\1\51\3\10\1\0\2\52\1\0\41\52\1\53"+
+    "\4\0\16\52\46\0\1\33\20\0\52\54\1\55\14\54"+
+    "\3\0\1\10\3\0\5\10\1\0\5\10\13\0\3\10"+
+    "\3\0\1\10\7\0\1\10\1\56\11\10\4\0\1\10"+
+    "\3\0\5\10\1\0\5\10\13\0\3\10\3\0\1\10"+
+    "\7\0\3\10\1\57\7\10\4\0\1\10\3\0\5\10"+
+    "\1\0\5\10\13\0\3\10\3\0\1\10\7\0\11\10"+
+    "\1\60\1\10\4\0\1\61\63\0\6\62\1\63\60\62"+
+    "\2\64\1\0\42\64\1\65\1\66\2\0\16\64\3\0"+
+    "\1\10\3\0\5\10\1\0\5\10\13\0\3\10\3\0"+
+    "\1\10\7\0\10\10\1\67\2\10\1\0\44\52\1\53"+
+    "\2\0\1\52\1\0\16\52\3\0\1\10\3\0\5\10"+
+    "\1\0\5\10\13\0\1\10\1\70\1\10\3\0\1\10"+
+    "\7\0\13\10\4\0\1\10\3\0\5\10\1\0\5\10"+
+    "\13\0\3\10\3\0\1\10\7\0\1\10\1\71\11\10"+
+    "\4\0\1\10\3\0\5\10\1\0\5\10\13\0\3\10"+
+    "\3\0\1\10\7\0\12\10\1\72\5\0\1\73\62\0"+
+    "\6\62\1\74\60\62\6\0\1\63\15\0\1\75\42\0"+
+    "\45\64\1\65\1\66\1\64\1\0\16\64\46\0\1\66"+
+    "\23\0\1\10\3\0\5\10\1\0\5\10\13\0\1\76"+
+    "\2\10\3\0\1\10\7\0\13\10\4\0\1\10\3\0"+
+    "\5\10\1\0\5\10\13\0\3\10\3\0\1\10\7\0"+
+    "\2\10\1\77\10\10\4\0\1\10\3\0\5\10\1\0"+
+    "\5\10\13\0\3\10\3\0\1\10\7\0\10\10\1\100"+
+    "\2\10\6\0\1\101\61\0\6\62\1\74\15\62\1\75"+
+    "\42\62\3\0\1\10\3\0\5\10\1\0\5\10\13\0"+
+    "\3\10\3\0\1\10\7\0\1\10\1\102\11\10\7\0"+
+    "\1\103\63\0\1\10\3\0\5\10\1\0\5\10\13\0"+
+    "\3\10\3\0\1\10\7\0\3\10\1\104\7\10\10\0"+
+    "\1\105\1\106\1\0\1\107\5\0\1\110\51\0\1\10"+
+    "\3\0\5\10\1\0\5\10\13\0\3\10\3\0\1\10"+
+    "\7\0\4\10\1\111\6\10\11\0\1\112\71\0\1\113"+
+    "\66\0\1\114\71\0\1\115\61\0\1\116\72\0\1\117"+
+    "\67\0\1\120\67\0\1\121\61\0\1\122\62\0\1\123"+
+    "\70\0\1\124\70\0\1\125\67\0\1\126\67\0\1\127"+
+    "\63\0\1\130\70\0\1\131\61\0\1\132\70\0\1\133"+
+    "\67\0\1\134\71\0\1\135\71\0\1\136\55\0\1\137"+
+    "\66\0\1\140\74\0\1\141\66\0\1\142\52\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1672];
+    int [] result = new int[3630];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -204,13 +222,15 @@ public class LexicalAnalyzer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\4\1\1\11\3\1\4\11\3\1\4\11"+
-    "\6\1\1\11\2\1\1\0\1\1\2\0\2\11\1\1"+
-    "\1\11\1\0\1\11\4\1\1\0\3\1\2\0\1\1"+
-    "\1\11\6\1\1\0\1\11\10\1";
+    "\1\0\1\11\4\1\1\11\1\1\1\11\6\1\6\11"+
+    "\1\1\2\11\2\1\1\11\4\1\1\0\1\1\1\11"+
+    "\1\1\3\0\2\11\1\1\1\0\1\1\1\0\1\11"+
+    "\3\1\4\0\1\1\1\11\4\1\2\0\1\11\3\1"+
+    "\1\0\1\1\1\0\1\1\4\0\1\1\15\0\1\11"+
+    "\5\0\1\11\3\0\2\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[68];
+    int [] result = new int[98];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -314,7 +334,7 @@ private PascalToken createToken(String name, String value) {
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 166) {
+    while (i < 262) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -667,135 +687,151 @@ private PascalToken createToken(String name, String value) {
           case 1: 
             { throw new RuntimeException("Caractere inválido " + yytext() + " na linha " + yyline + ", coluna " +yycolumn);
             }
-          case 34: break;
-          case 2: 
-            { return new PascalToken( "numero real", yytext() );
-            }
-          case 35: break;
-          case 3: 
-            { return new PascalToken( "soma", yytext() );
-            }
-          case 36: break;
-          case 4: 
-            { return new PascalToken( "subtracao", yytext() );
-            }
-          case 37: break;
-          case 5: 
-            { return createToken("delimitadores", yytext());
-            }
           case 38: break;
-          case 6: 
-            { return new PascalToken( "multiplicar", yytext() );
-            }
-          case 39: break;
-          case 7: 
-            { return new PascalToken( "dividir", yytext() );
-            }
-          case 40: break;
-          case 8: 
-            { return new PascalToken( "maior", yytext() );
-            }
-          case 41: break;
-          case 9: 
-            { return new PascalToken( "menor", yytext() );
-            }
-          case 42: break;
-          case 10: 
-            { return new PascalToken( "expoente", yytext() );
-            }
-          case 43: break;
-          case 11: 
-            { return new PascalToken( "arrouba", yytext() );
-            }
-          case 44: break;
-          case 12: 
-            { /**/
-            }
-          case 45: break;
-          case 13: 
-            { return createToken("identificadores", yytext());
-            }
-          case 46: break;
-          case 14: 
-            { return new PascalToken( "vetor", yytext() );
-            }
-          case 47: break;
-          case 15: 
-            { return new PascalToken( "number", yytext() );
-            }
-          case 48: break;
-          case 16: 
+          case 2: 
             { return new PascalToken( "abreParenteses", yytext() );
             }
-          case 49: break;
-          case 17: 
+          case 39: break;
+          case 3: 
+            { return createToken("identificadores", yytext());
+            }
+          case 40: break;
+          case 4: 
+            { return createToken("delimitadores", yytext());
+            }
+          case 41: break;
+          case 5: 
+            { return new PascalToken( "multiplicar", yytext() );
+            }
+          case 42: break;
+          case 6: 
             { return new PascalToken( "fechaParenteses", yytext() );
             }
+          case 43: break;
+          case 7: 
+            { return new PascalToken( "numero real", yytext() );
+            }
+          case 44: break;
+          case 8: 
+            { return new PascalToken( "soma", yytext() );
+            }
+          case 45: break;
+          case 9: 
+            { return new PascalToken( "subtracao", yytext() );
+            }
+          case 46: break;
+          case 10: 
+            { return new PascalToken( "dividir", yytext() );
+            }
+          case 47: break;
+          case 11: 
+            { return new PascalToken( "maior", yytext() );
+            }
+          case 48: break;
+          case 12: 
+            { return new PascalToken( "menor", yytext() );
+            }
+          case 49: break;
+          case 13: 
+            { return new PascalToken( "expoente", yytext() );
+            }
           case 50: break;
-          case 18: 
-            { return new PascalToken( "abreImpressao", yytext() );
+          case 14: 
+            { return new PascalToken( "arrouba", yytext() );
             }
           case 51: break;
-          case 19: 
-            { return createToken("fimLinha", yytext());
+          case 15: 
+            { return new PascalToken( "cifrao", yytext() );
             }
           case 52: break;
-          case 20: 
-            { return new PascalToken( "igual ou maior", yytext() );
+          case 16: 
+            { return new PascalToken( "porrcentagem", yytext() );
             }
           case 53: break;
-          case 21: 
-            { return new PascalToken( "igual ou menor", yytext() );
+          case 17: 
+            { /**/
             }
           case 54: break;
-          case 22: 
-            { return new PascalToken( "igual", yytext() );
+          case 18: 
+            { return new PascalToken( "vetor", yytext() );
             }
           case 55: break;
-          case 23: 
-            { return createToken("comentario1", yytext());
+          case 19: 
+            { return new PascalToken( "number", yytext() );
             }
           case 56: break;
-          case 24: 
-            { return new PascalToken( "if", yytext() );
+          case 20: 
+            { return new PascalToken( "abreImpressao", yytext() );
             }
           case 57: break;
-          case 25: 
-            { return new PascalToken( "texto", yytext() );
+          case 21: 
+            { return createToken("fimLinha", yytext());
             }
           case 58: break;
-          case 26: 
-            { return createToken("comentario3", yytext());
+          case 22: 
+            { return new PascalToken( "if", yytext() );
             }
           case 59: break;
-          case 27: 
-            { return new PascalToken( "end", yytext() );
+          case 23: 
+            { return new PascalToken( "igual", yytext() );
             }
           case 60: break;
-          case 28: 
-            { return new PascalToken( "var", yytext() );
+          case 24: 
+            { return new PascalToken( "igual ou maior", yytext() );
             }
           case 61: break;
-          case 29: 
-            { return createToken("comentario2", yytext());
+          case 25: 
+            { return new PascalToken( "igual ou menor", yytext() );
             }
           case 62: break;
-          case 30: 
-            { return new PascalToken( "then", yytext() );
+          case 26: 
+            { return new PascalToken( "texto", yytext() );
             }
           case 63: break;
-          case 31: 
-            { return new PascalToken( "else", yytext() );
+          case 27: 
+            { return createToken("comentario1", yytext());
             }
           case 64: break;
-          case 32: 
-            { return new PascalToken( "begin", yytext() );
+          case 28: 
+            { return createToken("comentario3", yytext());
             }
           case 65: break;
+          case 29: 
+            { return new PascalToken( "var", yytext() );
+            }
+          case 66: break;
+          case 30: 
+            { return createToken("comentario2", yytext());
+            }
+          case 67: break;
+          case 31: 
+            { return new PascalToken( "then", yytext() );
+            }
+          case 68: break;
+          case 32: 
+            { return new PascalToken( "else", yytext() );
+            }
+          case 69: break;
           case 33: 
             { return new PascalToken( "program", yytext() );
             }
-          case 66: break;
+          case 70: break;
+          case 34: 
+            { return new PascalToken( "end", yytext() );
+            }
+          case 71: break;
+          case 35: 
+            { return new PascalToken( "begin", yytext() );
+            }
+          case 72: break;
+          case 36: 
+            { return new PascalToken( "string", yytext() );
+            }
+          case 73: break;
+          case 37: 
+            { return new PascalToken( "inteiro", yytext() );
+            }
+          case 74: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
