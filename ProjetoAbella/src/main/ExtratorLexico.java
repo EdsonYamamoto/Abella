@@ -15,8 +15,13 @@ public class ExtratorLexico {
 		LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(sourceCode));
 	    
 			while ((token = lexical.yylex()) != null) {
-			    System.out.println(token.name + "\t\t " + token.value);
-			    //System.out.println("<" + token.name + "\t " + token.value + "> (" + token.line + " - " + token.column + ")");
+				//if(token.name!="fimLinha"&&token.name!="comentario1"&&token.name!="comentario2"&&token.name!="comentario3"&&token.name!="comentario4")
+				//	System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "-\t\t " + token.value);
+
+				
+				if(token.name=="texto")
+					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "-\t\t " + token.value);
+
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

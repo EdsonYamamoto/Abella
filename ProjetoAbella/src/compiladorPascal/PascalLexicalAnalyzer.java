@@ -9,14 +9,14 @@ public class PascalLexicalAnalyzer {
         String rootPath = Paths.get("").toAbsolutePath(). toString();
         String subPath = "/src/compiladorPascalTeste";
 
-        String sourceCode = rootPath + subPath + "/program.pas";
+        String sourceCode = rootPath + subPath + "/uprincipal.pas";
 
         LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(sourceCode));
         
         PascalToken token;
 
         while ((token = lexical.yylex()) != null) {
-            System.out.println("--"+token.name + "--\n" + token.value);
+            System.out.println("--"+token.name + "--"+token.line+"\n" + token.value);
             //System.out.println("<" + token.name + "\t " + token.value + "> (" + token.line + " - " + token.column + ")");
         }
     }

@@ -7,10 +7,7 @@ Program CalcularSalario;
 			ValorSalario := 100.00; 
 		Else 
 			ValorSalario := ValorSalario + 2; 
-	End;
-
-{ este teste é 
-comentario
-}
-	Imprimir('Processamento feito com sucesso')
+			//ansdklasndlk
+          if tipoos = '2' then          //OS'S DE ACESSÓRIO
+        begin
 End.
