@@ -86,7 +86,7 @@ begin
   if trim(edtnome.text) = emptystr then
   begin
     edtnome.setfocus;
-    raise exception.create('O nome é obrigatório');
+    raise exception.create('O nome obrigatrio');
   end;
 
   if cbNacionalidade.ItemIndex = -1 then
@@ -97,7 +97,7 @@ begin
 
   if existeJacadastrado(edtnome.text, edtSobrenome.Text) then
   begin
-    raise exception.create('Este Ator já está cadastrado');
+    raise exception.create('Este Ator j est cadastrado');
   end;
 
 
@@ -125,7 +125,7 @@ begin
     end;
   end;
 
-  showmessage('Operação concluída com sucesso') ;
+  showmessage('Operao concluda com sucesso') ;
   edtNome.Clear;
   edtSobrenome.Clear;
   cbNacionalidade.itemindex := -1;

@@ -19,20 +19,22 @@ private PascalToken createToken(String name, String value) {
 %line
 %column
 
+palavraBegin				= [Bb][Ee][Gg][Ii][Nn]
+palavraEnd					= [Ee][Nn][Dd]
+palavraInteger				= [Ii][Nn][Tt][Ee][Gg][Ee][Rr]
+palavraString				= [Ss][Tt][Rr][Ii][Nn][Gg]
+palavraIf					= [Ii][Ff]
+palavraThen					= [Tt][Hh][Ee][Nn]
+palavraElse					= [Ee][Ll][Ss][Ee]
+palavraProcedure			= [Pp][Rr][Oo][Cc][Ee][Dd][Uu][Rr][Ee]
+palavraFunction				= [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]
+palavraRaise				= [Rr][Aa][Ii][Ss][Ee]
+palavraException			= [Ee][Xx][Cc][Ee][Pp][Tt][Ii][Oo][Nn]
+palavraCreate				= [Cc][Rr][Ee][Aa][Tt][Ee]
+palavraNot					= [Nn][Oo][Tt]
+palavraSQL					= [Ss][Qq][Ll]
+palavraADD					= [Aa][Dd][Dd]
 
-
-palavraBegin				= "(?i:.*BEGIN.*)"
-palavraEnd					= "(?i:.*END.*)"
-palavraInteger				= "(?i:.*INTEGER.*)"
-palavraString				= "(?i:.*STRING.*)"
-palavraInteger				= "(?i:.*INTEGER.*)"
-palavraString				= "(?i:.*STRING.*)"
-palavraIf					= "(?i:.*IF.*)"
-palavraThen					= "(?i:.*THEN.*)"
-palavraElse					= "(?i:.*ELSE.*)"
-nao							= "(?i:.*NOT.*)"
-palavraSQL				= [SQL]
-palavraADD				= "(?i:.*ADD*)"
 integer 			= 0|[1-9][0-9]*
 real 				= ((\+|-)?([0-9]+)(\.[0-9]+)?)|((\+|-)?\.?[0-9]+)
 
@@ -66,7 +68,7 @@ fechaParenteses     = (")")
 aspasSimples = ("\'")
 
 LineTerminator = \r|\n|\r\n
-InputCharacter = [^\r\n][A-Za-z0-9_·‡‚„ÈËÍÌÔÛÙıˆ˙ÁÒ¡¿¬√…»Õœ”‘’÷⁄«—!?∫™=()]*
+InputCharacter = [^\r\n][A-Za-z0-9_·‡‚„ÈËÍÌÔÛÙıˆ˙ÁÒ¡¿¬√…»Õœ”‘’÷⁄«—!?∫™=(),.]*
 naoAspas   	= [^}]
 
 
@@ -74,6 +76,8 @@ comment_body   	 	= {nonrightbrace}*
 
 leftbrace       	= \{
 rightbrace      	= \}
+
+
 nonrightbrace   	= [^}]
 
 
@@ -82,10 +86,13 @@ comentario_2		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
 comentario_3		= [/]{2,2} {InputCharacter}* {LineTerminator}
 comentario_4		= "(*" [^*] ~"*)" | "(*" "*"+ ")"
 
-texto				= {aspasSimples}{InputCharacter}*{aspasSimples}
+texto				= {aspasSimples}{InputCharacter}{aspasSimples}
 
+erro				= {palavraRaise}[ ]{palavraException}*[.]{palavraCreate}*
 
-SqlAdd				= {palavraSQL}
+SqlAdd				= {palavraSQL}[.]{palavraADD}
+
+metodo				= {palavraProcedure}*{palavraFunction}* {InputCharacter}*[.]{InputCharacter}*
 
 program = "program"
 
@@ -122,8 +129,6 @@ program = "program"
 {palavraInteger} 		{ return new PascalToken( "inteiro", yytext() ); }
 {palavraString} 		{ return new PascalToken( "string", yytext() ); }
 
-"program" 	{ return new PascalToken( "program", yytext() ); }		
-"Var"		{ return new PascalToken( "var", yytext() ); }
 {palavraIf}		{ return new PascalToken( "if", yytext() ); }
 {palavraThen}		{ return new PascalToken( "then", yytext() ); }
 {palavraElse}		{ return new PascalToken( "else", yytext() ); }
@@ -138,6 +143,7 @@ program = "program"
 {identificadores}	{ return createToken("identificadores", yytext()); }
 {delimitadores}		{ return createToken("delimitadores", yytext()); }
 
+{erro}  { return createToken("raise error", yytext()); }
 {program} { return createToken(yytext(), "");} 
 {brancos} { /**/ }
 

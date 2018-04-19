@@ -8,6 +8,9 @@ Program CalcularSalario;
 		Else 
 			ValorSalario := ValorSalario + 2; 
 			//ansdklasndlk
+			print('asdasd'+ 'asdasd' +'asdqweqw'+ acessorio + 'dfgdfg');
           if tipoos = '2' then          //OS'S DE ACESSÓRIO
         begin
+        sql.add('askndlkas'+quotedstring());
+        SQL.ADD('askndlkas'+quotedstring());
 End.
