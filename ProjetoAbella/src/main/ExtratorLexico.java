@@ -19,7 +19,7 @@ public class ExtratorLexico {
 				//	System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "-\t\t " + token.value);
 
 				
-				if(token.name=="texto")
+				if(token.name!="fimLinha")
 					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "-\t\t " + token.value);
 
 			}

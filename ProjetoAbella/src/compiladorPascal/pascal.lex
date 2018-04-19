@@ -51,7 +51,7 @@ arrouba				= "@"
 cifrao				= "$"
 porcentagem			= "%"
 
-brancos 			= [\n| |\t]
+palavrasBranco 			= [\n| |\t]
 
 igual				= (":=")
 delimitadores		= (":" | ";" | "."| ","| "=")
@@ -59,40 +59,37 @@ delimitadores		= (":" | ";" | "."| ","| "=")
 vetor		= ("[" | "]")
 number		= ("#")
 
+abreChaves       	= [\{]
+fechaChaves      	= [\}]
 
-identificadores		= [A-Za-z_][A-Za-z_0-9]*
+
+identificador		= [A-Za-z][A-Za-z_0-9]*
 abreParenteses      = ("(")
 fechaParenteses     = (")")
 
 
 aspasSimples = ("\'")
 
-LineTerminator = \r|\n|\r\n
-InputCharacter = [^\r\n][A-Za-z0-9_áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ!?ºª=(),.]*
-naoAspas   	= [^}]
+LineTerminator = [\r|\n|\r\n]
+caracteresTexto = [A-Z|a-z|_|0-9|á|à|â|ã|é|è|ê|í|ï|ó|ô|õ|ö|ú|ç|ñ|Á|À|Â|Ã|É|È|ê|Ê|Í|Ï|Ó|Ô|Õ|Ö|Ú|û|Û|ü|Ü|Ç|Ñ|!|?|º|ª|=|(|)|,|.|\-|\+|\*|\\|\"|\`|\{|\}|\&|\¨|\§|\¬|\¢|\¹|\²|\³|\£|\´|\~|\°|\r|\n|\r\n|\/|\s|\t|\;|\#|\:]
+naoAspas   	= [^\}]
 
 
-comment_body   	 	= {nonrightbrace}*
+comment_body   	 	= {naoFechaChaves}*
+naoFechaChaves   	= [^}]
 
-leftbrace       	= \{
-rightbrace      	= \}
-
-
-nonrightbrace   	= [^}]
-
-
-comentario_1		= {leftbrace}{comment_body}{rightbrace}
+comentario_1		= {abreChaves}{comment_body}*{fechaChaves}
 comentario_2		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
-comentario_3		= [/]{2,2} {InputCharacter}* {LineTerminator}
+comentario_3		= [/]{2,2} {caracteresTexto}*{LineTerminator}
 comentario_4		= "(*" [^*] ~"*)" | "(*" "*"+ ")"
 
-texto				= {aspasSimples}{InputCharacter}{aspasSimples}
+texto				= {aspasSimples}{caracteresTexto}*{aspasSimples}
 
-erro				= {palavraRaise}[ ]{palavraException}*[.]{palavraCreate}*
+erro				= {palavraRaise}{palavrasBranco}*{palavraException}{palavrasBranco}*[.]{palavrasBranco}*{palavraCreate}
 
-SqlAdd				= {palavraSQL}[.]{palavraADD}
+SqlAdd				= {palavraSQL}{palavrasBranco}*[.]{palavrasBranco}*{palavraADD}
 
-metodo				= {palavraProcedure}*{palavraFunction}* {InputCharacter}*[.]{InputCharacter}*
+metodo				= {palavraProcedure}*{palavraFunction}*
 
 program = "program"
 
@@ -140,12 +137,12 @@ program = "program"
 {comentario_3}  { return createToken("comentario3", yytext()); }
 {comentario_4}  { return createToken("comentario4", yytext()); }
 
-{identificadores}	{ return createToken("identificadores", yytext()); }
+{identificador}	{ return createToken("ID", yytext()); }
 {delimitadores}		{ return createToken("delimitadores", yytext()); }
 
 {erro}  { return createToken("raise error", yytext()); }
 {program} { return createToken(yytext(), "");} 
-{brancos} { /**/ }
+{palavrasBranco} { /**/ }
 
 
 {SqlAdd} { return createToken("consulta", yytext()); }

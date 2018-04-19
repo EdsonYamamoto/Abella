@@ -76,7 +76,14 @@ begin
 
   action := cafree;
   frmCadastroAtores := nil;
+{
 
+
+aqui tem um comentario
+
+
+
+}
 
 end;
 

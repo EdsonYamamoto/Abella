@@ -72,7 +72,15 @@ uses UDataModule;
 procedure TfrmCadastroDiretores.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
+{
 
+
+aqui tem um comentario
+
+/*asdkasbd
+(*Y@*&#&*$¨@!¨#!*%$(
+
+}
   action := cafree;
   frmCadastroDiretores := nil;
 
