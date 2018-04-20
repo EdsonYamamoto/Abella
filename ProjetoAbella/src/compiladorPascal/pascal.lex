@@ -19,6 +19,8 @@ private PascalToken createToken(String name, String value) {
 %line
 %column
 
+palavraParserIntToStr		= [Ii][Nn][Tt][Tt][Oo][Ss][Tt][Rr]
+palavraParserStrToInt		= [Ss][Tt][Rr][Tt][Oo][Ii][Nn][Tt]
 palavraBegin				= [Bb][Ee][Gg][Ii][Nn]
 palavraEnd					= [Ee][Nn][Dd]
 palavraInteger				= [Ii][Nn][Tt][Ee][Gg][Ee][Rr]
@@ -54,6 +56,8 @@ porcentagem			= "%"
 palavrasBranco 			= [\n| |\t]
 
 igual				= (":=")
+diferente			= [\<][\>]
+
 delimitadores		= (":" | ";" | "."| ","| "=")
 
 vetor		= ("[" | "]")
@@ -70,18 +74,21 @@ fechaParenteses     = (")")
 
 aspasSimples = ("\'")
 
-LineTerminator = [\r|\n|\r\n]
-caracteresTexto = [A-Z|a-z|_|0-9|á|à|â|ã|é|è|ê|í|ï|ó|ô|õ|ö|ú|ç|ñ|Á|À|Â|Ã|É|È|ê|Ê|Í|Ï|Ó|Ô|Õ|Ö|Ú|û|Û|ü|Ü|Ç|Ñ|!|?|º|ª|=|(|)|,|.|\-|\+|\*|\\|\"|\`|\{|\}|\&|\¨|\§|\¬|\¢|\¹|\²|\³|\£|\´|\~|\°|\r|\n|\r\n|\/|\s|\t|\;|\#|\:]
-naoAspas   	= [^\}]
+terminaLinha = [\r|\n|\r\n]
+caracteresTexto = [A-Z|a-z|_|0-9|á|à|â|ã|é|è|ê|í|ï|ó|ô|õ|ö|ú|ç|ñ|Á|À|Â|Ã|É|È|ê|Ê|Í|Ï|Ó|Ô|Õ|Ö|Ú|û|Û|ü|Ü|Ç|Ñ|!|?|º|ª|=|(|)|,|\.|\-|\+|\*|\\|\"|\`|\{|\}|\&|\¨|\§|\¬|\¢|\¹|\²|\³|\£|\´|\~|\°|\r|\n|\r\n|\/|\s|\t|\;|\#|\:|\@|\[|\]|\<|\>|\^|\|]
 
+naoAspas   	= [^\}]
 
 comment_body   	 	= {naoFechaChaves}*
 naoFechaChaves   	= [^}]
-
+comment_Linha  	 	= {naoTerminaLinha}*
+naoTerminaLinha   	= [^\r|\n|\r\n]
 comentario_1		= {abreChaves}{comment_body}*{fechaChaves}
 comentario_2		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
-comentario_3		= [/]{2,2} {caracteresTexto}*{LineTerminator}
+comentario_3		= [/]{2,2} {comment_Linha}*{terminaLinha}
 comentario_4		= "(*" [^*] ~"*)" | "(*" "*"+ ")"
+
+variavel			= {palavraString}|{palavraInteger}
 
 texto				= {aspasSimples}{caracteresTexto}*{aspasSimples}
 
@@ -89,11 +96,16 @@ erro				= {palavraRaise}{palavrasBranco}*{palavraException}{palavrasBranco}*[.]{
 
 SqlAdd				= {palavraSQL}{palavrasBranco}*[.]{palavrasBranco}*{palavraADD}
 
-metodo				= {palavraProcedure}*{palavraFunction}*
+metodo				= ({palavraProcedure}|{palavraFunction}){palavrasBranco}*{identificador}{palavrasBranco}*[\.]{palavrasBranco}*{identificador}{palavrasBranco}*	
+variaveisMetodo		= ({abreParenteses}	 ({palavrasBranco}* {identificador}*{palavrasBranco}* {identificador}*{palavrasBranco}*[\:]*{palavrasBranco}* {variavel}*{palavrasBranco}*[,]*)* 	{fechaParenteses})*
+condicaoIf					= {palavraIf} * {palavraThen}
 
 program = "program"
 
 %%
+
+{igual}			{ return new PascalToken( "igual", yytext() ); }
+{diferente}			{ return new PascalToken( "diferente", yytext() ); }
 
 {mais}				{ return new PascalToken( "soma", yytext() ); }
 {menos}				{ return new PascalToken( "subtracao", yytext() ); }
@@ -108,7 +120,7 @@ program = "program"
 {expoente}		{ return new PascalToken( "expoente", yytext() ); }
 {arrouba}		{ return new PascalToken( "arrouba", yytext() ); }
 {cifrao}			{ return new PascalToken( "cifrao", yytext() ); }
-{porcentagem}			{ return new PascalToken( "porrcentagem", yytext() ); }
+{porcentagem}			{ return new PascalToken( "porcentagem", yytext() ); }
 
 {number}			{ return new PascalToken( "number", yytext() ); }
 {real}			{ return new PascalToken( "numero real", yytext() ); }
@@ -118,19 +130,25 @@ program = "program"
 {fechaParenteses}			{ return new PascalToken( "fechaParenteses", yytext() ); }
 
 {texto}			{ return new PascalToken( "texto", yytext() ); }
-{igual}			{ return new PascalToken( "igual", yytext() ); }
 {vetor}			{ return new PascalToken( "vetor", yytext() ); }
 
 {palavraBegin}		{ return new PascalToken( "begin", yytext() ); }
 {palavraEnd} 		{ return new PascalToken( "end", yytext() ); }
 {palavraInteger} 		{ return new PascalToken( "inteiro", yytext() ); }
 {palavraString} 		{ return new PascalToken( "string", yytext() ); }
+{palavraParserIntToStr} 		{ return new PascalToken( "IntToStr", yytext() ); }
+{palavraParserStrToInt} 		{ return new PascalToken( "StrToInt", yytext() ); }
+
+{metodo}			{ return new PascalToken( "metodo", yytext() ); }
+{variaveisMetodo}	{ return new PascalToken( "variaveisMetodo", yytext() ); }
+
 
 {palavraIf}		{ return new PascalToken( "if", yytext() ); }
 {palavraThen}		{ return new PascalToken( "then", yytext() ); }
+
 {palavraElse}		{ return new PascalToken( "else", yytext() ); }
 
-{LineTerminator}		{ return createToken("fimLinha", yytext()); }
+{terminaLinha}		{ return createToken("fimLinha", yytext()); }
 
 {comentario_1}  { return createToken("comentario1", yytext()); }
 {comentario_2}  { return createToken("comentario2", yytext()); }
