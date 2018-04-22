@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.String;
 
+import compiladorPascal.GeneratorPascal;
 import features.BancoDados;
 import features.BancoDadosGrafo;
 import features.Dados;
@@ -31,6 +32,7 @@ public class AppPrinc {
 		File file = new File(Configuracoes.getDiretorio());
 		File afile[] = file.listFiles();
 		int i = 0;
+		
 		for (int j = afile.length; i < j; i++) {
 			File arquivos = afile[i];
 			if(arquivos.getName().endsWith(Configuracoes.getExtensaoArquivoEntrada()))

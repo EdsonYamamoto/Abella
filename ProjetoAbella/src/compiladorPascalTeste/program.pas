@@ -3,14 +3,23 @@ Program CalcularSalario;
 	Var TempoEmAnos : Integer; 
 	Var ValorSalario: Real; 
 	Begin 
-		If (TempoEmAnos > 10) Then 
-			ValorSalario := 100.00; 
-		Else 
-			ValorSalario := ValorSalario + 2; 
-			//ansdklasndlk
-			print('asdasd'+ 'asdasd' +'asdqweqw'+ acessorio + 'dfgdfg');
-          if tipoos = '2' then          //OS'S DE ACESSÓRIO
-        begin
-        sql.add('askndlkas'+quotedstring());
-        SQL.ADD('askndlkas'+quotedstring());
+		
+	if (Edit1.Text = 'nebrio') then 
+	ShowMessage('Nome Lind') else 
+	ShowMessage('Nome Feio'); 	
+		
+		
+	if (Edit1.Text = 'nebrio') then 
+	begin 
+	ShowMessage('Nome Lindo'); 
+	ShowMessage('Nome de Gente Inteligente'); 
+	end else 
+	begin 
+	ShowMessage('Nome Feio'); 
+	ShowMessage('Nome de gente Menos Inteligente'); 
+	end; 
+
+
+        sql.add('askndlkas'+quotedstring('batata'));
+        SQL.ADD('askndlkas'+quotedstring('banana'));
 End.

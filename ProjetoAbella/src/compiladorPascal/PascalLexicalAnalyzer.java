@@ -9,7 +9,7 @@ public class PascalLexicalAnalyzer {
         String rootPath = Paths.get("").toAbsolutePath(). toString();
         String subPath = "/src/compiladorPascalTeste";
 
-        String sourceCode = rootPath + subPath + "/UCadastroDiretores.pas";
+        String sourceCode = rootPath + subPath + "/UcadastroDiretores.pas";
 
         LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(sourceCode));
         
