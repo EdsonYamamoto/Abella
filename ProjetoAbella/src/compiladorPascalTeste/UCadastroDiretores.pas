@@ -95,6 +95,12 @@ begin
     edtnome.setfocus;
     raise exception.create('O nome é obrigatório');
   end;
+	else if trim(edtnome.text) = emptystr then
+	begin
+	showmessage('fora');
+	end;
+	else
+	showmessage('bolafora');
 
   if cbNacionalidade.ItemIndex = -1 then
   begin

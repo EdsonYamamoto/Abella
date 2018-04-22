@@ -169,13 +169,13 @@ chamadaMetodo		= 	(
 
 atribuicao			= (({atributo}|{identificador}|{chamadaMetodo}*|{vetor}){proximaInstrucao}*{igual}{proximaInstrucao}*({atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}){proximaInstrucao}*[\;])
 
-condicaoIf			= 	{palavraIf}{1,1} {proximaInstrucao}* 
+condicaoElseIF			= 	((({palavraElse}{proximaInstrucao}*){0,1}{palavraIf}){1,1} {proximaInstrucao}* 
 							{palavraNot}* {proximaInstrucao}* {abreParenteses}* {proximaInstrucao}*
 								({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo})
 							{proximaInstrucao}*{condicao} {proximaInstrucao}*
 								({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo})
 							{proximaInstrucao}*{fechaParenteses}*
-					  	{palavraThen}{1,1}
+					  	{palavraThen}{1,1})
 
 program = "program"
 
@@ -226,7 +226,7 @@ program = "program"
 {palavraIf}			{ return new PascalToken( "if", yytext() ); }
 {palavraThen}		{ return new PascalToken( "then", yytext() ); }
 
-{palavraElse}		{ return new PascalToken( "else", yytext() ); }
+{palavraElse}		{ return new PascalToken( "condicao else", yytext() ); }
 
 {terminaLinha}		{ return createToken("fimLinha", yytext()); }
 
@@ -248,7 +248,7 @@ program = "program"
 {SqlOpen} 			{ return createToken("SqlOpen", yytext()); }
 {paramByName}		{ return createToken("ParamByName", yytext()); }
 {fieldByName}		{ return createToken("FieldByName", yytext()); }
-{condicaoIf}		{ return createToken("condicaoIf", yytext()); }
+{condicaoElseIF}	{ return createToken("condicao else ou if", yytext()); }
 {chamadaMetodo}		{ return createToken("chamada Metodo", yytext()); }
 {atribuicao}		{ return createToken("atribuicao", yytext()); }
 
