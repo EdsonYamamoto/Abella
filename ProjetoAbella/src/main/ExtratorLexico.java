@@ -17,13 +17,11 @@ public class ExtratorLexico {
 			while ((token = lexical.yylex()) != null) {
 				//if(token.name!="fimLinha"&&token.name!="comentario1"&&token.name!="comentario2"&&token.name!="comentario3"&&token.name!="comentario4")
 				//	System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "-\t\t " + token.value);
-
 				
-				if(token.name!="fimLinha")
-				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "-\t\t " + token.value);
-					
-				}
+				//if((token.name=="real"||token.name=="integer"||token.name=="key"))
+					if(token.name!="fimLinha")
+						System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "-\t\t " + token.value);
+				
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

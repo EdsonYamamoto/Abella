@@ -24,6 +24,7 @@ Palavras reservadas
 palavraParserIntToStr		= [Ii][Nn][Tt][Tt][Oo][Ss][Tt][Rr]
 palavraParserStrToInt		= [Ss][Tt][Rr][Tt][Oo][Ii][Nn][Tt]
 palavraBegin				= [Bb][Ee][Gg][Ii][Nn]
+palavraAnd					= [Aa][Nn][Dd]
 palavraEnd					= [Ee][Nn][Dd]
 palavraInteger				= [Ii][Nn][Tt][Ee][Gg][Ee][Rr]
 palavraString				= [Ss][Tt][Rr][Ii][Nn][Gg]
@@ -57,9 +58,12 @@ palavraAsstring				= [Aa][Ss][Ss][Tt][Rr][Ii][Nn][Gg]
 palavraAsinteger			= [Aa][Ss][Ii][Nn][Tt][Ee][Gg][Ee][Rr]
 palavraTrim					= [Tt][Rr][Ii][Mm]
 palavraResult				= [Rr][Ee][Ss][Uu][Ll][Tt]
+palavraIfThen				= [Ii][Ff][Tt][Hh][Ee][Nn]
 
 integer 			= 0|[1-9][0-9]*
-real 				= ((\+|-)?([0-9]+)(\.[0-9]+)?)|((\+|-)?\.?[0-9]+)
+real 				= (([0-9]+)((\.|\,)[0-9]+)?)|((\.|\,)?[0-9]+)
+
+key					= [\#]{integer}
 
 mais				= "+"
 menos				= "-"
@@ -94,17 +98,6 @@ abreChaves       	= [\{]
 fechaChaves      	= [\}]
 
 
-identificador		= [A-Za-z][A-Za-z_0-9]*
-abreParenteses      = ("(")
-fechaParenteses     = (")")
-
-aspasSimples = ("\'")
-
-terminaLinha = [\r|\n|\r\n]
-caracteresTexto = [A-Z|a-z|_|0-9|á|à|â|ã|é|è|ê|í|ï|ó|ô|õ|ö|ú|ç|ñ|Á|À|Â|Ã|É|È|ê|Ê|Í|Ï|Ó|Ô|Õ|Ö|Ú|û|Û|ü|Ü|Ç|Ñ|!|?|º|ª|=|(|)|,|\.|\-|\+|\*|\\|\"|\`|\{|\}|\&|\¨|\§|\¬|\¢|\¹|\²|\³|\£|\´|\~|\°|\r|\n|\r\n|\/|\s|\t|\;|\#|\:|\@|\[|\]|\<|\>|\^|\|]
-
-proximaInstrucao 	= ({terminaLinha}|{palavrasBranco})
-
 comment_body   	 	= {naoFechaChaves}*
 naoFechaChaves   	= [^}]
 comment_Linha  	 	= {naoTerminaLinha}*
@@ -118,8 +111,19 @@ comentario 			= 	(
 							{comentario_1}|{comentario_2}|{comentario_3}|{comentario_4}
 						)
 
+identificador		= [A-Za-z][A-Za-z_0-9]*
+abreParenteses      = ("(")
+fechaParenteses     = (")")
+
+aspasSimples = ("\'")
+
+terminaLinha = ([\r]|[\n]|[\r\n])
+caracteresTexto = [A-Z|a-z|_|0-9|á|à|â|ã|é|è|ê|í|ï|ó|ô|õ|ö|ú|ç|ñ|Á|À|Â|Ã|É|È|ê|Ê|Í|Ï|Ó|Ô|Õ|Ö|Ú|û|Û|ü|Ü|Ç|Ñ|!|?|º|ª|=|(|)|,|\.|\-|\+|\*|\\|\"|\`|\{|\}|\&|\¨|\§|\¬|\¢|\¹|\²|\³|\£|\´|\~|\°|\r|\n|\r\n|\/|\s|\t|\;|\#|\:|\@|\[|\]|\<|\>|\^|\|\%|\$]
+
+proximaInstrucao 	= ({terminaLinha}|{palavrasBranco})
+
 condicao 			= 	(
-							{maior}|{menor}|{maiorIgual}|{menorIgual}|{simboloIgual}
+							{maior}|{menor}|{maiorIgual}|{menorIgual}|{simboloIgual}|{diferente}
 						)
 
 unit 				= {palavraUnit}{proximaInstrucao}*{atributo}{proximaInstrucao}*[\;]
@@ -165,7 +169,7 @@ texto				= 	{aspasSimples}{caracteresTexto}*{aspasSimples}
 
 quotedstr			= 	{palavraQuotedstr}{proximaInstrucao}*{abreParenteses}
 						(
-							{texto}|{variavel}|{proximaInstrucao}
+							{texto}|{variavel}|{proximaInstrucao}|{key}|{integer}|{real}|{mais}|{atributo}
 						)*
 						{fechaParenteses}
 
@@ -174,7 +178,7 @@ mensagem			= 	{palavraShowmessage}{proximaInstrucao}*{abreParenteses}({texto}|{v
 
 erro				= 	{palavraRaise}{proximaInstrucao}*{palavraException}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraCreate}{abreParenteses}
 						(
-							{texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo}
+							{texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo}|{key}|{integer}|{real}
 						)*
 						{fechaParenteses}{proximaInstrucao}*[\;]
 
@@ -185,7 +189,7 @@ SqlAdd				= 	(
 						)*
 						{proximaInstrucao}*{palavraSQL}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraADD}{proximaInstrucao}*{abreParenteses}
 						(
-							{proximaInstrucao}|{texto}|{atributo}|{mais}|{quotedstr}|{chamadaMetodo}
+							{proximaInstrucao}|{texto}|{atributo}|{mais}|{quotedstr}|{chamadaMetodo}|{key}|{integer}|{real}
 						)
 						* {fechaParenteses} {proximaInstrucao}*[\;]
 
@@ -210,16 +214,16 @@ paramByName			= {identificador}{proximaInstrucao}*[\.]{proximaInstrucao}*{palavr
 fieldByName			= {identificador}{proximaInstrucao}*[\.]{proximaInstrucao}*{palavraFieldbyname}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*{texto}{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*[\.]*{proximaInstrucao}*({palavraAsinteger}|{palavraAsstring})*
 
 
-chamadaMetodo		= 	(
+chamadaMetodo		= 	
+						(
 							(
-								(
-								{atributo}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*
-									({texto}|{atributo})
-								{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*
-								)[\;]*
-								|({atributo}{proximaInstrucao}*[\;])
-							)*
-						)
+							{atributo}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*
+								({texto}|{atributo}|{vetor})
+							{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*
+							)[\;]*
+							|({atributo}{proximaInstrucao}*[\;])
+						)*
+						
 
 atribuicao			= 	(
 							(
@@ -242,12 +246,15 @@ condicaoElseIF			= 	(
 								{proximaInstrucao}*{fechaParenteses}*
 					  			{palavraThen}{1,1}
 					  		)
-
+condicaoIfThen			= {palavraIfThen}
 program = "program"
 
 %%
 
+
+{comentario}  		{ return createToken("comentario", yytext()); }
 {unit}			{ return new PascalToken( "unit", yytext() ); }
+
 
 {simboloIgual}		{ return new PascalToken( "simboloIgual", yytext() ); }
 {mais}				{ return new PascalToken( "soma", yytext() ); }
@@ -268,11 +275,12 @@ program = "program"
 {porcentagem}		{ return new PascalToken( "porcentagem", yytext() ); }
 
 {number}			{ return new PascalToken( "number", yytext() ); }
-{real}				{ return new PascalToken( "numero real", yytext() ); }
 {integer}			{ return new PascalToken( "integer", yytext() ); }
+{real}				{ return new PascalToken( "real", yytext() ); }
 {aspasSimples}		{ return new PascalToken( "abreImpressao", yytext() ); }
 {abreParenteses}	{ return new PascalToken( "abreParenteses", yytext() ); }
 {fechaParenteses}	{ return new PascalToken( "fechaParenteses", yytext() ); }
+
 
 {texto}				{ return new PascalToken( "texto", yytext() ); }
 {vetor}				{ return new PascalToken( "vetor", yytext() ); }
@@ -296,7 +304,6 @@ program = "program"
 
 {terminaLinha}		{ return createToken("fimLinha", yytext()); }
 
-{comentario}  		{ return createToken("comentario", yytext()); }
 
 {identificador}		{ return createToken("ID", yytext()); }
 {atributo}			{ return createToken("atributo", yytext()); }
@@ -308,6 +315,7 @@ program = "program"
 {palavrasBranco} 	{ /**/ }
 
 
+{key} 				{ return createToken("key", yytext()); }
 {SqlClear} 			{ return createToken("SqlClear", yytext()); }
 {SqlAdd} 			{ return createToken("SqlAdd", yytext()); }
 {SqlExec} 			{ return createToken("SqlExec", yytext()); }
@@ -315,6 +323,7 @@ program = "program"
 {paramByName}		{ return createToken("ParamByName", yytext()); }
 {fieldByName}		{ return createToken("FieldByName", yytext()); }
 {condicaoElseIF}	{ return createToken("condicao else ou if", yytext()); }
+{condicaoIfThen}	{ return createToken("condicao ifthen", yytext()); }
 {chamadaMetodo}		{ return createToken("chamada Metodo", yytext()); }
 {atribuicao}		{ return createToken("atribuicao", yytext()); }
 
