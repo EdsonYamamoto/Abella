@@ -54,7 +54,7 @@ begin
 
   try
     zGen.sql.clear;
-    zGen.sql.add('INSERT INTO tblDiretores');
+    zGen.sql.add('INSERT INTO tblDiretores'); zGen.sql.add('  idNacionalidade'); zGen.sql.add('  idNacionalidade'); zGen.sql.add('  idNacionalidade');
     zGen.sql.add('(');
     zGen.sql.add('  nome,');
     zGen.sql.add('  sobrenome,');

@@ -114,37 +114,89 @@ comentario_1		= {abreChaves}{comment_body}*{fechaChaves}
 comentario_2		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
 comentario_3		= [/]{2,2} {comment_Linha}*{terminaLinha}
 comentario_4		= "(*" [^*] ~"*)" | "(*" "*"+ ")"
-comentario 			= ({comentario_1}|{comentario_2}|{comentario_3}|{comentario_4})
+comentario 			= 	(
+							{comentario_1}|{comentario_2}|{comentario_3}|{comentario_4}
+						)
 
-condicao 			= ({maior}|{menor}|{maiorIgual}|{menorIgual}|{simboloIgual})
+condicao 			= 	(
+							{maior}|{menor}|{maiorIgual}|{menorIgual}|{simboloIgual}
+						)
 
 unit 				= {palavraUnit}{proximaInstrucao}*{atributo}{proximaInstrucao}*[\;]
 
-vetor				= ({identificador}|{atributo})({abreColchetes}({proximaInstrucao}*|{texto}|{atributo}|{real}|{mais}|{menos}|{multiplica}|{divide})*{fechaColchetes}	)|({abreColchetes}|{fechaColchetes})
+vetor				= 	(
+							{identificador}|{atributo}
+						)
+						(
+							{abreColchetes}
+							(
+								{proximaInstrucao}*|{texto}|{atributo}|{real}|{mais}|{menos}|{multiplica}|{divide}
+							)*
+							{fechaColchetes}	
+						)
+						|(
+							{abreColchetes}|{fechaColchetes}
+						)
 
 mensagem	 		= {palavraShowmessage}
 
-atributo			= ({identificador})( {proximaInstrucao}*[\.]{proximaInstrucao}* {identificador})*
+atributo			= 	(
+							{identificador}
+						)
+						( 
+							{proximaInstrucao}*[\.]{proximaInstrucao}* {identificador}
+						)*
 
-tipoVariavel		= ({palavraString}|{palavraInteger}|{palavraBoolean})
+tipoVariavel		= 	(
+							{palavraString}|{palavraInteger}|{palavraBoolean}
+						)
 
-variavel			= {palavraVar} {proximaInstrucao}* {identificador} {palavrasBranco}* [\:] {proximaInstrucao}* ({tipoVariavel}|{identificador})
-palavraVariavel		= {palavraVar}{proximaInstrucao}*{identificador} {proximaInstrucao}* [\:] {proximaInstrucao}* ({tipoVariavel}|{identificador}){proximaInstrucao}*[\;]
+variavel			= 	{palavraVar}{proximaInstrucao}*{identificador} {palavrasBranco}* [\:] {proximaInstrucao}* 
+						(
+							{tipoVariavel}|{identificador}
+						)
+palavraVariavel		= 	{palavraVar}{proximaInstrucao}*{identificador} {proximaInstrucao}* [\:] {proximaInstrucao}* 
+						(
+							{tipoVariavel}|{identificador}
+						)
+						{proximaInstrucao}*[\;]
 
-texto				= {aspasSimples}{caracteresTexto}*{aspasSimples}
-/*Qualquer caracter que ficar entre aspas*/
-quotedstr			= {palavraQuotedstr}{proximaInstrucao}*{abreParenteses}({texto}|{variavel}|{proximaInstrucao})*{fechaParenteses}
-/*Qualquer coisa que estiver dentro de um quotedstring*/
-mensagem			= {palavraShowmessage}{proximaInstrucao}*{abreParenteses}({texto}|{variavel}|{proximaInstrucao})*{fechaParenteses}{proximaInstrucao}*[\;]
-/*Qualquer coisa escrita dentro de um show message*/
-erro				= {palavraRaise}{proximaInstrucao}*{palavraException}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraCreate}{abreParenteses}({texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo})*{fechaParenteses}{proximaInstrucao}*[\;]
+texto				= 	{aspasSimples}{caracteresTexto}*{aspasSimples}
 
-SqlClear			= {identificador}{palavrasBranco}*[.]{palavrasBranco}*{palavraSQL}{palavrasBranco}*[.]{palavrasBranco}*{palavraClear}{palavrasBranco}*[\;]
-SqlAdd				= ({identificador}{proximaInstrucao}*[.])*{proximaInstrucao}*{palavraSQL}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraADD}{proximaInstrucao}*{abreParenteses}({proximaInstrucao}|{texto}|{atributo}|{mais}|{quotedstr})* {fechaParenteses} {proximaInstrucao}*[\;]
+quotedstr			= 	{palavraQuotedstr}{proximaInstrucao}*{abreParenteses}
+						(
+							{texto}|{variavel}|{proximaInstrucao}
+						)*
+						{fechaParenteses}
+
+
+mensagem			= 	{palavraShowmessage}{proximaInstrucao}*{abreParenteses}({texto}|{variavel}|{proximaInstrucao})*{fechaParenteses}{proximaInstrucao}*[\;]
+
+erro				= 	{palavraRaise}{proximaInstrucao}*{palavraException}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraCreate}{abreParenteses}
+						(
+							{texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo}
+						)*
+						{fechaParenteses}{proximaInstrucao}*[\;]
+
+SqlClear			= 	{identificador}{palavrasBranco}*[.]{palavrasBranco}*{palavraSQL}{palavrasBranco}*[.]{palavrasBranco}*{palavraClear}{palavrasBranco}*[\;]
+
+SqlAdd				= 	(
+							{identificador}{proximaInstrucao}*[.]
+						)*
+						{proximaInstrucao}*{palavraSQL}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraADD}{proximaInstrucao}*{abreParenteses}
+						(
+							{proximaInstrucao}|{texto}|{atributo}|{mais}|{quotedstr}|{chamadaMetodo}
+						)
+						* {fechaParenteses} {proximaInstrucao}*[\;]
+
 SqlExec				= ({identificador}{proximaInstrucao}*[\.])*{proximaInstrucao}*{palavraExecSQL}{proximaInstrucao}*[\;]
+
 SqlOpen				= ({identificador}{proximaInstrucao}*[\.])*{proximaInstrucao}*{palavraOpen}{proximaInstrucao}*[\;]
 
+
+
 baseMetodo			= ({palavraProcedure}|{palavraFunction}){proximaInstrucao}*{identificador}{atributo}*[\.]*{proximaInstrucao}*{identificador}*{proximaInstrucao}*	
+
 variaveisMetodo		= ({abreParenteses} ({proximaInstrucao}* {identificador}*{proximaInstrucao}* {identificador}*{proximaInstrucao}*[\:]*{proximaInstrucao}* {variavel}*{proximaInstrucao}*[\;]*[\,]*)* {fechaParenteses})*
 
 metodo 				= {baseMetodo}{variaveisMetodo}{proximaInstrucao}*[\:]*{proximaInstrucao}*{tipoVariavel}*{proximaInstrucao}*[\;]
@@ -152,7 +204,9 @@ metodo 				= {baseMetodo}{variaveisMetodo}{proximaInstrucao}*[\:]*{proximaInstru
 /*
 trim				= {palavraTrim}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*({texto}|{atributo}){proximaInstrucao}*{fechaParenteses}
 */
+
 paramByName			= {identificador}{proximaInstrucao}*[\.]{proximaInstrucao}*{palavraParambyname}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*{texto}{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*[\.]*{proximaInstrucao}*({palavraAsinteger}|{palavraAsstring})*
+
 fieldByName			= {identificador}{proximaInstrucao}*[\.]{proximaInstrucao}*{palavraFieldbyname}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*{texto}{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*[\.]*{proximaInstrucao}*({palavraAsinteger}|{palavraAsstring})*
 
 
@@ -167,15 +221,27 @@ chamadaMetodo		= 	(
 							)*
 						)
 
-atribuicao			= (({atributo}|{identificador}|{chamadaMetodo}*|{vetor}){proximaInstrucao}*{igual}{proximaInstrucao}*({atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}){proximaInstrucao}*[\;])
+atribuicao			= 	(
+							(
+								{atributo}|{identificador}|{chamadaMetodo}*|{vetor}
+							)
+							{proximaInstrucao}*{igual}{proximaInstrucao}*
+							(
+								{atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}
+							)
+							{proximaInstrucao}*[\;]
+						)
 
-condicaoElseIF			= 	((({palavraElse}{proximaInstrucao}*){0,1}{palavraIf}){1,1} {proximaInstrucao}* 
-							{palavraNot}* {proximaInstrucao}* {abreParenteses}* {proximaInstrucao}*
-								({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo})
-							{proximaInstrucao}*{condicao} {proximaInstrucao}*
-								({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo})
-							{proximaInstrucao}*{fechaParenteses}*
-					  	{palavraThen}{1,1})
+condicaoElseIF			= 	(
+								(
+									({palavraElse}{proximaInstrucao}*){0,1}
+								{palavraIf}){1,1} {proximaInstrucao}* {palavraNot}* {proximaInstrucao}* {abreParenteses}* {proximaInstrucao}*
+									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo})
+								{proximaInstrucao}*{condicao} {proximaInstrucao}*
+									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo})
+								{proximaInstrucao}*{fechaParenteses}*
+					  			{palavraThen}{1,1}
+					  		)
 
 program = "program"
 
