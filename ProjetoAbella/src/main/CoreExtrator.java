@@ -147,7 +147,6 @@ public class CoreExtrator {
 		String tipo = "";
 		
 		palavras = str.split(" ");
-		
 		Pattern patternIf = Pattern.compile(palavraIf);
 		Pattern patternElse = Pattern.compile(palavraElse);
 		Pattern patternWhile = Pattern.compile(palavraWhile);

@@ -30,6 +30,7 @@ palavraInteger				= [Ii][Nn][Tt][Ee][Gg][Ee][Rr]
 palavraString				= [Ss][Tt][Rr][Ii][Nn][Gg]
 palavraBoolean				= [Bb][Oo][Oo][Ll][Ee][Aa][Nn]
 palavraIf					= [Ii][Ff]
+palavraKey					= [Kk][Ee][Yy]
 palavraThen					= [Tt][Hh][Ee][Nn]
 palavraElse					= [Ee][Ll][Ss][Ee]
 palavraProcedure			= [Pp][Rr][Oo][Cc][Ee][Dd][Uu][Rr][Ee]
@@ -61,9 +62,9 @@ palavraResult				= [Rr][Ee][Ss][Uu][Ll][Tt]
 palavraIfThen				= [Ii][Ff][Tt][Hh][Ee][Nn]
 
 integer 			= 0|[1-9][0-9]*
-real 				= (([0-9]+)((\.|\,)[0-9]+)?)|((\.|\,)?[0-9]+)
+real 				= (([0-9]+)(\.[0-9]+)?)|(\.?[0-9]+)
 
-key					= [\#]{integer}
+keyNumber			= [\#]{integer}
 
 mais				= "+"
 menos				= "-"
@@ -81,7 +82,9 @@ porcentagem			= "%"
 
 begin				= {palavraBegin}
 
-end					= {palavraEnd}{proximaInstrucao}*[\;]*
+
+endIf				= {palavraEnd}
+end					= {palavraEnd}{proximaInstrucao}*[\;]
 
 palavrasBranco 			= [\n| |\t]
 
@@ -134,7 +137,7 @@ vetor				= 	(
 						(
 							{abreColchetes}
 							(
-								{proximaInstrucao}*|{texto}|{atributo}|{real}|{mais}|{menos}|{multiplica}|{divide}
+								{proximaInstrucao}*|{texto}|{integer}|{atributo}|{real}|{mais}|{menos}|{multiplica}|{divide}|[\,]
 							)*
 							{fechaColchetes}	
 						)
@@ -155,11 +158,11 @@ tipoVariavel		= 	(
 							{palavraString}|{palavraInteger}|{palavraBoolean}
 						)
 
-variavel			= 	{palavraVar}{proximaInstrucao}*{identificador} {palavrasBranco}* [\:] {proximaInstrucao}* 
+variavel			= 	{identificador} {proximaInstrucao}* [\:] {proximaInstrucao}* 
 						(
 							{tipoVariavel}|{identificador}
-						)
-palavraVariavel		= 	{palavraVar}{proximaInstrucao}*{identificador} {proximaInstrucao}* [\:] {proximaInstrucao}* 
+						){proximaInstrucao}* [\;]
+palavraVariavel		= 	{identificador} {proximaInstrucao}* [\:] {proximaInstrucao}* 
 						(
 							{tipoVariavel}|{identificador}
 						)
@@ -169,27 +172,30 @@ texto				= 	{aspasSimples}{caracteresTexto}*{aspasSimples}
 
 quotedstr			= 	{palavraQuotedstr}{proximaInstrucao}*{abreParenteses}
 						(
-							{texto}|{variavel}|{proximaInstrucao}|{key}|{integer}|{real}|{mais}|{atributo}
+							{texto}|{variavel}|{proximaInstrucao}|{keyNumber}|{integer}|{real}|{mais}|{atributo}
 						)*
 						{fechaParenteses}
 
 
-mensagem			= 	{palavraShowmessage}{proximaInstrucao}*{abreParenteses}({texto}|{variavel}|{proximaInstrucao})*{fechaParenteses}{proximaInstrucao}*[\;]
+mensagem			= 	{palavraShowmessage}{proximaInstrucao}*{abreParenteses}
+						(
+							{texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo}|{integer}|{keyNumber}
+						)*{fechaParenteses}{proximaInstrucao}*[\;]
 
 erro				= 	{palavraRaise}{proximaInstrucao}*{palavraException}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraCreate}{abreParenteses}
 						(
-							{texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo}|{key}|{integer}|{real}
+							{texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo}|{keyNumber}|{integer}|{real}
 						)*
 						{fechaParenteses}{proximaInstrucao}*[\;]
 
-SqlClear			= 	{identificador}{palavrasBranco}*[.]{palavrasBranco}*{palavraSQL}{palavrasBranco}*[.]{palavrasBranco}*{palavraClear}{palavrasBranco}*[\;]
+SqlClear			= 	{identificador}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraSQL}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraClear}{proximaInstrucao}*[\;]
 
 SqlAdd				= 	(
 							{identificador}{proximaInstrucao}*[.]
 						)*
 						{proximaInstrucao}*{palavraSQL}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraADD}{proximaInstrucao}*{abreParenteses}
 						(
-							{proximaInstrucao}|{texto}|{atributo}|{mais}|{quotedstr}|{chamadaMetodo}|{key}|{integer}|{real}
+							{proximaInstrucao}|{texto}|{atributo}|{mais}|{quotedstr}|({chamadaMetodo}{proximaInstrucao}*[\.]{proximaInstrucao}*({palavraAsstring}|{palavraAsinteger}))|{keyNumber}|{integer}|{real}
 						)
 						* {fechaParenteses} {proximaInstrucao}*[\;]
 
@@ -217,8 +223,10 @@ fieldByName			= {identificador}{proximaInstrucao}*[\.]{proximaInstrucao}*{palavr
 chamadaMetodo		= 	
 						(
 							(
-							{atributo}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*
-								({texto}|{atributo}|{vetor}|[\,])
+								({identificador}|{atributo}){proximaInstrucao}*{abreParenteses}{proximaInstrucao}*
+									(
+										{texto}|{atributo}|{vetor}|[\,]
+								)*
 							{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*
 							)[\;]*
 							|({atributo}{proximaInstrucao}*[\;])
@@ -227,12 +235,15 @@ chamadaMetodo		=
 
 atribuicao			= 	(
 							(
-								{atributo}|{identificador}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}
+								{atributo}|{identificador}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}|{keyNumber}|{palavraKey}
 							)
 							{proximaInstrucao}*{igual}{proximaInstrucao}*
 							(
-								{atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}
-							)
+								{atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}|{palavraKey}|{mais}|{keyNumber}
+							)*
+							(
+								{proximaInstrucao}*[\.]{proximaInstrucao}*({palavraAsstring}|{palavraAsinteger})
+							){0,1}
 							{proximaInstrucao}*[\;]
 						)
 
@@ -240,7 +251,7 @@ condicaoElseIF			= 	(
 								(
 									({palavraElse}{proximaInstrucao}*){0,1}
 								{palavraIf}){1,1} {proximaInstrucao}* {palavraNot}* {proximaInstrucao}* {abreParenteses}* {proximaInstrucao}*
-									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}|{mais}|{menos})
+									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}([\.])|{mais}|{menos})
 								{proximaInstrucao}*{condicao} {proximaInstrucao}*
 									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}|{mais}|{menos})
 								{proximaInstrucao}*{fechaParenteses}*
@@ -287,6 +298,7 @@ program = "program"
 
 {begin}				{ return new PascalToken( "begin", yytext() ); }
 {end} 				{ return new PascalToken( "end", yytext() ); }
+{endIf}				{ return new PascalToken( "end If", yytext() ); }
 {palavraInteger}	{ return new PascalToken( "inteiro", yytext() ); }
 {palavraString} 	{ return new PascalToken( "string", yytext() ); }
 {palavraParserIntToStr}	{ return new PascalToken( "IntToStr", yytext() ); }
@@ -315,7 +327,7 @@ program = "program"
 {palavrasBranco} 	{ /**/ }
 
 
-{key} 				{ return createToken("key", yytext()); }
+{keyNumber} 		{ return createToken("keyNumber", yytext()); }
 {SqlClear} 			{ return createToken("SqlClear", yytext()); }
 {SqlAdd} 			{ return createToken("SqlAdd", yytext()); }
 {SqlExec} 			{ return createToken("SqlExec", yytext()); }

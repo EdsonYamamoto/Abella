@@ -84,4 +84,11 @@ begin
   zConsultaDiretores.Refresh;
 
 
+Setlength(Arr_pnacess, length(Arr_pnacess) + 1 );
+Arr_pnacess[length(Arr_pnacess) - 1 ] := 'Não original';
+Setlength(Arr_pnacess, length(Arr_pnacess) + 1 );
+Arr_pnacess[length(Arr_pnacess) - 1 ] := 'Incompatível';
+Setlength(Arr_pnacess, length(Arr_pnacess) + 1 );
+
+
 end;
