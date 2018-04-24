@@ -218,7 +218,7 @@ chamadaMetodo		=
 						(
 							(
 							{atributo}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*
-								({texto}|{atributo}|{vetor})
+								({texto}|{atributo}|{vetor}|[\,])
 							{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*
 							)[\;]*
 							|({atributo}{proximaInstrucao}*[\;])
@@ -227,11 +227,11 @@ chamadaMetodo		=
 
 atribuicao			= 	(
 							(
-								{atributo}|{identificador}|{chamadaMetodo}*|{vetor}
+								{atributo}|{identificador}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}
 							)
 							{proximaInstrucao}*{igual}{proximaInstrucao}*
 							(
-								{atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}
+								{atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}
 							)
 							{proximaInstrucao}*[\;]
 						)
@@ -240,9 +240,9 @@ condicaoElseIF			= 	(
 								(
 									({palavraElse}{proximaInstrucao}*){0,1}
 								{palavraIf}){1,1} {proximaInstrucao}* {palavraNot}* {proximaInstrucao}* {abreParenteses}* {proximaInstrucao}*
-									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo})
+									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}|{mais}|{menos})
 								{proximaInstrucao}*{condicao} {proximaInstrucao}*
-									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo})
+									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}|{mais}|{menos})
 								{proximaInstrucao}*{fechaParenteses}*
 					  			{palavraThen}{1,1}
 					  		)
