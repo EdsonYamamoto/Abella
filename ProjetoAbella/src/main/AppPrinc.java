@@ -62,9 +62,8 @@ public class AppPrinc {
 			for (int j = afile.length; i < j; i++) {
 				File arquivos = afile[i];
 				if(arquivos.getName().endsWith(Configuracoes.getExtensaoArquivoEntrada()))
-				{
 					FluxoExtrator.escreveFluxoPrograma(arquivos);
-				}
+				
 				if(arquivos.length()==0)
 					arquivos.delete();
 			}

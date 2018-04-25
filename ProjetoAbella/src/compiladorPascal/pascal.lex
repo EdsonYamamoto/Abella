@@ -35,6 +35,8 @@ palavraThen					= [Tt][Hh][Ee][Nn]
 palavraElse					= [Ee][Ll][Ss][Ee]
 palavraProcedure			= [Pp][Rr][Oo][Cc][Ee][Dd][Uu][Rr][Ee]
 palavraFunction				= [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]
+palavraTrue					= [Tt][Rr][Uu][Ee]
+palavraFalse				= [Ff][Aa][Ll][Ss][Ee]
 palavraRaise				= [Rr][Aa][Ii][Ss][Ee]
 palavraVar					= [Vv][Aa][Rr]
 palavraException			= [Ee][Xx][Cc][Ee][Pp][Tt][Ii][Oo][Nn]
@@ -60,6 +62,9 @@ palavraAsinteger			= [Aa][Ss][Ii][Nn][Tt][Ee][Gg][Ee][Rr]
 palavraTrim					= [Tt][Rr][Ii][Mm]
 palavraResult				= [Rr][Ee][Ss][Uu][Ll][Tt]
 palavraIfThen				= [Ii][Ff][Tt][Hh][Ee][Nn]
+palavraDo					= [Dd][Oo]
+palavraOn					= [Oo][Nn]
+palavraExcept				= [Ee][Xx][Cc][Ee][Pp][Tt]
 
 integer 			= 0|[1-9][0-9]*
 real 				= (([0-9]+)(\.[0-9]+)?)|(\.?[0-9]+)
@@ -114,7 +119,6 @@ comentario 			= 	(
 							{comentario_1}|{comentario_2}|{comentario_3}|{comentario_4}
 						)
 
-identificador		= [A-Za-z][A-Za-z_0-9]*
 abreParenteses      = ("(")
 fechaParenteses     = (")")
 
@@ -141,11 +145,16 @@ vetor				= 	(
 							)*
 							{fechaColchetes}	
 						)
-						|(
+						|
+						(
 							{abreColchetes}|{fechaColchetes}
 						)
-
-mensagem	 		= {palavraShowmessage}
+						
+mensagem			= 	{palavraShowmessage}{proximaInstrucao}*{abreParenteses}
+						(
+							{texto}|{variavel}|{proximaInstrucao}*|{mais}|{atributo}|{integer}|{keyNumber}|[\,]
+						)*
+						{fechaParenteses}{proximaInstrucao}*[\;]
 
 atributo			= 	(
 							{identificador}
@@ -176,17 +185,13 @@ quotedstr			= 	{palavraQuotedstr}{proximaInstrucao}*{abreParenteses}
 						)*
 						{fechaParenteses}
 
-
-mensagem			= 	{palavraShowmessage}{proximaInstrucao}*{abreParenteses}
-						(
-							{texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo}|{integer}|{keyNumber}
-						)*{fechaParenteses}{proximaInstrucao}*[\;]
-
 erro				= 	{palavraRaise}{proximaInstrucao}*{palavraException}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraCreate}{abreParenteses}
 						(
 							{texto}|{variavel}|{proximaInstrucao}|{mais}|{atributo}|{keyNumber}|{integer}|{real}
 						)*
 						{fechaParenteses}{proximaInstrucao}*[\;]
+						
+except				=	{palavraExcept}{proximaInstrucao}*{palavraOn}{proximaInstrucao}*{identificador}{proximaInstrucao}*[\:]{proximaInstrucao}*{palavraException}{proximaInstrucao}*{palavraDo}
 
 SqlClear			= 	{identificador}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraSQL}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraClear}{proximaInstrucao}*[\;]
 
@@ -207,7 +212,13 @@ SqlOpen				= ({identificador}{proximaInstrucao}*[\.])*{proximaInstrucao}*{palavr
 
 baseMetodo			= ({palavraProcedure}|{palavraFunction}){proximaInstrucao}*{identificador}{atributo}*[\.]*{proximaInstrucao}*{identificador}*{proximaInstrucao}*	
 
-variaveisMetodo		= ({abreParenteses} ({proximaInstrucao}* {identificador}*{proximaInstrucao}* {identificador}*{proximaInstrucao}*[\:]*{proximaInstrucao}* {variavel}*{proximaInstrucao}*[\;]*[\,]*)* {fechaParenteses})*
+variaveisMetodo		= 	(
+							{abreParenteses} 
+							(
+								{proximaInstrucao}* {identificador}*{proximaInstrucao}* {identificador}*{proximaInstrucao}*[\:]*{proximaInstrucao}* {variavel}*{proximaInstrucao}*[\;]*[\,]*
+							)* 
+							{fechaParenteses}
+						)*
 
 metodo 				= {baseMetodo}{variaveisMetodo}{proximaInstrucao}*[\:]*{proximaInstrucao}*{tipoVariavel}*{proximaInstrucao}*[\;]
 
@@ -223,34 +234,41 @@ fieldByName			= {identificador}{proximaInstrucao}*[\.]{proximaInstrucao}*{palavr
 chamadaMetodo		= 	
 						(
 							(
-								({identificador}|{atributo}){proximaInstrucao}*{abreParenteses}{proximaInstrucao}*
-									(
-										{texto}|{atributo}|{vetor}|[\,]
+								(
+									{identificador}|{atributo}|{palavraFieldbyname}|{palavraParserStrToInt}|{palavraParserIntToStr}
+								)
+								{proximaInstrucao}*{abreParenteses}
+								(
+									{texto}|{atributo}|{vetor}|[\,]|{proximaInstrucao}*|[\+]
 								)*
-							{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*
-							)[\;]*
-							|({atributo}{proximaInstrucao}*[\;])
+								{fechaParenteses}{proximaInstrucao}*
+								)
+							[\;]{0,1}
+							|
+							(
+								{atributo}{proximaInstrucao}*[\;]{1,1}
+							)
 						)*
 						
 
 atribuicao			= 	(
 							(
 								{atributo}|{identificador}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}|{keyNumber}|{palavraKey}
-							)
+							)*
 							{proximaInstrucao}*{igual}{proximaInstrucao}*
 							(
-								{atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}|{palavraKey}|{mais}|{keyNumber}
+								{atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}|{palavraKey}|{mais}|{keyNumber}|{menos}|{integer}
 							)*
 							(
 								{proximaInstrucao}*[\.]{proximaInstrucao}*({palavraAsstring}|{palavraAsinteger})
 							){0,1}
-							{proximaInstrucao}*[\;]
+							{proximaInstrucao}*[\;]{0,1}
 						)
 
 condicaoElseIF			= 	(
 								(
 									({palavraElse}{proximaInstrucao}*){0,1}
-								{palavraIf}){1,1} {proximaInstrucao}* {palavraNot}* {proximaInstrucao}* {abreParenteses}* {proximaInstrucao}*
+								{palavraIf}){1,1} {proximaInstrucao}* {palavraNot}{0,1} {proximaInstrucao}* {abreParenteses}* {proximaInstrucao}*
 									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}([\.])|{mais}|{menos})
 								{proximaInstrucao}*{condicao} {proximaInstrucao}*
 									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}|{mais}|{menos})
@@ -258,85 +276,89 @@ condicaoElseIF			= 	(
 					  			{palavraThen}{1,1}
 					  		)
 condicaoIfThen			= {palavraIfThen}
+
+identificador		= [A-Za-z][A-Za-z_0-9]*
 program = "program"
 
 %%
 
 
-{comentario}  		{ return createToken("comentario", yytext()); }
-{unit}			{ return new PascalToken( "unit", yytext() ); }
+{comentario}  			{ return new PascalToken("comentario          ", yytext()); }
+{unit}					{ return new PascalToken( "unit               ", yytext() ); }
 
 
-{simboloIgual}		{ return new PascalToken( "simboloIgual", yytext() ); }
-{mais}				{ return new PascalToken( "soma", yytext() ); }
-{menos}				{ return new PascalToken( "subtracao", yytext() ); }
-{multiplica}		{ return new PascalToken( "multiplicar", yytext() ); }
-{divide}			{ return new PascalToken( "dividir", yytext() ); }
+{simboloIgual}			{ return new PascalToken( "simboloIgual	      ", yytext() ); }
+{mais}					{ return new PascalToken( "soma               ", yytext() ); }
+{menos}					{ return new PascalToken( "subtracao          ", yytext() ); }
+{multiplica}			{ return new PascalToken( "multiplicar        ", yytext() ); }
+{divide}				{ return new PascalToken( "dividir            ", yytext() ); }
 
-{igual}				{ return new PascalToken( "igual", yytext() ); }
-{diferente}			{ return new PascalToken( "diferente", yytext() ); }
-{maior}				{ return new PascalToken( "maior", yytext() ); }
-{menor}				{ return new PascalToken( "menor", yytext() ); }
-{maiorIgual}		{ return new PascalToken( "igual ou maior", yytext() ); }
-{menorIgual}		{ return new PascalToken( "igual ou menor", yytext() ); }
+{igual}					{ return new PascalToken( "igual              ", yytext() ); }
+{diferente}				{ return new PascalToken( "diferente          ", yytext() ); }
+{maior}					{ return new PascalToken( "maior              ", yytext() ); }
+{menor}					{ return new PascalToken( "menor              ", yytext() ); }
+{maiorIgual}			{ return new PascalToken( "igual ou maior     ", yytext() ); }
+{menorIgual}			{ return new PascalToken( "igual ou menor     ", yytext() ); }
 
-{expoente}			{ return new PascalToken( "expoente", yytext() ); }
-{arrouba}			{ return new PascalToken( "arrouba", yytext() ); }
-{cifrao}			{ return new PascalToken( "cifrao", yytext() ); }
-{porcentagem}		{ return new PascalToken( "porcentagem", yytext() ); }
+{expoente}				{ return new PascalToken( "expoente           ", yytext() ); }
+{arrouba}				{ return new PascalToken( "arrouba            ", yytext() ); }
+{cifrao}				{ return new PascalToken( "cifrao             ", yytext() ); }
+{porcentagem}			{ return new PascalToken( "porcentagem        ", yytext() ); }
 
-{number}			{ return new PascalToken( "number", yytext() ); }
-{integer}			{ return new PascalToken( "integer", yytext() ); }
-{real}				{ return new PascalToken( "real", yytext() ); }
-{aspasSimples}		{ return new PascalToken( "abreImpressao", yytext() ); }
-{abreParenteses}	{ return new PascalToken( "abreParenteses", yytext() ); }
-{fechaParenteses}	{ return new PascalToken( "fechaParenteses", yytext() ); }
-
-
-{texto}				{ return new PascalToken( "texto", yytext() ); }
-{vetor}				{ return new PascalToken( "vetor", yytext() ); }
-
-{begin}				{ return new PascalToken( "begin", yytext() ); }
-{end} 				{ return new PascalToken( "end", yytext() ); }
-{endIf}				{ return new PascalToken( "end If", yytext() ); }
-{palavraInteger}	{ return new PascalToken( "inteiro", yytext() ); }
-{palavraString} 	{ return new PascalToken( "string", yytext() ); }
-{palavraParserIntToStr}	{ return new PascalToken( "IntToStr", yytext() ); }
-{palavraParserStrToInt}	{ return new PascalToken( "StrToInt", yytext() ); }
-
-{metodo}			{ return new PascalToken( "metodo", yytext() ); }
-{variaveisMetodo}	{ return new PascalToken( "variaveisMetodo", yytext() ); }
-{variavel}			{ return new PascalToken( "declaracaoVariavel", yytext() ); }
+{number}				{ return new PascalToken( "number             ", yytext() ); }
+{integer}				{ return new PascalToken( "integer            ", yytext() ); }
+{real}					{ return new PascalToken( "real               ", yytext() ); }
+{aspasSimples}			{ return new PascalToken( "abreImpressao      ", yytext() ); }
+{abreParenteses}		{ return new PascalToken( "abreParenteses     ", yytext() ); }
+{fechaParenteses}		{ return new PascalToken( "fechaParenteses    ", yytext() ); }
 
 
-{palavraIf}			{ return new PascalToken( "if", yytext() ); }
-{palavraThen}		{ return new PascalToken( "then", yytext() ); }
+{texto}					{ return new PascalToken( "texto              ", yytext() ); }
+{vetor}					{ return new PascalToken( "vetor              ", yytext() ); }
 
-{palavraElse}		{ return new PascalToken( "condicao else", yytext() ); }
+{begin}					{ return new PascalToken( "begin              ", yytext() ); }
+{end} 					{ return new PascalToken( "end                ", yytext() ); }
+{endIf}					{ return new PascalToken( "end If             ", yytext() ); }
+{palavraInteger}		{ return new PascalToken( "inteiro            ", yytext() ); }
+{palavraString} 		{ return new PascalToken( "string             ", yytext() ); }
+{palavraParserIntToStr}	{ return new PascalToken( "IntToStr           ", yytext() ); }
+{palavraParserStrToInt}	{ return new PascalToken( "StrToInt           ", yytext() ); }
 
-{terminaLinha}		{ return createToken("fimLinha", yytext()); }
-
-
-{identificador}		{ return createToken("ID", yytext()); }
-{atributo}			{ return createToken("atributo", yytext()); }
-{delimitadores}		{ return createToken("delimitadores", yytext()); }
-
-{erro}  			{ return createToken("raise error", yytext()); }
-{mensagem} 			{ return createToken("showMessage", yytext()); }
-{program} 			{ return createToken(yytext(), "");} 
-{palavrasBranco} 	{ /**/ }
+{metodo}				{ return new PascalToken( "metodo             ", yytext() ); }
+{variaveisMetodo}		{ return new PascalToken( "variaveisMetodo    ", yytext() ); }
+{variavel}				{ return new PascalToken( "declaracaoVariavel ", yytext() ); }
 
 
-{keyNumber} 		{ return createToken("keyNumber", yytext()); }
-{SqlClear} 			{ return createToken("SqlClear", yytext()); }
-{SqlAdd} 			{ return createToken("SqlAdd", yytext()); }
-{SqlExec} 			{ return createToken("SqlExec", yytext()); }
-{SqlOpen} 			{ return createToken("SqlOpen", yytext()); }
-{paramByName}		{ return createToken("ParamByName", yytext()); }
-{fieldByName}		{ return createToken("FieldByName", yytext()); }
-{condicaoElseIF}	{ return createToken("condicao else ou if", yytext()); }
-{condicaoIfThen}	{ return createToken("condicao ifthen", yytext()); }
-{chamadaMetodo}		{ return createToken("chamada Metodo", yytext()); }
-{atribuicao}		{ return createToken("atribuicao", yytext()); }
+{palavraIf}				{ return new PascalToken( "if                 ", yytext() ); }
+{palavraThen}			{ return new PascalToken( "then               ", yytext() ); }
+
+{palavraElse}			{ return new PascalToken( "condicao else      ", yytext() ); }
+
+{terminaLinha}			{ return new PascalToken("fimLinha            ", yytext()); }
+
+
+{identificador}			{ return new PascalToken("ID                  ", yytext()); }
+{atributo}				{ return new PascalToken("atributo            ", yytext()); }
+{delimitadores}			{ return new PascalToken("delimitadores       ", yytext()); }
+
+{except}				{ return new PascalToken("except              ", yytext()); }
+{erro}  				{ return new PascalToken("raise error         ", yytext()); }
+{mensagem} 				{ return new PascalToken("showMessage         ", yytext()); }
+{program} 				{ return new PascalToken(yytext(), "");} 
+{palavrasBranco} 		{ /**/ }
+
+
+{keyNumber} 			{ return new PascalToken("keyNumber           ", yytext()); }
+{SqlClear} 				{ return new PascalToken("SqlClear            ", yytext()); }
+{SqlAdd} 				{ return new PascalToken("SqlAdd              ", yytext()); }
+{SqlExec} 				{ return new PascalToken("SqlExec             ", yytext()); }
+{SqlOpen} 				{ return new PascalToken("SqlOpen             ", yytext()); }
+{paramByName}			{ return new PascalToken("ParamByName         ", yytext()); }
+{fieldByName}			{ return new PascalToken("FieldByName         ", yytext()); }
+{condicaoElseIF}		{ return new PascalToken("condicao else ou if ", yytext()); }
+{condicaoIfThen}		{ return new PascalToken("condicao ifthen     ", yytext()); }
+{chamadaMetodo}			{ return new PascalToken("chamada Metodo      ", yytext()); }
+{atribuicao}			{ return new PascalToken("atribuicao          ", yytext()); }
+
 
 . { throw new RuntimeException("Caractere inválido " + yytext() + " na linha " + yyline + ", coluna " +yycolumn); }

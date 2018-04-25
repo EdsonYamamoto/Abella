@@ -90,5 +90,5 @@ Setlength(Arr_pnacess, length(Arr_pnacess) + 1 );
 Arr_pnacess[length(Arr_pnacess) - 1 ] := 'Incompatível';
 Setlength(Arr_pnacess, length(Arr_pnacess) + 1 );
 
-
+Application.MessageBox('Deseja concluir o reparo sem a reposição dos itens?','Laboratório',36)
 end;
