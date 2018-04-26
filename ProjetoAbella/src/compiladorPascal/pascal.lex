@@ -59,12 +59,14 @@ palavraOpen					= [Oo][Pp][Ee][Nn]
 palavraUnit					= [Uu][Nn][Ii][Tt]
 palavraAsstring				= [Aa][Ss][Ss][Tt][Rr][Ii][Nn][Gg]
 palavraAsinteger			= [Aa][Ss][Ii][Nn][Tt][Ee][Gg][Ee][Rr]
+palavraAsboolean			= [Aa][Ss][Bb][Oo][Ll][Ee][Aa][Nn]
 palavraTrim					= [Tt][Rr][Ii][Mm]
 palavraResult				= [Rr][Ee][Ss][Uu][Ll][Tt]
 palavraIfThen				= [Ii][Ff][Tt][Hh][Ee][Nn]
 palavraDo					= [Dd][Oo]
 palavraOn					= [Oo][Nn]
 palavraExcept				= [Ee][Xx][Cc][Ee][Pp][Tt]
+palavraMessageBox			= [Mm][Ee][Ss][Ss][Aa][Gg][Ee][Bb][Oo][Xx]
 
 integer 			= 0|[1-9][0-9]*
 real 				= (([0-9]+)(\.[0-9]+)?)|(\.?[0-9]+)
@@ -132,8 +134,9 @@ proximaInstrucao 	= ({terminaLinha}|{palavrasBranco})
 condicao 			= 	(
 							{maior}|{menor}|{maiorIgual}|{menorIgual}|{simboloIgual}|{diferente}
 						)
+boolean				=	({palavraTrue}|{palavraFalse})
 
-unit 				= {palavraUnit}{proximaInstrucao}*{atributo}{proximaInstrucao}*[\;]
+unit 				= 	{palavraUnit}{proximaInstrucao}*{atributo}{proximaInstrucao}*[\;]
 
 vetor				= 	(
 							{identificador}|{atributo}
@@ -193,6 +196,13 @@ erro				= 	{palavraRaise}{proximaInstrucao}*{palavraException}{proximaInstrucao}
 						
 except				=	{palavraExcept}{proximaInstrucao}*{palavraOn}{proximaInstrucao}*{identificador}{proximaInstrucao}*[\:]{proximaInstrucao}*{palavraException}{proximaInstrucao}*{palavraDo}
 
+MessageBox			=	{identificador}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraMessageBox}{proximaInstrucao}*
+						{abreParenteses} 
+							(
+								{proximaInstrucao}* {identificador}*{proximaInstrucao}* {identificador}*{proximaInstrucao}*[\:]*{proximaInstrucao}* {variavel}*{proximaInstrucao}*[\;]*[\,]*
+							)* 
+						{fechaParenteses}
+
 SqlClear			= 	{identificador}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraSQL}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraClear}{proximaInstrucao}*[\;]
 
 SqlAdd				= 	(
@@ -200,7 +210,7 @@ SqlAdd				= 	(
 						)*
 						{proximaInstrucao}*{palavraSQL}{proximaInstrucao}*[.]{proximaInstrucao}*{palavraADD}{proximaInstrucao}*{abreParenteses}
 						(
-							{proximaInstrucao}|{texto}|{atributo}|{mais}|{quotedstr}|({chamadaMetodo}{proximaInstrucao}*[\.]{proximaInstrucao}*({palavraAsstring}|{palavraAsinteger}))|{keyNumber}|{integer}|{real}
+							{proximaInstrucao}|{texto}|{atributo}|{mais}|{quotedstr}|({chamadaMetodo}{proximaInstrucao}*[\.]{proximaInstrucao}*({palavraAsstring}|{palavraAsinteger}|{palavraAsboolean}))|{keyNumber}|{integer}|{real}
 						)
 						* {fechaParenteses} {proximaInstrucao}*[\;]
 
@@ -226,9 +236,9 @@ metodo 				= {baseMetodo}{variaveisMetodo}{proximaInstrucao}*[\:]*{proximaInstru
 trim				= {palavraTrim}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*({texto}|{atributo}){proximaInstrucao}*{fechaParenteses}
 */
 
-paramByName			= {identificador}{proximaInstrucao}*[\.]{proximaInstrucao}*{palavraParambyname}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*{texto}{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*[\.]*{proximaInstrucao}*({palavraAsinteger}|{palavraAsstring})*
+paramByName			= ({identificador}{proximaInstrucao}*){0,1}[\.]{proximaInstrucao}*{palavraParambyname}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*{texto}{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*[\.]*{proximaInstrucao}*({palavraAsinteger}|{palavraAsstring}|{palavraAsboolean})*
 
-fieldByName			= {identificador}{proximaInstrucao}*[\.]{proximaInstrucao}*{palavraFieldbyname}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*{texto}{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*[\.]*{proximaInstrucao}*({palavraAsinteger}|{palavraAsstring})*
+fieldByName			= ({identificador}{proximaInstrucao}*){0,1}[\.]{proximaInstrucao}*{palavraFieldbyname}{proximaInstrucao}*{abreParenteses}{proximaInstrucao}*{texto}{proximaInstrucao}*{fechaParenteses}{proximaInstrucao}*[\.]*{proximaInstrucao}*({palavraAsinteger}|{palavraAsstring}|{palavraAsboolean})*
 
 
 chamadaMetodo		= 	
@@ -243,7 +253,7 @@ chamadaMetodo		=
 								)*
 								{fechaParenteses}{proximaInstrucao}*
 								)
-							[\;]{0,1}
+							[\;]{0,1}0
 							|
 							(
 								{atributo}{proximaInstrucao}*[\;]{1,1}
@@ -257,10 +267,13 @@ atribuicao			= 	(
 							)*
 							{proximaInstrucao}*{igual}{proximaInstrucao}*
 							(
-								{atributo}|{identificador}|{texto}|{real}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}|{palavraKey}|{mais}|{keyNumber}|{menos}|{integer}
+								{atributo}|{identificador}|{texto}|{chamadaMetodo}*|{vetor}|{paramByName}|{fieldByName}|{palavraKey}
+								|{integer}|{real}
+								|{boolean}|{mais}|{menos}
+								|{keyNumber}
 							)*
 							(
-								{proximaInstrucao}*[\.]{proximaInstrucao}*({palavraAsstring}|{palavraAsinteger})
+								{proximaInstrucao}*[\.]{proximaInstrucao}*({palavraAsstring}|{palavraAsinteger}|{palavraAsboolean})
 							){0,1}
 							{proximaInstrucao}*[\;]{0,1}
 						)
@@ -271,7 +284,7 @@ condicaoElseIF			= 	(
 								{palavraIf}){1,1} {proximaInstrucao}* {palavraNot}{0,1} {proximaInstrucao}* {abreParenteses}* {proximaInstrucao}*
 									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}([\.])|{mais}|{menos})
 								{proximaInstrucao}*{condicao} {proximaInstrucao}*
-									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}|{mais}|{menos})
+									({atributo}|{vetor}|{texto}|{identificador}|{real}|{chamadaMetodo}|{mais}|{menos}|{boolean})
 								{proximaInstrucao}*{fechaParenteses}*
 					  			{palavraThen}{1,1}
 					  		)
@@ -336,6 +349,7 @@ program = "program"
 
 {terminaLinha}			{ return new PascalToken("fimLinha            ", yytext()); }
 
+{MessageBox}			{ return new PascalToken("MessageBox          ", yytext()); }
 
 {identificador}			{ return new PascalToken("ID                  ", yytext()); }
 {atributo}				{ return new PascalToken("atributo            ", yytext()); }
