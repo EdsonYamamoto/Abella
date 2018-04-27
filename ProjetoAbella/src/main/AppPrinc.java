@@ -55,20 +55,7 @@ public class AppPrinc {
 		if(Configuracoes.isHabilitaImpressaoLOG())
 			Dados.impressaoDados();
 		
-		if(Configuracoes.isHabilitarModoFluxoPrograma())
-		{
-			FluxoExtrator.arvore = new Graph();
-			i = 0;
-			for (int j = afile.length; i < j; i++) {
-				File arquivos = afile[i];
-				if(arquivos.getName().endsWith(Configuracoes.getExtensaoArquivoEntrada()))
-					FluxoExtrator.escreveFluxoPrograma(arquivos);
-				
-				if(arquivos.length()==0)
-					arquivos.delete();
-			}
-		}
-		
+			
 		if(Configuracoes.isHabilitaImpressaoScriptBancoNeo4J())
 		{
 			BancoDadosGrafo.impressaoDadosBancoNeo4j();

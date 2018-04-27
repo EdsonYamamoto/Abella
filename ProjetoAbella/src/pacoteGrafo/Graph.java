@@ -12,32 +12,36 @@ public class Graph {
 	}
 
 	//metodo que armazena um nome mais uma informacao
-	public void addNode(String nome, String pasName)
+	public void addNode(int i, String nome, String info)
 	{
-		if(find(nome)==null)
-			nodes.add(new Node(nome, pasName));
+		if(find(i)==null)
+			nodes.add(new Node(i, nome, info));
 	}
 	//metodo que armazena apenas o nome de um nó
-	public void addNode(String nome)
+	public void addNode(int i,String nome)
 	{
-		if(find(nome)==null)
-			nodes.add(new Node(nome));
+		if(find(i)==null)
+			nodes.add(new Node(i,nome));
 	}
-	
-	public void addEdge(String nomeInicio, String nomeFim, String info) 
+	//metodo que armazena apenas o nome de um nó
+	public void addNode(int i)
 	{
-		Node nFrom = find(nomeInicio);
-        Node nTo = find(nomeFim);
+		nodes.add(new Node(i));
+	}
+	public void addEdge(int inicio, int fim, String info) 
+	{
+		Node nFrom = find(inicio);
+        Node nTo = find(fim);
         if (nFrom != null && nTo != null)
         {
             nFrom.AddEdge(nTo, info);
         }
 	}
 	
-	public Node find(String nome)
+	public Node find(int i)
 	{
 		for (Node node : nodes) 
-			if(node.nome.compareTo(nome)==0)
+			if(node.id==i)
 				return node;
 			
 		return null;

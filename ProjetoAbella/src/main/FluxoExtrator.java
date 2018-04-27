@@ -294,7 +294,7 @@ public class FluxoExtrator {
 									if (metodoProcFuncDivisao[0].compareTo(metodo.getUnit())==0 && metodoProcFuncDivisao[1].compareTo(metodo.getMetodo())==0) 
 									{
 										MetodoService.setMetodo(metodo);
-										arvore.addNode(MetodoService.getMetodo().getMetodo(),MetodoService.getMetodo().getUnit());
+										//arvore.addNode(MetodoService.getMetodo().getMetodo(),MetodoService.getMetodo().getUnit());
 									}
 					        	tipo += "Função ";
 				    		}
@@ -317,7 +317,7 @@ public class FluxoExtrator {
 									{
 										MetodoService.setMetodo(metodo);
 										//System.out.println(MetodoService.getMetodo());
-										arvore.addNode(MetodoService.getMetodo().getMetodo(), MetodoService.getMetodo().getUnit());
+										//arvore.addNode(MetodoService.getMetodo().getMetodo(), MetodoService.getMetodo().getUnit());
 									}
 					        	tipo += "Procedure ";
 							}
@@ -335,8 +335,8 @@ public class FluxoExtrator {
 						if(metodo.getMetodo().compareTo(auxiliar[0])==0)
 						{
 							//System.out.println(MetodoService.getMetodo().getMetodo()+"\t"+numLinha+"\t"+ auxiliar[0]);
-							arvore.addNode(auxiliar[0], MetodoService.getMetodo().getUnit());
-							arvore.addEdge(MetodoService.getMetodo().getMetodo(), auxiliar[0], "oi?");
+							//arvore.addNode(auxiliar[0], MetodoService.getMetodo().getUnit());
+							//arvore.addEdge(MetodoService.getMetodo().getMetodo(), auxiliar[0], "oi?");
 							
 						}
 					}

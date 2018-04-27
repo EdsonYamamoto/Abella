@@ -10,6 +10,7 @@ import javax.swing.GrayFilter;
 
 import compiladorPascal.LexicalAnalyzer;
 import compiladorPascal.PascalToken;
+import pacoteGrafo.Edge;
 import pacoteGrafo.Graph;
 import pacoteGrafo.Node;
 import service.ArquivoService;
@@ -18,8 +19,9 @@ import service.MetodoService;
 
 public class ExtratorLexico {
 	
-	public static boolean tokenUnit=false;
-	public static boolean tokenMetodo=false;
+	public static boolean tokenUnit=true;
+	public static boolean tokenMetodo=true;
+	public static boolean tokenBeginEnd=false;
 
 	public static boolean tokenComentario=false;
 	
@@ -33,17 +35,20 @@ public class ExtratorLexico {
 	public static boolean tokenDeclaracaoVariavel=false;
 	public static boolean tokenAtribuicao=false;
 	
-	public static boolean tokenAddSql=true;
+	public static boolean tokenAddSql=false;
 	public static boolean tokenOpenSql=false;
 	public static boolean tokenExecSql=false;
 	public static boolean tokenSqlClear=false;
 	
+	public static Graph grafo;
+	public static int i=0;
+			
 	public static void extrator(File sourceCode)
 	{
-		Graph grafo = new Graph();
-		Node no = new Node();
-		Node noAnterior = new Node();
-		String frase = new String();
+		grafo = new Graph();
+		Node no;
+		Node noUnit = null;
+		Node noMetodo = null;
 	    PascalToken token;
 	    try {
 		LexicalAnalyzer lexical = new LexicalAnalyzer(new FileReader(sourceCode));
@@ -53,94 +58,145 @@ public class ExtratorLexico {
 			while ((token = lexical.yylex()) != null) {
 				token.value = token.value.replaceAll("([\r]|[\n]|[\r\n]|[\t])","");
 				//System.out.println(token.name.trim());
+				no = new Node();
 
-				frase = "";
 				if(token.name.trim().compareTo("unit")==0 && tokenUnit)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					no = guardaDadosNode(token.name, token.value);
+					
+					noUnit = new Node(no.id,no.nome,no.informacao);
+					grafo.addNode(no.id,no.nome,no.informacao);
 				}
-				
 				if(token.name.trim().compareTo("metodo")==0 && tokenMetodo)
 				{
-					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
-					MetodoService.getMetodo().setArquivoModelo(ArquivoService.getListaArquivos().get(ArquivoService.getListaArquivos().size()-1));
+					no = guardaDadosNode(token.name, token.value);
+					
+					noMetodo = new Node(no.id,no.nome,no.informacao);
+
+					grafo.addNode(no.id,no.nome,no.informacao);
+					grafo.addEdge(noUnit.id,no.id,"");
 				}
 				
 				if(token.name.trim().compareTo("condicao else ou if")==0  && tokenElseIf)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					no = guardaDadosNode(token.name, token.value);
+					
+					grafo.addNode(no.id,no.nome,no.informacao);
+					grafo.addEdge(noMetodo.id,no.id,"");
 				}
 				
 				if(token.name.trim().compareTo("condicao else")==0  && tokenElse)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
 				
 				if(token.name.trim().compareTo("atribuicao")==0  && tokenAtribuicao)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
 				
 				if(token.name.trim().compareTo("SqlAdd")==0  && tokenAddSql)
 				{
-					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
-					frase = separaAddSQL(token.value);
+					no = guardaDadosNode(token.name, token.value);
 				}
 
 				if(token.name.trim().compareTo("SqlClear")==0  && tokenSqlClear)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
 
 				if(token.name.trim().compareTo("SqlOpen")==0  && tokenOpenSql)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
 				
 				if(token.name.trim().compareTo("SqlExec")==0  && tokenExecSql)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
 				
 				if(token.name.trim().compareTo("raise error")==0  && tokenRaiseError)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
 				
 				if(token.name.trim().compareTo("except")==0  && tokenExcept)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
-				
 				
 				if(token.name.trim().compareTo("declaracaoVariavel")==0  && tokenDeclaracaoVariavel)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
 				
 				if(token.name.trim().compareTo("comentario")==0  && tokenComentario)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
 				
 				if(token.name.trim().compareTo("showMessage")==0  && tokenMessagem)
 				{
-					System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
-				grafo.addNode(frase);
-				
-				if(grafo.nodes.size()>1)
+				if((token.name.trim().compareTo("begin")==0||
+					token.name.trim().compareTo("end")==0||
+					token.name.trim().compareTo("end If")==0 ) && tokenBeginEnd)
 				{
-					grafo.addEdge(no.nome, noAnterior.nome,"");
+					//System.out.println(sourceCode.getName()+" lin:"+token.line+" -"+token.name + "\t- " + token.value);
+					
+					no = guardaDadosNode(token.name, token.value);
 				}
-				noAnterior = grafo.nodes.get(grafo.nodes.size()-1);
-				no = grafo.nodes.get(grafo.nodes.size()-1);
 				
+/*
+				if(no.nome!=null)
+				{
+					grafo.addNode(i,no.nome,no.informacao);
+					System.out.println(grafo.nodes.get(grafo.nodes.size()-1));
+					grafo.addEdge(i-1, i, "");
+				}
+	*/			
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	    
+	    for (Node n : grafo.nodes) {
+			for (Edge e : n.getArestas()) {
+				System.out.println(e.from.informacao+"-->  "+e.to.informacao);
+			}
+		}
+	}
+	
+	private static Node guardaDadosNode(String nome, String info)
+	{
+		i++;
+		Node no = new Node();
+		no.id = i;
+		no.nome = nome;
+		no.informacao = info;
+		return no;
 	}
 	private static void salvaArquivoService(File arquivo)
 	{
@@ -157,11 +213,9 @@ public class ExtratorLexico {
 		String[] splitConsulta;
 		
 		splitConsulta = frase.split("([Aa][Dd][Dd])");
-		if(splitConsulta.length>1)
-		{
+
 			teste = splitConsulta[1].trim().substring(0, splitConsulta[1].length()-1);
 			System.out.println(frase+"\n"+teste+"\n\n");
-		}
 		return teste;
 	}
 }

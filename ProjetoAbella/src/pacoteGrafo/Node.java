@@ -7,21 +7,29 @@ public class Node {
 	public String nome;
 	public String informacao;
 	public String pasName;
+	public int id;
 	public boolean visited;
 	private List<Edge> edges = new ArrayList<Edge>();
 	public Node()
 	{
 		
 	}
-	public Node(String nome, String PasName)
+	public Node(int i, String nome, String informacao)
 	{
+		this.id = i;
 		this.nome = nome;
-		this.pasName = PasName;
+		this.informacao = informacao;
 	}
 	
-	public Node(String nome)
+	public Node(int i, String nome)
 	{
+		this.id = i;
 		this.nome = nome;
+	}
+	
+	public Node(int i)
+	{
+		this.id = i;
 	}
 	
 	public List<Edge> getArestas() {
@@ -43,6 +51,6 @@ public class Node {
 	@Override
 	public String toString()
 	{
-		return this.nome;
+		return this.id+" "+this.nome+" "+this.informacao;
 	}
 }
